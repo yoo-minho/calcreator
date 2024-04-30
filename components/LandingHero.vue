@@ -40,7 +40,6 @@ const toast = useToast();
 
 const recalculate = () => {
   보수월액.value = 0;
-  건강보험료.value = 0;
 };
 
 const calculate = () => {
@@ -172,7 +171,7 @@ useSeoMeta({
             v-model="건강보험료"
             color="gray"
             variant="outline"
-            type="text"
+            type="number"
             input-class="text-right"
             size="xl"
             :disabled="보수월액 > 0"
