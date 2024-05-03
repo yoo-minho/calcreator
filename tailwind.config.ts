@@ -5,7 +5,7 @@ export default <Partial<Config>>{
   theme: {
     extend: {
       colors: {
-        "electric-violet": {
+        vviolet: {
           "50": "#edeeff",
           "100": "#dee0ff",
           "200": "#c3c5ff",
