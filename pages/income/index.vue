@@ -1,6 +1,5 @@
 <script setup lang="ts">
-const people = [1, 2, 3, 4, 5, 6, 7];
-const selectedPeople = ref(people[0]);
+const selectedPeople = ref(1);
 
 //보건복지부
 const 기준중위소득 = {
@@ -29,6 +28,7 @@ const 건강보험료율 = {
 const 건강보험료 = ref(0);
 const 건강보험료2 = ref(0);
 const 보수월액 = ref(0);
+const 모드 = ref<'선택' | '조회'>('선택');
 const 중위소득대비 = ref(0);
 const 중위소득대비2 = ref(0);
 const 월평균소득대비 = ref(0);
@@ -45,7 +45,7 @@ watch(건강보험료, () => {
 const toast = useToast();
 
 const recalculate = () => {
-  보수월액.value = 0;
+  모드.value = '선택';
 };
 
 const calculate = () => {
@@ -61,12 +61,13 @@ const calculate = () => {
   const 합산건강보험료 = !맞벌이유무.value
     ? 건강보험료.value
     : 건강보험료.value > 건강보험료2.value
-    ? 건강보험료.value + 건강보험료2.value / 2
-    : 건강보험료.value / 2 + 건강보험료2.value;
+      ? 건강보험료.value + 건강보험료2.value / 2
+      : 건강보험료.value / 2 + 건강보험료2.value;
 
   console.log({ 맞벌이유무, 합산건강보험료 });
 
   보수월액.value = Math.round(합산건강보험료 * (100 / (건강보험료율[2024] / 2)));
+  모드.value = '조회';
 
   중위소득대비.value =
     Math.round((합산건강보험료 / 중위소득건보료[2024]["직장가입"][selectedPeople.value - 1]) * 1000) / 10;
@@ -143,45 +144,10 @@ const 맞벌이계산식 = () => {
   <div>
     <LandingHero chip="2024"> 나의소득<br /><span class="text-vviolet-500">몇퍼센트</span> </LandingHero>
     <div class="flex flex-col gap-3 pt-6">
-      {{ selectedPeople }}
-      <!-- <IconSelector
-        :model-value="selectedPeople"
-        title="가족구성원"
-        unit="명"
-        :count="7"
-        :mode="보수월액 === 0 ? 'SELECT' : 'READ'"
-      >
-        <template #icon-on><UIcon name="i-ph-user-circle-duotone" dynamic /></template>
-        <template #icon-off><UIcon name="i-ph-user-circle-thin" dynamic /></template>
-      </IconSelector> -->
-      <div>
-        <div class="text-xl leading-7 flex gap-3">
-          <div class="font-bold">가족구성원</div>
-          <div>{{ selectedPeople }}명</div>
-        </div>
-        <div v-if="보수월액 === 0">
-          <div class="flex">
-            <template v-for="i in 7">
-              <template v-if="i <= selectedPeople">
-                <UIcon
-                  name="i-ph-user-circle-duotone"
-                  dynamic
-                  class="flex-1 text-4xl text-primary cursor-pointer"
-                  @click="selectedPeople = selectedPeople === i && i > 1 ? i - 1 : i"
-                />
-              </template>
-              <template v-else>
-                <UIcon
-                  name="i-ph-user-circle-thin"
-                  dynamic
-                  class="flex-1 text-4xl cursor-pointer"
-                  @click="selectedPeople = i"
-                />
-              </template>
-            </template>
-          </div>
-        </div>
-      </div>
+      <IconSelector v-model="selectedPeople" title="가족구성원" unit="명" :count="7" :mode="모드" :icon="{
+        on: 'i-ph-user-circle-duotone',
+        off: 'i-ph-user-circle-thin'
+      }" />
       <div>
         <template v-if="보수월액 > 0">
           <div class="text-xl leading-7">
@@ -204,12 +170,8 @@ const 맞벌이계산식 = () => {
                   <UDivider class="py-1" />
                   <div class="text-xs text-gray-400 font-light">
                     1️⃣ 건강보험공단 접속 - 로그인
-                    <a
-                      href="https://www.nhis.or.kr/nhis/index.do"
-                      class="underline-offset-4 text-primary-300"
-                      target="건강보험공단"
-                      >링크</a
-                    >
+                    <a href="https://www.nhis.or.kr/nhis/index.do" class="underline-offset-4 text-primary-300"
+                      target="건강보험공단">링크</a>
                     <br />
                     2️⃣ [민원여기요]-[개인민원] 이동<br />
                     3️⃣ [보험료 조회/신청]-[직장보험료 조회] 이동<br />
@@ -220,36 +182,16 @@ const 맞벌이계산식 = () => {
             </UPopover>
           </div>
           <div class="text-xs text-gray-400">월 기준, 직장가입자 기준, 노인장기요양보험료 미포함</div>
-          <UInput
-            v-model="건강보험료"
-            color="gray"
-            variant="outline"
-            type="number"
-            input-class="text-right"
-            size="xl"
-            :disabled="보수월액 > 0"
-          >
+          <UInput v-model="건강보험료" color="gray" variant="outline" type="number" input-class="text-right" size="xl"
+            :disabled="보수월액 > 0">
             <template #trailing> 원 </template>
           </UInput>
-          <UInput
-            v-if="맞벌이유무"
-            v-model="건강보험료2"
-            color="gray"
-            variant="outline"
-            type="number"
-            input-class="text-right"
-            size="xl"
-            :disabled="보수월액 > 0"
-            class="pt-1"
-            :input-attr="{ 'max-length': 8 }"
-          >
+          <UInput v-if="맞벌이유무" v-model="건강보험료2" color="gray" variant="outline" type="number" input-class="text-right"
+            size="xl" :disabled="보수월액 > 0" class="pt-1" :input-attr="{ 'max-length': 8 }">
             <template #trailing> 원 </template>
           </UInput>
           <div v-if="selectedPeople > 1" class="pt-3 flex gap-3">
-            <UCheckbox
-              v-model="맞벌이유무"
-              :label="`맞벌이?` + (맞벌이유무 ? ' - 공식 : 높은소득 + 낮은소득/2' : '')"
-            />
+            <UCheckbox v-model="맞벌이유무" :label="`맞벌이?` + (맞벌이유무 ? ' - 공식 : 높은소득 + 낮은소득/2' : '')" />
           </div>
         </template>
       </div>
@@ -275,10 +217,8 @@ const 맞벌이계산식 = () => {
           </div>
           <div class="text-xs text-gray-400">비과세 소득 제외된 월 소득 (세전)</div>
           <div class="flex gap-2">
-            <div
-              class="rounded-lg divide-y divide-gray-200 ring-1 ring-gray-200 shadow flex-1 text-right px-4 py-1"
-              color="gray"
-            >
+            <div class="rounded-lg divide-y divide-gray-200 ring-1 ring-gray-200 shadow flex-1 text-right px-4 py-1"
+              color="gray">
               {{ 보수월액.toLocaleString() }} 원
             </div>
           </div>
@@ -339,22 +279,10 @@ const 맞벌이계산식 = () => {
         </div>
 
         <UDivider type="dashed" />
-        <UButton
-          block
-          color="primary"
-          label="뒤로가기"
-          size="lg"
-          icon="i-heroicons-arrow-left-16-solid"
-          @click="recalculate()"
-        />
-        <UButton
-          block
-          color="black"
-          label="링크복사"
-          size="lg"
-          icon="i-heroicons-clipboard-document-check"
-          @click="copyLink()"
-        />
+        <UButton block color="primary" label="뒤로가기" size="lg" icon="i-heroicons-arrow-left-16-solid"
+          @click="recalculate()" />
+        <UButton block color="black" label="링크복사" size="lg" icon="i-heroicons-clipboard-document-check"
+          @click="copyLink()" />
         <UDivider type="dashed" />
         <div>
           <div class="text-xl font-bold leading-7">참고</div>
@@ -368,23 +296,14 @@ const 맞벌이계산식 = () => {
       </template>
       <template v-else>
         <UButton block color="primary" label="계산하기" size="lg" icon="i-heroicons-calculator" @click="calculate()" />
-        <UButton
-          block
-          color="black"
-          label="링크복사"
-          size="lg"
-          icon="i-heroicons-clipboard-document-check"
-          @click="copyLink()"
-        />
+        <UButton block color="black" label="링크복사" size="lg" icon="i-heroicons-clipboard-document-check"
+          @click="copyLink()" />
       </template>
     </div>
   </div>
   <div class="flex justify-center pt-3">
-    <a href="https://hits.sh/customcal.vercel.app/income/"
-      ><img
-        alt="Hits"
-        src="https://hits.sh/customcal.vercel.app/income.svg?view=today-total&style=flat-square&color=6449FC"
-    /></a>
+    <a href="https://hits.sh/customcal.vercel.app/income/"><img alt="Hits"
+        src="https://hits.sh/customcal.vercel.app/income.svg?view=today-total&style=flat-square&color=6449FC" /></a>
   </div>
 </template>
 
