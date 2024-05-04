@@ -142,12 +142,14 @@ const 맞벌이계산식 = () => {
 </script>
 <template>
   <div>
-    <LandingHero chip="2024"> 나의소득<br /><span class="text-vviolet-500">몇퍼센트</span> </LandingHero>
+    <LandingHero :chip="{ label: '2024', color: 'vviolet' }">
+      <p>나의소득<br /><span class="text-vviolet-500">몇퍼센트</span></p>
+    </LandingHero>
     <div class="flex flex-col gap-3 pt-6">
       <IconSelector v-model="selectedPeople" title="가족구성원" unit="명" :count="7" :mode="모드" :icon="{
-        on: 'i-ph-user-circle-duotone',
-        off: 'i-ph-user-circle-thin'
-      }" />
+      on: 'i-ph-user-circle-duotone',
+      off: 'i-ph-user-circle-thin'
+    }" />
       <div>
         <template v-if="보수월액 > 0">
           <div class="text-xl leading-7">

@@ -67,24 +67,24 @@ const clickUser = (id: number) => {
 <template>
     <UCard @click="clickUser(id)" class="hover:bg-gray-100 cursor-pointer">
         <template #header>
-            <div class="flex justify-between items-center">
-                <div class="text-3xl font-bold">{{ instructor }}</div>
-                <div class="text-right">
+            <div class="flex w-full">
+                <div class="flex-1">
+                    <div class="text-3xl font-bold">{{ instructor }}</div>
                     <div class="font-bold text-green-500">예상수익 : {{ formatNumberKR(totalSales) }}</div>
                     <div class="text-sm">전체 강의수 : {{ items.length }}</div>
+                    <div class="flex gap-1 flex-wrap pt-2" v-if="_totalSkills.length > 0">
+                        <UBadge v-for="s in _totalSkills" :label="s" color="gray" size="xs" />
+                    </div>
+                </div>
+                <div>
+                    <UIcon name="i-ph-house-duotone" dynamic size="1.5rem" />
                 </div>
             </div>
         </template>
 
         <template v-for="cal in calItems.splice(0, 3)">
-            <div>
+            <div class="text-sm">
                 <div>{{ cal.title }}</div>
-            </div>
-        </template>
-
-        <template #footer>
-            <div class="flex gap-1">
-                <UBadge v-for="s in _totalSkills" :label="s" color="gray" />
             </div>
         </template>
     </UCard>
