@@ -4,7 +4,8 @@
   <div>
     <LandingHero>
       <span class="text-base font-light">"그거 계산해보면 좋겠다" 하면 만들어버리는</span>
-      <span>커스텀 계산기</span>
+      <span>계산기 창조자</span>
+      <span class="text-base font-light">작품 모음</span>
     </LandingHero>
     <div class="flex flex-col gap-3">
       <UButton class="w-full" color="vviolet" variant="outline" size="xl" to="/income">

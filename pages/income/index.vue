@@ -1,34 +1,13 @@
 <script setup lang="ts">
+import { 건강보험료율, 기준중위소득, 전년도도시근로자월평균소득, 중위소득건보료 } from "./data/각종기준";
+
+useAppConfig().ui.primary = "blue";
+
 const selectedPeople = ref(1);
-
-//보건복지부
-const 기준중위소득 = {
-  2024: [2_228_445, 3_682_609, 4_714_657, 5_729_913, 6_695_735, 7_618_369, 8_514_994],
-};
-
-const 중위소득건보료 = {
-  2024: {
-    직장가입: [79_320, 130_901, 167_876, 205_281, 239_074, 271_291, 304_986],
-    지역가입: [0, 74_359, 123_611, 156_318, 195_321, 233_543, 271_091],
-    혼합가입: [0, 132_127, 169_859, 208_153, 243_098, 277_236, 314_423],
-  },
-};
-
-//통계청
-const 전년도도시근로자월평균소득 = {
-  2024: [3_482_964, 5_415_712, 7_198_649, 8_248_467, 8_775_071, 9_563_282, 10_351_493],
-  2023: [3_353_884, 5_005_376, 6_718_198, 7_622_056, 8_040_492, 8_701_639, 9_362_786, 10_023_933],
-};
-
-//소득 8분위???
-const 건강보험료율 = {
-  2024: 7.09,
-};
-
 const 건강보험료 = ref(0);
 const 건강보험료2 = ref(0);
 const 보수월액 = ref(0);
-const 모드 = ref<'선택' | '조회'>('선택');
+const 모드 = ref<"선택" | "조회">("선택");
 const 중위소득대비 = ref(0);
 const 중위소득대비2 = ref(0);
 const 월평균소득대비 = ref(0);
@@ -45,7 +24,7 @@ watch(건강보험료, () => {
 const toast = useToast();
 
 const recalculate = () => {
-  모드.value = '선택';
+  모드.value = "선택";
 };
 
 const calculate = () => {
@@ -61,25 +40,21 @@ const calculate = () => {
   const 합산건강보험료 = !맞벌이유무.value
     ? 건강보험료.value
     : 건강보험료.value > 건강보험료2.value
-      ? 건강보험료.value + 건강보험료2.value / 2
-      : 건강보험료.value / 2 + 건강보험료2.value;
+    ? 건강보험료.value + 건강보험료2.value / 2
+    : 건강보험료.value / 2 + 건강보험료2.value;
 
   console.log({ 맞벌이유무, 합산건강보험료 });
 
   보수월액.value = Math.round(합산건강보험료 * (100 / (건강보험료율[2024] / 2)));
-  모드.value = '조회';
+  모드.value = "조회";
 
   중위소득대비.value =
     Math.round((합산건강보험료 / 중위소득건보료[2024]["직장가입"][selectedPeople.value - 1]) * 1000) / 10;
-
   중위소득대비2.value = Math.round((보수월액.value / 기준중위소득[2024][selectedPeople.value - 1]) * 1000) / 10;
-
   월평균소득대비.value =
     Math.round((보수월액.value / 전년도도시근로자월평균소득[2024][selectedPeople.value - 1]) * 1000) / 10;
 
-  setTimeout(() => {
-    scrollToTop();
-  }, 300);
+  setTimeout(() => scrollToTop(), 300);
 };
 
 const scrollToTop = () => {
@@ -116,18 +91,7 @@ const refers = [
 ];
 
 const 스크롤지점 = ref<HTMLDivElement>();
-
-useSeoMeta({
-  title: "나의소득몇퍼센트 - 중위소득|월평균소득 계산",
-  ogTitle: "나의소득몇퍼센트 - 중위소득|월평균소득 계산",
-  description: "건강보험료를 활용하여 중위소득과 월평균소득을 알아봅시다",
-  ogDescription: "건강보험료를 활용하여 중위소득과 월평균소득을 알아봅시다.",
-  ogImage: "/og.png",
-  twitterCard: "summary_large_image",
-});
-
 const 맞벌이유무 = ref(false);
-
 const 맞벌이계산식 = () => {
   const 건보료 = 건강보험료.value.toLocaleString() + "원";
   const 건보료2 = 건강보험료2.value.toLocaleString() + "원";
@@ -139,17 +103,33 @@ const 맞벌이계산식 = () => {
   }
   return 건보료;
 };
+
+useSeoMeta({
+  title: "나의소득몇퍼센트 - 중위소득|월평균소득 계산",
+  ogTitle: "나의소득몇퍼센트 - 중위소득|월평균소득 계산",
+  description: "건강보험료를 활용하여 중위소득과 월평균소득을 알아봅시다",
+  ogDescription: "건강보험료를 활용하여 중위소득과 월평균소득을 알아봅시다.",
+  ogImage: "/og.png",
+  twitterCard: "summary_large_image",
+});
 </script>
 <template>
   <div>
-    <LandingHero :chip="{ label: '2024', color: 'vviolet' }">
-      <p>나의소득<br /><span class="text-vviolet-500">몇퍼센트</span></p>
+    <LandingHero :chip="{ label: '2024', color: 'primary' }">
+      <p>나의소득<br /><span class="text-primary">몇퍼센트</span></p>
     </LandingHero>
     <div class="flex flex-col gap-3 pt-6">
-      <IconSelector v-model="selectedPeople" title="가족구성원" unit="명" :count="7" :mode="모드" :icon="{
-      on: 'i-ph-user-circle-duotone',
-      off: 'i-ph-user-circle-thin'
-    }" />
+      <IconSelector
+        v-model="selectedPeople"
+        title="가족구성원"
+        unit="명"
+        :count="7"
+        :mode="모드"
+        :icon="{
+          on: 'i-ph-user-circle-duotone',
+          off: 'i-ph-user-circle-thin',
+        }"
+      />
       <div>
         <template v-if="보수월액 > 0">
           <div class="text-xl leading-7">
@@ -172,8 +152,12 @@ const 맞벌이계산식 = () => {
                   <UDivider class="py-1" />
                   <div class="text-xs text-gray-400 font-light">
                     1️⃣ 건강보험공단 접속 - 로그인
-                    <a href="https://www.nhis.or.kr/nhis/index.do" class="underline-offset-4 text-primary-300"
-                      target="건강보험공단">링크</a>
+                    <a
+                      href="https://www.nhis.or.kr/nhis/index.do"
+                      class="underline-offset-4 text-primary-300"
+                      target="건강보험공단"
+                      >링크</a
+                    >
                     <br />
                     2️⃣ [민원여기요]-[개인민원] 이동<br />
                     3️⃣ [보험료 조회/신청]-[직장보험료 조회] 이동<br />
@@ -184,16 +168,36 @@ const 맞벌이계산식 = () => {
             </UPopover>
           </div>
           <div class="text-xs text-gray-400">월 기준, 직장가입자 기준, 노인장기요양보험료 미포함</div>
-          <UInput v-model="건강보험료" color="gray" variant="outline" type="number" input-class="text-right" size="xl"
-            :disabled="보수월액 > 0">
+          <UInput
+            v-model="건강보험료"
+            color="gray"
+            variant="outline"
+            type="number"
+            input-class="text-right"
+            size="xl"
+            :disabled="보수월액 > 0"
+          >
             <template #trailing> 원 </template>
           </UInput>
-          <UInput v-if="맞벌이유무" v-model="건강보험료2" color="gray" variant="outline" type="number" input-class="text-right"
-            size="xl" :disabled="보수월액 > 0" class="pt-1" :input-attr="{ 'max-length': 8 }">
+          <UInput
+            v-if="맞벌이유무"
+            v-model="건강보험료2"
+            color="gray"
+            variant="outline"
+            type="number"
+            input-class="text-right"
+            size="xl"
+            :disabled="보수월액 > 0"
+            class="pt-1"
+            :input-attr="{ 'max-length': 8 }"
+          >
             <template #trailing> 원 </template>
           </UInput>
           <div v-if="selectedPeople > 1" class="pt-3 flex gap-3">
-            <UCheckbox v-model="맞벌이유무" :label="`맞벌이?` + (맞벌이유무 ? ' - 공식 : 높은소득 + 낮은소득/2' : '')" />
+            <UCheckbox
+              v-model="맞벌이유무"
+              :label="`맞벌이?` + (맞벌이유무 ? ' - 공식 : 높은소득 + 낮은소득/2' : '')"
+            />
           </div>
         </template>
       </div>
@@ -219,8 +223,10 @@ const 맞벌이계산식 = () => {
           </div>
           <div class="text-xs text-gray-400">비과세 소득 제외된 월 소득 (세전)</div>
           <div class="flex gap-2">
-            <div class="rounded-lg divide-y divide-gray-200 ring-1 ring-gray-200 shadow flex-1 text-right px-4 py-1"
-              color="gray">
+            <div
+              class="rounded-lg divide-y divide-gray-200 ring-1 ring-gray-200 shadow flex-1 text-right px-4 py-1"
+              color="gray"
+            >
               {{ 보수월액.toLocaleString() }} 원
             </div>
           </div>
@@ -281,10 +287,22 @@ const 맞벌이계산식 = () => {
         </div>
 
         <UDivider type="dashed" />
-        <UButton block color="primary" label="뒤로가기" size="lg" icon="i-heroicons-arrow-left-16-solid"
-          @click="recalculate()" />
-        <UButton block color="black" label="링크복사" size="lg" icon="i-heroicons-clipboard-document-check"
-          @click="copyLink()" />
+        <UButton
+          block
+          color="primary"
+          label="뒤로가기"
+          size="lg"
+          icon="i-heroicons-arrow-left-16-solid"
+          @click="recalculate()"
+        />
+        <UButton
+          block
+          color="black"
+          label="링크복사"
+          size="lg"
+          icon="i-heroicons-clipboard-document-check"
+          @click="copyLink()"
+        />
         <UDivider type="dashed" />
         <div>
           <div class="text-xl font-bold leading-7">참고</div>
@@ -298,14 +316,23 @@ const 맞벌이계산식 = () => {
       </template>
       <template v-else>
         <UButton block color="primary" label="계산하기" size="lg" icon="i-heroicons-calculator" @click="calculate()" />
-        <UButton block color="black" label="링크복사" size="lg" icon="i-heroicons-clipboard-document-check"
-          @click="copyLink()" />
+        <UButton
+          block
+          color="black"
+          label="링크복사"
+          size="lg"
+          icon="i-heroicons-clipboard-document-check"
+          @click="copyLink()"
+        />
       </template>
     </div>
   </div>
   <div class="flex justify-center pt-3">
-    <a href="https://hits.sh/customcal.vercel.app/income/"><img alt="Hits"
-        src="https://hits.sh/customcal.vercel.app/income.svg?view=today-total&style=flat-square&color=6449FC" /></a>
+    <a href="https://hits.sh/customcal.vercel.app/income/"
+      ><img
+        alt="Hits"
+        src="https://hits.sh/customcal.vercel.app/income.svg?view=today-total&style=flat-square&color=blue"
+    /></a>
   </div>
 </template>
 

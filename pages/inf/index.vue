@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { 지식공유자들 } from "./data/지식공유자";
 
+useAppConfig().ui.primary = "green";
+
 const goInf = () => {
   window.open("https://www.inflearn.com/open-knowledge", "inf");
 };
@@ -20,9 +22,9 @@ const routerPush = (id: string) => {
   <div class="flex flex-col gap-3">
     <LandingHero>
       <span class="text-4xl">예상수익 자극받고</span>
-      <span class="text-4xl text-green-500">지식공유 시작하자</span>
+      <span class="text-4xl text-primary">지식공유 시작하자</span>
       <UButton class="mt-3 w-full" color="white" @click="goInf()">
-        <div class="text-center text-green-500 w-full">인프런에서 지식공유하려면? click!</div>
+        <div class="text-center text-primary w-full">인프런에서 지식공유하려면? click!</div>
       </UButton>
     </LandingHero>
     <SearchInput v-model="searchWord" />
