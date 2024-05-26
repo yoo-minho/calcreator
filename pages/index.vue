@@ -8,10 +8,10 @@
       <span class="text-base font-light">작품 모음</span>
     </LandingHero>
     <div class="flex flex-col gap-3">
-      <UButton class="w-full" color="vviolet" variant="outline" size="xl" to="/income">
+      <UButton class="w-full" color="orange" variant="outline" size="xl" to="/micro-saas">
         <div class="flex gap-2 justify-between w-full">
           <UIcon name="i-heroicons-presentation-chart-bar" dynamic size="1.5rem" />
-          <span class="flex-1 text-left">중위소득 · 도시월평균소득 계산기</span>
+          <span class="flex-1 text-left">마이크로사스 고객계산기</span>
           <UIcon name="i-ph-arrow-circle-right-fill" dynamic size="1.5rem" />
         </div>
       </UButton>
@@ -20,6 +20,14 @@
         <div class="flex gap-2 justify-between w-full">
           <UIcon name="i-ph-user-circle-check-light" dynamic size="1.5rem" />
           <span class="flex-1 text-left">인프런 지식공유자 예상수익 계산기</span>
+          <UIcon name="i-ph-arrow-circle-right-fill" dynamic size="1.5rem" />
+        </div>
+      </UButton>
+
+      <UButton class="w-full" color="blue" variant="outline" size="xl" to="/income">
+        <div class="flex gap-2 justify-between w-full">
+          <UIcon name="i-heroicons-presentation-chart-bar" dynamic size="1.5rem" />
+          <span class="flex-1 text-left">중위소득 · 도시월평균소득 계산기</span>
           <UIcon name="i-ph-arrow-circle-right-fill" dynamic size="1.5rem" />
         </div>
       </UButton>

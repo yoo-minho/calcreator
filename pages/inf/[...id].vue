@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import KnowledgeUser from "./components/KnowledgeUser.vue";
 
+useAppConfig().ui.primary = "green";
+
 const route = useRoute();
 const id = +route.params.id[0];
 

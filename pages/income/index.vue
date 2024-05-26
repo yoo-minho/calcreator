@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import IncomeResult from "./components/IncomeResult.vue";
 import { 건강보험료율, 기준중위소득, 전년도도시근로자월평균소득, 중위소득건보료 } from "./data/각종기준";
 
 useAppConfig().ui.primary = "blue";
@@ -25,6 +26,7 @@ const toast = useToast();
 
 const recalculate = () => {
   모드.value = "선택";
+  보수월액.value = 0;
 };
 
 const calculate = () => {
@@ -42,8 +44,6 @@ const calculate = () => {
     : 건강보험료.value > 건강보험료2.value
     ? 건강보험료.value + 건강보험료2.value / 2
     : 건강보험료.value / 2 + 건강보험료2.value;
-
-  console.log({ 맞벌이유무, 합산건강보험료 });
 
   보수월액.value = Math.round(합산건강보험료 * (100 / (건강보험료율[2024] / 2)));
   모드.value = "조회";
@@ -65,30 +65,6 @@ const scrollToTop = () => {
     behavior: "smooth",
   });
 };
-
-const copyLink = async () => {
-  await navigator.clipboard.writeText(location.href);
-  toast.add({
-    id: "copyLink",
-    title: "링크 복사 완료! 공유를 시작하세요!",
-    icon: "i-heroicons-check-circle",
-  });
-};
-
-const refers = [
-  {
-    label: "역대 기준중위소득 확인 - 보건복지부",
-    url: "https://www.mohw.go.kr/menu.es?mid=a10708010900",
-  },
-  {
-    label: "역대 건강보험료율 확인 - 국민건강보험",
-    url: "https://www.nhis.or.kr/nhis/minwon/retrieveJobCalcView.do",
-  },
-  {
-    label: "2024 건강보험료 소득판정기준표 - 엔젤시터",
-    url: "https://angelsitter.co.kr/contents.php?cname=welfare_basic_insurance",
-  },
-];
 
 const 스크롤지점 = ref<HTMLDivElement>();
 const 맞벌이유무 = ref(false);
@@ -130,210 +106,64 @@ useSeoMeta({
           off: 'i-ph-user-circle-thin',
         }"
       />
-      <div>
-        <template v-if="보수월액 > 0">
-          <div class="text-xl leading-7">
-            <div class="font-bold">건강보험료</div>
-            <div>
-              {{ 맞벌이계산식() }}
-            </div>
-          </div>
-        </template>
-        <template v-else>
-          <div class="text-xl leading-7 flex items-center">
-            <div class="font-bold">건강보험료?</div>
-            <UPopover>
-              <UButton color="primary" size="md" variant="ghost" icon="i-heroicons-question-mark-circle" />
-              <template #panel>
-                <div class="p-3">
-                  <div class="text-black text-sm font-bold">
-                    각종 <b class="text-primary">건강보험료</b>에 활용되는 소득기준
-                  </div>
-                  <UDivider class="py-1" />
-                  <div class="text-xs text-gray-400 font-light">
-                    1️⃣ 건강보험공단 접속 - 로그인
-                    <a
-                      href="https://www.nhis.or.kr/nhis/index.do"
-                      class="underline-offset-4 text-primary-300"
-                      target="건강보험공단"
-                      >링크</a
-                    >
-                    <br />
-                    2️⃣ [민원여기요]-[개인민원] 이동<br />
-                    3️⃣ [보험료 조회/신청]-[직장보험료 조회] 이동<br />
-                    4️⃣ 최근 건강보험x산정보험료 조회<br />
-                  </div>
-                </div>
-              </template>
-            </UPopover>
-          </div>
-          <div class="text-xs text-gray-400">월 기준, 직장가입자 기준, 노인장기요양보험료 미포함</div>
-          <UInput
-            v-model="건강보험료"
-            color="gray"
-            variant="outline"
-            type="number"
-            input-class="text-right"
-            size="xl"
-            :disabled="보수월액 > 0"
-          >
-            <template #trailing> 원 </template>
-          </UInput>
-          <UInput
-            v-if="맞벌이유무"
-            v-model="건강보험료2"
-            color="gray"
-            variant="outline"
-            type="number"
-            input-class="text-right"
-            size="xl"
-            :disabled="보수월액 > 0"
-            class="pt-1"
-            :input-attr="{ 'max-length': 8 }"
-          >
-            <template #trailing> 원 </template>
-          </UInput>
-          <div v-if="selectedPeople > 1" class="pt-3 flex gap-3">
-            <UCheckbox
-              v-model="맞벌이유무"
-              :label="`맞벌이?` + (맞벌이유무 ? ' - 공식 : 높은소득 + 낮은소득/2' : '')"
-            />
-          </div>
-        </template>
-      </div>
       <template v-if="보수월액 > 0">
-        <UDivider />
-        <div v-if="!맞벌이유무">
-          <div class="flex items-center gap-1">
-            <div class="text-xl font-bold leading-7" ref="스크롤지점">건강보험료로 추정된 월 소득</div>
-            <UPopover>
-              <UButton color="primary" size="md" variant="ghost" icon="i-heroicons-question-mark-circle" />
-              <template #panel>
-                <div class="p-3 text-sm text-gray-400">
-                  사용처에 따라<br />
-                  다르게 표현되나<br />
-                  비슷하게 쓰임. <br />
-                  <UDivider class="py-3" />
-                  보수월액 (건강보험)<br />
-                  보수총액 (고용/산재보험)<br />
-                  기준소득월액 (국민연금)
-                </div>
-              </template>
-            </UPopover>
-          </div>
-          <div class="text-xs text-gray-400">비과세 소득 제외된 월 소득 (세전)</div>
-          <div class="flex gap-2">
-            <div
-              class="rounded-lg divide-y divide-gray-200 ring-1 ring-gray-200 shadow flex-1 text-right px-4 py-1"
-              color="gray"
-            >
-              {{ 보수월액.toLocaleString() }} 원
-            </div>
-          </div>
-        </div>
-        <div>
-          <div class="flex items-center gap-3">
-            <div class="flex-1 flex gap-1">
-              <UBadge label="중위소득" />
-              <UPopover>
-                <UButton color="primary" size="md" variant="ghost" icon="i-heroicons-question-mark-circle" />
-                <template #panel>
-                  <div class="p-3">
-                    <div class="text-black text-sm">각종 <b class="text-primary">복지제도</b>에 활용되는 소득기준</div>
-                    <UDivider class="py-1" />
-                    <div class="text-xs text-gray-400">
-                      시점마다 명확한 기준이 바뀔 수 있음. <br />
-                      예를들어,<br />
-                      희귀질환아동지원 : 중위소득 130% 이하 만18세 미만 <br />
-                      청년도약계좌 : 중위소득 180% 이하 청년대상 <br />
-                      청년월세지원사업 : 청년독립가구 중위소득 60% 이하<br />
-                      청년내일저축계좌 : 중위소득 50% 초과 ~ 100% 이하<br />
-                    </div>
-                  </div>
-                </template>
-              </UPopover>
-            </div>
-            <div class="text-5xl font-bold tracking-tight text-gray-900">
-              <span class="text-primary"> {{ 중위소득대비 }} </span>%
-              <!-- <span class="text-primary"> {{ 중위소득대비2 }} </span>% -->
-            </div>
-          </div>
-          <div class="flex items-center">
-            <div class="flex-1 flex gap-1 items-center">
-              <UBadge>전년도 도시근로자<br />월평균소득</UBadge>
-              <UPopover>
-                <UButton color="primary" size="md" variant="ghost" icon="i-heroicons-question-mark-circle" />
-                <template #panel>
-                  <div class="p-3">
-                    <div class="text-black text-sm">
-                      각종 <b class="text-primary">청약/임대 제도</b>에 활용되는 소득기준
-                    </div>
-                    <UDivider class="py-1" />
-                    <div class="text-xs text-gray-400">
-                      시점마다 명확한 기준이 바뀔 수 있음. <br />
-                      예를들어,<br />
-                      행복주택 : 월평균소득기준 100% 이하<br />
-                      국민임대주택 : 월평균소득기준 50% 이하<br />
-                      뉴홈사전청약 : 월평균소득기준 100% 이하<br />
-                    </div>
-                  </div>
-                </template>
-              </UPopover>
-            </div>
-            <div class="text-5xl font-bold tracking-tight text-gray-900">
-              <span class="text-primary"> {{ 월평균소득대비 }} </span>%
-            </div>
-          </div>
-        </div>
-
-        <UDivider type="dashed" />
-        <UButton
-          block
-          color="primary"
-          label="뒤로가기"
-          size="lg"
-          icon="i-heroicons-arrow-left-16-solid"
-          @click="recalculate()"
+        <IncomeResult
+          :healthInsuranceFee="맞벌이계산식()"
+          :income="보수월액"
+          :isDual="맞벌이유무"
+          :medianIncome="중위소득대비"
+          :avgMonIncome="월평균소득대비"
+          @back="recalculate()"
         />
-        <UButton
-          block
-          color="black"
-          label="링크복사"
-          size="lg"
-          icon="i-heroicons-clipboard-document-check"
-          @click="copyLink()"
-        />
-        <UDivider type="dashed" />
-        <div>
-          <div class="text-xl font-bold leading-7">참고</div>
-          <div v-for="r in refers">
-            <div class="text-sm">
-              {{ r.label }}
-              <a class="underline-offset-4 text-primary-300" :href="r.url" :target="r.label"> 링크 </a>
-            </div>
-          </div>
-        </div>
       </template>
       <template v-else>
-        <UButton block color="primary" label="계산하기" size="lg" icon="i-heroicons-calculator" @click="calculate()" />
-        <UButton
-          block
-          color="black"
-          label="링크복사"
-          size="lg"
-          icon="i-heroicons-clipboard-document-check"
-          @click="copyLink()"
+        <BasicInput
+          v-model="건강보험료"
+          label="건강보험료?"
+          trailing="원"
+          help="월 기준, 직장가입자 기준, 노인장기요양보험료 미포함"
+          type="number"
+        >
+          <template #tooltip>
+            <div class="text-md font-bold"><span class="text-primary">건강보험료</span> 조회방법</div>
+            <UDivider class="py-1" />
+            <div class="text-base text-gray-400">
+              1️⃣ 건강보험공단 접속 - 로그인
+              <a
+                href="https://www.nhis.or.kr/nhis/index.do"
+                class="underline-offset-4 text-primary-300"
+                target="건강보험공단"
+                >링크</a
+              >
+              <br />
+              2️⃣ [민원여기요]-[개인민원] 이동<br />
+              3️⃣ [보험료 조회/신청]-[직장보험료 조회] 이동<br />
+              4️⃣ 최근 건강보험x산정보험료 조회<br /></div
+          ></template>
+        </BasicInput>
+        <UInput
+          v-if="맞벌이유무"
+          v-model="건강보험료2"
+          color="gray"
+          variant="outline"
+          type="number"
+          input-class="text-right"
+          size="xl"
+          class="pt-1"
+          :input-attr="{ 'max-length': 8 }"
+        >
+          <template #trailing> 원 </template>
+        </UInput>
+        <UCheckbox
+          v-if="selectedPeople > 1"
+          v-model="맞벌이유무"
+          :label="`맞벌이?` + (맞벌이유무 ? ' - 공식 : 높은소득 + 낮은소득/2' : '')"
         />
+        <UButton block color="primary" label="계산하기" size="lg" icon="i-heroicons-calculator" @click="calculate()" />
       </template>
     </div>
   </div>
-  <div class="flex justify-center pt-3">
-    <a href="https://hits.sh/customcal.vercel.app/income/"
-      ><img
-        alt="Hits"
-        src="https://hits.sh/customcal.vercel.app/income.svg?view=today-total&style=flat-square&color=blue"
-    /></a>
-  </div>
+  <HitBanner domain="customcal.vercel.app/income" color="blue" />
 </template>
 
 <style lang="scss" scoped></style>

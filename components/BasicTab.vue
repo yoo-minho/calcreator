@@ -1,19 +1,16 @@
 <script setup lang="ts">
-const q = defineModel();
+const selected = defineModel();
 
 type BaseInputType = {
   label?: string;
-  help?: string;
-  trailing: string;
-  type?: string;
-  disabled?: boolean;
+  items?: any[];
 };
 
 defineProps<BaseInputType>();
 </script>
 <template>
   <div>
-    <div v-if="label" class="text-xl leading-7 flex items-center">
+    <div class="text-xl leading-7 flex items-center">
       <div class="font-bold">{{ label }}</div>
       <UPopover v-if="$slots.tooltip">
         <UButton color="primary" size="md" variant="ghost" icon="i-heroicons-question-mark-circle" />
@@ -24,18 +21,13 @@ defineProps<BaseInputType>();
         </template>
       </UPopover>
     </div>
-    <div v-if="help" class="text-xs text-gray-400 mb-2">{{ help }}</div>
-    <UInput
-      v-model="q"
-      color="gray"
-      variant="outline"
-      :type="type"
-      input-class="text-right"
-      size="xl"
-      :disabled="disabled"
-    >
-      <template #trailing v-if="trailing"> {{ trailing }} </template>
-    </UInput>
+    <UTabs :items="items" v-model="selected">
+      <template #item="{ item }">
+        <UCard>
+          <slot name="tab-contents" :item="item" />
+        </UCard>
+      </template>
+    </UTabs>
   </div>
 </template>
 
