@@ -13,18 +13,11 @@ defineProps<BaseInputType>();
 </script>
 <template>
   <div>
-    <div v-if="label" class="text-xl leading-7 flex items-center">
-      <div class="font-bold">{{ label }}</div>
-      <UPopover v-if="$slots.tooltip">
-        <UButton color="primary" size="md" variant="ghost" icon="i-heroicons-question-mark-circle" />
-        <template #panel>
-          <div class="p-3 text-base">
-            <slot name="tooltip" />
-          </div>
-        </template>
-      </UPopover>
-    </div>
-    <div v-if="help" class="text-xs text-gray-400 mb-2">{{ help }}</div>
+    <BasicLabel v-if="label" :title="label" :help="help">
+      <template #tooltip v-if="$slots.tooltip">
+        <slot name="tooltip" />
+      </template>
+    </BasicLabel>
     <UInput
       v-model="q"
       color="gray"
