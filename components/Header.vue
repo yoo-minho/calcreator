@@ -9,6 +9,18 @@ const copyLink = async () => {
     icon: "i-heroicons-check-circle",
   });
 };
+
+const install = async () => {
+  const nuxtApp = useNuxtApp();
+  await nuxtApp.$pwa?.install();
+};
+
+const isPWAUnInstalled = ref(false);
+
+onMounted(() => {
+  const nuxtApp = useNuxtApp();
+  isPWAUnInstalled.value = nuxtApp.$pwa?.isPWAInstalled === false;
+});
 </script>
 
 <template>
@@ -16,6 +28,12 @@ const copyLink = async () => {
     <div class="mx-auto px-4 max-w-7xl flex items-center justify-between gap-3 h-[4rem]">
       <div class="flex items-center gap-2 font-bold w-full">
         <div class="flex-1 text-2xl cursor-pointer tracking-tighter" @click="$router.push('/')">calcreator</div>
+        <div v-if="isPWAUnInstalled">
+          <UButton color="black" size="sm" @click="install()">
+            <UIcon name="i-ph-download-simple" dynamic class="text-xl" />
+            앱 설치
+          </UButton>
+        </div>
         <div>
           <UButton color="black" size="sm" icon="i-heroicons-clipboard-document-check" @click="copyLink()">
             공유하기

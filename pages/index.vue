@@ -1,4 +1,10 @@
 <script setup lang="ts">
+useSeoMeta({
+  twitterCard: "summary_large_image",
+});
+
+defineOgImageComponent("NuxtSeo");
+
 const arr = [
   { title: "Micro SaaS 고객계산기", theme: "orange", icon: "heroicons-presentation-chart-bar", to: "/micro-saas" },
   { title: "인프런 지식공유자 예상수익 계산기", theme: "green", icon: "ph-user-circle-check-light", to: "/inf" },
