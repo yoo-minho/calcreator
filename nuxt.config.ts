@@ -1,11 +1,15 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
+  css: ["@/assets/main.css"],
   modules: ["@nuxt/ui", "nuxt-gtag", "@vite-pwa/nuxt", "@nuxtjs/seo"],
   gtag: {
     id: "G-J865KNTNQZ",
   },
   pwa: {
+    client: {
+      installPrompt: "true",
+    },
     includeAssets: ["favicon.ico", "apple-touch-icon.png"],
     manifest: {
       name: "calcreator",

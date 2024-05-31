@@ -1,0 +1,7 @@
+.dark .text-gray-900 {
+  color: var(--color-white);
+}
+
+.dark .text-gray-600 {
+  color: var(--color-gray-300);
+}

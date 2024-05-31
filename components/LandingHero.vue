@@ -1,5 +1,5 @@
 <script setup lang="ts">
-defineProps<{ chip?: { label: string; color: string }; slgn?: string; }>();
+defineProps<{ chip?: { label: string; color: string }; slgn?: string }>();
 </script>
 
 <template>
