@@ -44,7 +44,7 @@ const arr = [
           target="form"
         >
           <div class="flex gap-2 justify-between w-full items-center">
-            <span class="flex-1 text-left truncate tracking-tighter text-center">제안하기</span>
+            <span class="flex-1 text-left truncate tracking-tighter text-center dark:text-white">제안하기</span>
           </div>
         </UButton>
         <UButton class="flex-1" color="black" size="xl" to="https://uminoh.tistory.com/" target="blog">
