@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import BasicFullSpinner from "~/components/BasicFullSpinner.vue";
 import { 지식공유자들 } from "./data/지식공유자";
 
 useAppConfig().ui.primary = "green";
@@ -13,12 +14,16 @@ watch(searchWord, () => {
   targetArr.value = 지식공유자들.filter((tg) => tg.name.includes(searchWord.value));
 });
 
+const isLoading = ref(false);
+
 const routerPush = (id: string) => {
+  isLoading.value = true;
   location.href = `${id}`;
 };
 </script>
 
 <template>
+  <BasicFullSpinner v-model="isLoading" />
   <div class="flex flex-col gap-3">
     <LandingHero>
       <span class="text-4xl">예상수익 자극받고</span>
