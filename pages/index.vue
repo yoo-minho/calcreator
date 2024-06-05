@@ -6,16 +6,9 @@ useSeoMeta({
 defineOgImageComponent("NuxtSeo");
 
 const arr = [
-  { title: "Micro SaaS 고객계산기", theme: "orange", icon: "heroicons-presentation-chart-bar", to: "/micro-saas" },
-  { title: "인프런 지식공유자 예상수익 계산기", theme: "green", icon: "ph-user-circle-check-light", to: "/inf" },
-  { title: "중위소득 · 도시월평균소득 계산기", theme: "blue", icon: "heroicons-presentation-chart-bar", to: "/income" },
-  {
-    title: '"그거 계산해보면 좋겠다" 제안하기',
-    theme: "gray",
-    icon: "heroicons-envelope",
-    to: "https://naver.me/Gpfd5bxD",
-    target: "form",
-  },
+  { title: "Micro SaaS 고객계산기", icon: "heroicons-presentation-chart-bar", to: "/micro-saas" },
+  { title: "인프런 지식공유자 예상수익 계산기", icon: "ph-user-circle-check-light", to: "/inf" },
+  { title: "중위소득 · 도시월평균소득 계산기", icon: "heroicons-presentation-chart-bar", to: "/income" },
 ];
 </script>
 
@@ -23,17 +16,44 @@ const arr = [
   <div>
     <LandingHero>
       <span class="text-base font-light">"그거 계산해보면 좋겠다" 하면 만들어버리는</span>
-      <span class="tracking-tighter">calcreator</span>
+      <div class="flex items-end justify-center gap-3">
+        <img src="/icon-192.png" width="48" height="48" />
+        <span class="tracking-tighter text-transparent bg-clip-text bg-gradient-to-tl from-blue-500 to-violet-600">
+          calcreator
+        </span>
+      </div>
     </LandingHero>
     <template v-for="v in arr">
-      <UButton class="w-full" :color="v.theme" variant="ghost" size="xl" :to="v.to" square :target="v.target">
-        <div class="flex gap-2 justify-between w-full">
-          <UIcon :name="`i-${v.icon}`" dynamic size="1.5rem" />
+      <UButton class="w-full" color="black" variant="ghost" size="xl" :to="v.to" square>
+        <div class="flex gap-2 justify-between w-full items-center">
+          <UButton color="gray" class="p-1">
+            <UIcon :name="`i-${v.icon}`" dynamic size="1rem" />
+          </UButton>
           <span class="flex-1 text-left truncate tracking-tighter">{{ v.title }}</span>
-          <UIcon name="i-ph-arrow-circle-right-fill" dynamic size="1.5rem" />
+          <UIcon name="i-ph-caret-right-light" dynamic size="1rem" color="gray" />
         </div>
       </UButton>
     </template>
+    <div class="fixed bottom-0 left-0 p-3 w-full">
+      <div class="flex gap-3">
+        <UButton
+          class="flex-1 bg-gradient-to-tl from-blue-500 to-violet-600"
+          color="black"
+          size="xl"
+          to="https://naver.me/Gpfd5bxD"
+          target="form"
+        >
+          <div class="flex gap-2 justify-between w-full items-center">
+            <span class="flex-1 text-left truncate tracking-tighter text-center">제안하기</span>
+          </div>
+        </UButton>
+        <UButton class="flex-1" color="black" size="xl" to="https://uminoh.tistory.com/" target="blog">
+          <div class="flex gap-2 justify-between w-full items-center">
+            <span class="flex-1 text-left truncate tracking-tighter text-center">크리에이터 소개</span>
+          </div>
+        </UButton>
+      </div>
+    </div>
   </div>
 </template>
 

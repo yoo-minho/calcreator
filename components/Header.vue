@@ -36,23 +36,38 @@ const isDark = computed({
 </script>
 
 <template>
-  <div class="bg-background/75 backdrop-blur border-b -mb-px sticky top-0 z-50 border-primary-200/75">
+  <div class="bg-background/75 backdrop-blur border-b -mb-px sticky top-0 z-50">
     <div class="mx-auto px-4 max-w-7xl flex items-center justify-between gap-3 h-[4rem]">
       <div class="flex items-center gap-2 font-bold w-full">
-        <div class="flex-1 text-2xl cursor-pointer tracking-tighter" @click="$router.push('/')">calcreator</div>
-        <UButton v-if="isPWAUnInstalled" color="black" size="sm" @click="install()">
+        <template v-if="$route.path === '/'">
+          <div class="w-full"></div>
+        </template>
+        <template v-else>
+          <div class="flex-1 text-2xl cursor-pointer tracking-tighter" @click="$router.push('/')">calcreator</div>
+        </template>
+        <UButton v-if="isPWAUnInstalled" color="gray" size="sm" @click="install()" variant="ghost" class="flex-col">
           <UIcon name="i-ph-download-simple" dynamic class="text-xl" />
-          앱 설치
+          <span class="tracking-tighter">앱 설치</span>
         </UButton>
-        <UButton color="black" size="sm" icon="i-heroicons-clipboard-document-check" @click="copyLink()">
-          공유하기
+        <UButton
+          color="gray"
+          size="sm"
+          icon="i-heroicons-clipboard-document-check"
+          @click="copyLink()"
+          variant="ghost"
+          class="flex-col"
+        >
+          <span class="tracking-tighter">공유</span>
         </UButton>
         <UButton
           :icon="isDark ? 'i-heroicons-moon-20-solid' : 'i-heroicons-sun-20-solid'"
           color="gray"
           variant="ghost"
+          class="flex-col"
           @click="isDark = !isDark"
-        />
+        >
+          <span class="tracking-tighter text-sm">{{ isDark ? "어둠" : "밝음" }}</span>
+        </UButton>
       </div>
     </div>
   </div>

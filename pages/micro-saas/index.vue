@@ -1,5 +1,5 @@
 <script setup lang="ts">
-useAppConfig().ui.primary = "orange";
+useAppConfig().ui.primary = "cyan";
 
 const 연간구독매출 = ref(10);
 const 월구독료 = ref(1);
@@ -14,14 +14,14 @@ const calculate = () => {
 
 const items = [
   {
-    label: "부분유료화 : 4%",
+    label: "부분유료화",
     aka: "Freemium",
     content: "기본 서비스는 무료, 프리미엄 기능 사용시 유료",
     percent: 4,
     expression: "필요 무료고객수",
   },
   {
-    label: "무료체험판 : 8%",
+    label: "무료체험판",
     aka: "Free Trial",
     content: "통상 2주 체험판 제공, 계속 사용시 유료",
     percent: 8,
@@ -80,8 +80,9 @@ const refers = [
               <span>
                 a.k.a <b class="text-primary">{{ item.aka }}</b>
               </span>
+              <span> {{ item.content }} </span>
               <span>
-                {{ item.content }}
+                보통 전체 경험 고객 중 <b class="text-primary">{{ item.percent }}%</b> 유료 전환됨
               </span>
             </div>
           </template>
@@ -92,7 +93,7 @@ const refers = [
       <template v-else-if="page === 'result'">
         <BasicLabel title="연간 구독 매출" :contents="연간구독매출 + '억 원'" />
         <BasicLabel title="1인당 월 구독료" :contents="월구독료 + '만 원'" />
-        <BasicLabel title="모델" :contents="items[selected].aka" />
+        <BasicLabel title="모델" :contents="`${items[selected].label} (${items[selected].aka})`" />
         <UDivider />
         <BasicResultBanner>
           <template #name>필요 유료고객수</template>
@@ -122,7 +123,7 @@ const refers = [
         <UDivider type="dashed" />
         <BasicRefer :refers="refers" />
       </template>
-      <HitBanner domain="customcal.vercel.app/micro-saas" color="orange" />
+      <HitBanner domain="customcal.vercel.app/micro-saas" color="cyan" />
     </div>
   </div>
 </template>

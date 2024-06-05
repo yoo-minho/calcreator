@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import BasicFullSpinner from "~/components/BasicFullSpinner.vue";
 import { 지식공유자들 } from "./data/지식공유자";
+import HitBanner from "~/components/HitBanner.vue";
 
 useAppConfig().ui.primary = "green";
 
@@ -41,14 +42,7 @@ const routerPush = (id: string) => {
         </UButton>
       </template>
     </div>
-    <div class="flex justify-center pt-3">
-      <a href="https://hits.sh/customcal.vercel.app/inf/">
-        <img
-          alt="Hits"
-          src="https://hits.sh/customcal.vercel.app/inf.svg?view=today-total&style=flat-square&color=22C55E"
-        />
-      </a>
-    </div>
+    <HitBanner domain="customcal.vercel.app/inf" color="22C55E" />
   </div>
 </template>
 
