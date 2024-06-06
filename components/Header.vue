@@ -10,10 +10,17 @@ const copyLink = async () => {
   });
 };
 
+const isOpen = ref(false);
+
 const install = async () => {
   const nuxtApp = useNuxtApp();
   if (nuxtApp.$pwa) {
-    nuxtApp.$pwa.install();
+    await nuxtApp.$pwa.install();
+    if (!nuxtApp.$pwa.showInstallPrompt) {
+      isOpen.value = true;
+    }
+  } else {
+    isOpen.value = true;
   }
 };
 
@@ -23,31 +30,24 @@ onMounted(() => {
   const nuxtApp = useNuxtApp();
   isPWAUnInstalled.value = nuxtApp.$pwa?.isPWAInstalled === false;
 });
-
-const colorMode = useColorMode();
-const isDark = computed({
-  get() {
-    return colorMode.value === "dark";
-  },
-  set() {
-    colorMode.preference = colorMode.value === "dark" ? "light" : "dark";
-  },
-});
 </script>
 
 <template>
+  <InstallModal v-model="isOpen" />
   <div class="bg-background/75 backdrop-blur border-b -mb-px sticky top-0 z-50">
     <div class="mx-auto px-4 max-w-7xl flex items-center justify-between gap-3 h-[4rem]">
-      <div class="flex items-center gap-1 font-bold w-full">
-        <template v-if="$route.path === '/'">
-          <div class="w-full"></div>
-        </template>
+      <div class="flex items-center font-bold w-full">
+        <template v-if="$route.path === '/'"> </template>
         <template v-else>
-          <div class="flex-1 text-2xl cursor-pointer tracking-tighter" @click="$router.push('/')">calcreator</div>
+          <UButton class="flex-col items-start p-0" size="sm" variant="ghost">
+            <div class="text-2xl cursor-pointer tracking-tighter mb-[-8px]" @click="$router.push('/')">calcreator</div>
+            <span class="tracking-tighter text-xs">다른 계산기 보러가기</span>
+          </UButton>
         </template>
+        <div class="flex-1"></div>
         <UButton v-if="isPWAUnInstalled" color="gray" size="sm" @click="install()" variant="ghost" class="flex-col">
           <UIcon name="i-ph-download-simple" dynamic class="text-xl" />
-          <span class="tracking-tighter">앱설치</span>
+          <span class="tracking-tighter text-xs">앱설치</span>
         </UButton>
         <UButton
           color="gray"
@@ -57,16 +57,7 @@ const isDark = computed({
           variant="ghost"
           class="flex-col"
         >
-          <span class="tracking-tighter">공유</span>
-        </UButton>
-        <UButton
-          :icon="isDark ? 'i-heroicons-moon-20-solid' : 'i-heroicons-sun-20-solid'"
-          color="gray"
-          variant="ghost"
-          class="flex-col"
-          @click="isDark = !isDark"
-        >
-          <span class="tracking-tighter text-sm">{{ isDark ? "어둠" : "밝음" }}</span>
+          <span class="tracking-tighter text-xs">공유</span>
         </UButton>
       </div>
     </div>

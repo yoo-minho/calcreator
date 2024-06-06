@@ -1,8 +1,18 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
+  app: {
+    head: {
+      viewport: "width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0",
+    },
+  },
   css: ["@/assets/main.css"],
   modules: ["@nuxt/ui", "nuxt-gtag", "@vite-pwa/nuxt", "@nuxtjs/seo"],
+  colorMode: {
+    preference: "light",
+    fallback: "light",
+    classSuffix: "-mode",
+  },
   gtag: {
     id: "G-J865KNTNQZ",
   },

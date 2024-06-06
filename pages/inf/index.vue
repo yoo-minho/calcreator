@@ -19,6 +19,7 @@ const isLoading = ref(false);
 
 const routerPush = (id: string) => {
   isLoading.value = true;
+  setTimeout(() => (isLoading.value = false), 1000);
   location.href = `${id}`;
 };
 </script>
