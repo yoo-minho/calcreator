@@ -14,6 +14,6 @@ defineProps<{ title: string; contents?: string; help?: string }>();
     </UPopover>
     <div class="pl-3">{{ contents }}</div>
   </div>
-  <div v-if="help" class="text-xs text-gray-400 mb-2">{{ help }}</div>
+  <div v-if="help" class="text-xs text-gray-400 mt-[-4px]">{{ help }}</div>
 </template>
 <style lang="scss" scoped></style>
