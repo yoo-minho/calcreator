@@ -1,4 +1,6 @@
 <script setup lang="ts">
+useColorMode().preference = "white";
+
 useSeoMeta({
   twitterCard: "summary_large_image",
 });
@@ -8,7 +10,7 @@ useAppConfig().ui.primary = "violet";
 defineOgImageComponent("NuxtSeo");
 
 const arr = [
-  { title: "홍콩여행 계산기", icon: "heroicons-presentation-chart-bar", to: "/global-money" },
+  { title: "홍콩여행 계산기", icon: "solar-dollar-linear", to: "/global-money" },
   { title: "Micro SaaS 고객계산기", icon: "heroicons-presentation-chart-bar", to: "/micro-saas" },
   { title: "인프런 지식공유자 예상수익 계산기", icon: "ph-user-circle-check-light", to: "/inf" },
   { title: "중위소득 · 도시월평균소득 계산기", icon: "heroicons-presentation-chart-bar", to: "/income" },

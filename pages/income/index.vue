@@ -90,7 +90,7 @@ useSeoMeta({
 });
 </script>
 <template>
-  <div>
+  <div class="m-3">
     <LandingHero :chip="{ label: '2024', color: 'primary' }">
       <p>나의소득<br /><span class="text-primary">몇퍼센트</span></p>
     </LandingHero>

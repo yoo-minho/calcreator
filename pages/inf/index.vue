@@ -26,7 +26,7 @@ const routerPush = (id: string) => {
 
 <template>
   <BasicFullSpinner v-model="isLoading" />
-  <div class="flex flex-col gap-3">
+  <div class="flex flex-col gap-3 m-3">
     <LandingHero>
       <span class="text-4xl">예상수익 자극받고</span>
       <span class="text-4xl text-primary">지식공유 시작하자</span>

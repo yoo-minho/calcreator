@@ -45,7 +45,7 @@ const refers = [
 ];
 </script>
 <template>
-  <div>
+  <div class="m-3">
     <LandingHero>
       <span class="tracking-tighter">월 구독모델</span>
       <span class="text-primary tracking-tighter">몇 명필요해</span>

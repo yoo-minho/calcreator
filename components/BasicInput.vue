@@ -1,10 +1,11 @@
 <script setup lang="ts">
-const q = defineModel();
+const number = defineModel<number>();
+const number2 = computed(() => number.value?.toLocaleString());
 
 type BaseInputType = {
   label?: string;
   help?: string;
-  trailing: string;
+  trailing?: string;
   type?: string;
   disabled?: boolean;
   horizon?: boolean;
@@ -14,7 +15,7 @@ defineProps<BaseInputType>();
 </script>
 <template>
   <div :class="{ flex: horizon, 'items-center': horizon }">
-    <div style="width: 60vw" class="mb-2">
+    <div :style="{ width: horizon ? '60%' : '' }" class="mb-2">
       <BasicLabel v-if="label" :title="label" :help="help">
         <template #tooltip v-if="$slots.tooltip">
           <slot name="tooltip" />
@@ -23,7 +24,7 @@ defineProps<BaseInputType>();
     </div>
     <div class="flex-1">
       <UInput
-        v-model="q"
+        v-model="number2"
         color="gray"
         variant="outline"
         :type="type"
