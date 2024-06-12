@@ -3,7 +3,7 @@ defineProps<{ chip?: { label: string; color: string }; slgn?: string }>();
 </script>
 
 <template>
-  <div class="mx-auto px-4 flex flex-col max-w-4xl mb-6 mt-3">
+  <div class="mx-auto px-4 flex flex-col max-w-4xl my-6">
     <div class="text-center relative z-[1]">
       <template v-if="chip">
         <UChip :text="chip.label" size="2xl" :color="chip.color">

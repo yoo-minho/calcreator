@@ -28,6 +28,7 @@ defineProps<BaseInputType>();
         color="gray"
         variant="outline"
         :type="type"
+        :pattern="type === 'number' ? '\d*' : ''"
         input-class="text-right"
         size="xl"
         :disabled="disabled"
