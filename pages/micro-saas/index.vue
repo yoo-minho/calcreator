@@ -3,8 +3,11 @@ useAppConfig().ui.primary = "cyan";
 
 const 연간구독매출 = ref(10);
 const 월구독료 = ref(1);
+
 const 필요유료고객수 = computed(() => Math.round((연간구독매출.value * 10000) / (월구독료.value * 12)));
-const 필요모델고객수 = (percent: number) => Math.round(필요유료고객수.value * (100 / percent)).toLocaleString();
+const 필요모델고객수 = computed(() =>
+  Math.round(필요유료고객수.value * (100 / items[selected.value].percent)).toLocaleString()
+);
 
 const page = ref<"intro" | "result">("intro");
 
@@ -43,22 +46,32 @@ const refers = [
     url: "https://www.adachen.com/freemium-and-free-trial-conversion-benchmarks/",
   },
 ];
+
+const title = "Micro SaaS";
+const title2 = "고객 계산기";
+const desc = `월 구독료 만원으로 연 10억 매출을 내려면\n고객이 얼마나 필요한지 계산해드립니다`;
+
+useSeoMeta({
+  title: `${title} ${title2}`,
+  ogTitle: `${title} ${title2}`,
+  description: desc,
+  ogDescription: desc,
+  twitterCard: "summary_large_image",
+});
+
+defineOgImageComponent("LandingHero", { title, title2, desc, colorCode: "rgb(6,182,212)", chip: "💵👨‍💻👍" });
 </script>
 <template>
   <div class="m-3">
-    <LandingHero>
-      <span class="tracking-tighter">월 구독모델</span>
-      <span class="text-primary tracking-tighter">몇 명필요해</span>
-    </LandingHero>
+    <LandingHero :title="title" color-code="primary" :title2="title2" :desc="desc" />
 
     <div class="flex flex-col gap-3">
       <template v-if="page === 'intro'">
-        <BasicInput v-model="연간구독매출" label="연간구독매출 a.k.a ARR" trailing="억 원" type="number">
-          <template #tooltip> Annual Recurring Revenue </template>
+        <BasicInput v-model="연간구독매출" label="연간구독매출" trailing="억 원" type="tel">
+          <template #tooltip> a.k.a ARR : Annual Recurring Revenue </template>
         </BasicInput>
 
-        <BasicInput v-model="월구독료" label="1인당 월 구독료" trailing=" 만 원" type="number" />
-
+        <BasicInput v-model="월구독료" label="1인당 월 구독료" trailing=" 만 원" type="tel" />
         <BasicTab v-model="selected" label="모델에 따른 유료전환율" :items="items">
           <template #tooltip>
             <div class="text-sm">
@@ -90,6 +103,7 @@ const refers = [
 
         <UButton block color="primary" label="계산하기" size="lg" icon="i-heroicons-calculator" @click="calculate()" />
       </template>
+
       <template v-else-if="page === 'result'">
         <BasicLabel title="연간 구독 매출" :contents="연간구독매출 + '억 원'" />
         <BasicLabel title="1인당 월 구독료" :contents="월구독료 + '만 원'" />
@@ -107,7 +121,7 @@ const refers = [
         <BasicResultBanner>
           <template #name>{{ items[selected].expression }}</template>
           <template #resultValue>
-            <span class="font-bold tracking-tighter">{{ 필요모델고객수(items[selected].percent) }}</span>
+            <span class="font-bold tracking-tighter">{{ 필요모델고객수 }}</span>
             <span class="text-base ml-1">명</span>
           </template>
         </BasicResultBanner>

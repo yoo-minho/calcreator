@@ -1,6 +1,5 @@
 <script setup lang="ts">
 const number = defineModel<number>();
-const number2 = computed(() => number.value?.toLocaleString());
 
 type BaseInputType = {
   label?: string;
@@ -22,19 +21,19 @@ defineProps<BaseInputType>();
         </template>
       </BasicLabel>
     </div>
-    <div class="flex-1">
+    <div class="flex-1 flex items-center gap-3">
       <UInput
-        v-model="number2"
+        v-model="number"
         color="gray"
         variant="outline"
         :type="type"
-        :pattern="type === 'number' ? '\d*' : ''"
         input-class="text-right"
         size="xl"
         :disabled="disabled"
-      >
-        <template #trailing v-if="trailing"> {{ trailing }} </template>
-      </UInput>
+        class="flex-1"
+        :trailing="false"
+      />
+      <div class="font-bold tracking-tighter">{{ trailing }}</div>
     </div>
   </div>
 </template>

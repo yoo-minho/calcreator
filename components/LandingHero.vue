@@ -1,5 +1,24 @@
 <script setup lang="ts">
-defineProps<{ chip?: { label: string; color: string }; slgn?: string }>();
+const props = withDefaults(
+  defineProps<{
+    title?: string;
+    title2?: string;
+    desc?: string;
+    colorCode?: string;
+    colorCode2?: string;
+    chip?: { label: string; color: string };
+  }>(),
+  {
+    title: "calcreator.cc",
+    title2: "",
+    desc: "",
+    colorCode: "black",
+    colorCode2: "black",
+  }
+);
+
+const colorCode = props.colorCode === "primary" ? "rgb(var(--color-primary-DEFAULT))" : props.colorCode;
+const colorCode2 = props.colorCode2 === "primary" ? "rgb(var(--color-primary-DEFAULT))" : props.colorCode2;
 </script>
 
 <template>
@@ -9,16 +28,22 @@ defineProps<{ chip?: { label: string; color: string }; slgn?: string }>();
         <UChip :text="chip.label" size="2xl" :color="chip.color">
           <h1 class="text-5xl font-bold tracking-tight text-gray-900 flex flex-col">
             <slot />
+            <span class="tracking-tighter" :style="{ color: colorCode }">{{ title }}</span>
+            <span class="tracking-tighter" :style="{ color: colorCode2 }">{{ title2 }}</span>
           </h1>
         </UChip>
       </template>
       <template v-else>
         <h1 class="text-5xl font-bold tracking-tight text-gray-900 flex flex-col">
-          <slot />
+          <slot v-if="$slots.default" />
+          <template v-else>
+            <span class="tracking-tighter" :style="{ color: colorCode }">{{ title }}</span>
+            <span class="tracking-tighter" :style="{ color: colorCode2 }">{{ title2 }}</span>
+          </template>
         </h1>
       </template>
-      <template v-if="slgn">
-        <p class="mt-6 text-lg tracking-tight text-gray-600">{{ slgn }}</p>
+      <template v-if="desc">
+        <p class="mt-3 text-sm tracking-tight text-gray-600 break-keep whitespace-pre">{{ desc }}</p>
       </template>
     </div>
   </div>

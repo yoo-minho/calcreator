@@ -22,18 +22,36 @@ const routerPush = (id: string) => {
   setTimeout(() => (isLoading.value = false), 1000);
   location.href = `${id}`;
 };
+
+const title = "인프런";
+const title2 = "수익 계산기";
+const desc = "내가 좋아하는, 관심 있는, 수강한 인프런\n지식공유자님의 누적 예상 수익을 알려드립니다.";
+
+useSeoMeta({
+  title: `${title} ${title2}`,
+  ogTitle: `${title} ${title2}`,
+  description: desc,
+  ogDescription: desc,
+  twitterCard: "summary_large_image",
+});
+
+defineOgImageComponent("LandingHero", {
+  title: title,
+  title2: title2,
+  colorCode: "rgb(34,197,94)",
+  desc: desc,
+});
 </script>
 
 <template>
   <BasicFullSpinner v-model="isLoading" />
   <div class="flex flex-col gap-3 m-3">
-    <LandingHero>
-      <span class="text-4xl">예상수익 자극받고</span>
-      <span class="text-4xl text-primary">지식공유 시작하자</span>
-      <UButton class="mt-3 w-full" color="white" @click="goInf()">
-        <div class="text-center text-primary w-full">인프런에서 지식공유하려면? click!</div>
-      </UButton>
-    </LandingHero>
+    <LandingHero :title="title" :title2="title2" color-code="primary" :desc="desc" />
+
+    <div class="flex gap-2 justify-center mt-[-28px]">
+      <UButton to="https://www.inflearn.com/open-knowledge" target="inf">지식 공유 도전 👊👊👊</UButton>
+    </div>
+
     <SearchInput v-model="searchWord" />
 
     <div class="flex flex-wrap gap-1 mt-3">

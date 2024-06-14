@@ -7,7 +7,7 @@ export default defineNuxtConfig({
     },
   },
   css: ["@/assets/main.css"],
-  modules: ["@nuxt/ui", "nuxt-gtag", "@vite-pwa/nuxt", "@nuxtjs/seo"],
+  modules: ["@nuxt/ui", "nuxt-gtag", "@vite-pwa/nuxt", "@nuxtjs/seo", "@nuxtjs/tailwindcss"],
   colorMode: {
     preference: "light",
     fallback: "light",
@@ -55,8 +55,6 @@ export default defineNuxtConfig({
   },
   site: {
     url: "https://calcreator.cc",
-    name: "calcreator 계산기크리에이터",
-    description: "그거 계산해보면 좋겠다",
     defaultLocale: "ko_KR",
   },
   ogImage: {

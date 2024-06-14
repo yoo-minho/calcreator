@@ -3,7 +3,7 @@ import BasicCalculator from "./BasicCalculator.vue";
 
 useAppConfig().ui.primary = "pink";
 
-const 홍콩달러 = ref("100");
+const 홍콩달러 = ref("0");
 const 한국원화 = ref(0);
 const _한국원화 = computed(() => 한국원화.value.toLocaleString());
 const 빅맥몇개 = ref(0);
@@ -38,15 +38,30 @@ const makeLabel = (unit: string, prodduct: "빅맥단품" | "스벅라떼톨") =
     `(${(시세.홍콩.달러[prodduct] * 시세.홍콩.원화.달러사실때).toLocaleString()} 원)`,
   ].join(" ");
 };
+
+const title = `해외여행용`;
+const title2 = "환율계산기";
+const desc = "사칙연산과 동시에 환전이 됩니다.\n광고가 없어서 편리합니다.";
+
+useSeoMeta({
+  title: `${title} ${title2}`,
+  ogTitle: `${title} ${title2}`,
+  description: desc,
+  ogDescription: desc,
+  twitterCard: "summary_large_image",
+});
+
+defineOgImageComponent("LandingHero", {
+  title: title,
+  title2: title2,
+  colorCode: "rgb(236,72,153)",
+  desc: desc,
+  chip: "🗽🕌🎡",
+});
 </script>
 <template>
   <div class="flex flex-col" style="height: calc(100vh - 72px)">
-    <LandingHero>
-      <div class="flex gap-2">
-        <span class="tracking-tighter text-3xl">나는 한국인</span>
-        <span class="text-primary tracking-tighter text-3xl">홍콩 여행중</span>
-      </div>
-    </LandingHero>
+    <LandingHero :title="title" :title2="title2" color-code="primary" :desc="desc" />
 
     <BasicCalculator v-model="홍콩달러" class="flex-1">
       <UDivider />

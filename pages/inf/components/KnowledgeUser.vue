@@ -76,6 +76,26 @@ const formatPriceLabel = (price: number) => {
   if (price === 0) return "무료";
   return formatNumberKR(price);
 };
+
+const title = `${instructor} 님의`;
+const title2 = "인프런 예상 수익은?";
+const desc = "내가 좋아하는, 관심 있는, 수강한 인프런\n지식공유자님의 누적 예상 수익을 알려드립니다.";
+
+useSeoMeta({
+  title: `${title} ${title2}`,
+  ogTitle: `${title} ${title2}`,
+  description: desc,
+  ogDescription: desc,
+  twitterCard: "summary_large_image",
+});
+
+defineOgImageComponent("LandingHero", {
+  title: title,
+  title2: title2,
+  colorCode: "rgb(34,197,94)",
+  desc: desc,
+  chip: "🎓💵🎉",
+});
 </script>
 
 <template>

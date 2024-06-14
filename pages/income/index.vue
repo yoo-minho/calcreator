@@ -80,21 +80,30 @@ const 맞벌이계산식 = () => {
   return 건보료;
 };
 
+const title = "중위소득 계산기";
+const title2 = "월평균소득 계산기";
+const desc = `건강보험료만 입력하면\n동시에 계산해드립니다`;
+
 useSeoMeta({
-  title: "나의소득몇퍼센트 - 중위소득|월평균소득 계산",
-  ogTitle: "나의소득몇퍼센트 - 중위소득|월평균소득 계산",
-  description: "건강보험료를 활용하여 중위소득과 월평균소득을 알아봅시다",
-  ogDescription: "건강보험료를 활용하여 중위소득과 월평균소득을 알아봅시다.",
-  ogImage: "/og.png",
+  title: `${title} ${title2}`,
+  ogTitle: `${title} ${title2}`,
+  description: desc,
+  ogDescription: desc,
   twitterCard: "summary_large_image",
 });
+
+defineOgImageComponent("LandingHero", { title, title2, desc, colorCode: "rgb(59,130,246)", chip: "2024" });
 </script>
 <template>
   <div class="m-3">
-    <LandingHero :chip="{ label: '2024', color: 'primary' }">
-      <p>나의소득<br /><span class="text-primary">몇퍼센트</span></p>
-    </LandingHero>
-    <div class="flex flex-col gap-3 pt-6">
+    <LandingHero
+      :title="title"
+      color-code="primary"
+      :title2="title2"
+      :desc="desc"
+      :chip="{ label: '2024', color: 'primary' }"
+    />
+    <div class="flex flex-col gap-3">
       <IconSelector
         v-model="selectedPeople"
         title="가족구성원"
@@ -122,7 +131,7 @@ useSeoMeta({
           label="건강보험료?"
           trailing="원"
           help="월 기준, 직장가입자 기준, 노인장기요양보험료 미포함"
-          type="number"
+          type="tel"
         >
           <template #tooltip>
             <div class="text-md font-bold"><span class="text-primary">건강보험료</span> 조회방법</div>
