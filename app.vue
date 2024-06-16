@@ -15,6 +15,7 @@ useHead({
   font-style: normal;
   font-weight: 300;
   src: url("/assets/fonts/NotoSansKR-Light.woff") format("woff");
+  font-display: swap;
 }
 
 @font-face {
@@ -22,6 +23,7 @@ useHead({
   font-style: normal;
   font-weight: 400;
   src: url("/assets/fonts/NotoSansKR-Regular.woff") format("woff");
+  font-display: swap;
 }
 
 @font-face {
@@ -29,6 +31,7 @@ useHead({
   font-style: normal;
   font-weight: 500;
   src: url("/assets/fonts/NotoSansKR-Medium.woff") format("woff");
+  font-display: swap;
 }
 
 @font-face {
@@ -36,6 +39,7 @@ useHead({
   font-style: normal;
   font-weight: 700;
   src: url("/assets/fonts/NotoSansKR-Bold.woff") format("woff");
+  font-display: swap;
 }
 
 @font-face {
@@ -43,6 +47,7 @@ useHead({
   font-style: normal;
   font-weight: 900;
   src: url("/assets/fonts/NotoSansKR-Black.woff") format("woff");
+  font-display: swap;
 }
 
 body {

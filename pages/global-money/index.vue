@@ -109,9 +109,12 @@ defineOgImageComponent("LandingHero", {
       <UDivider />
 
       <div class="flex items-center p-3 jusify-between">
-        <div class="flex flex-col items-center" @click="isOpenCurrencySelectModal = true">
+        <div class="flex flex-col items-center cursor-pointer" @click="isOpenCurrencySelectModal = true">
           <IconRoundFull :flag="currencyFlag" />
-          <span class="mt-[-4px]">{{ currencyUnit }}</span>
+          <span class="mt-[-4px] flex items-center gap-1">
+            <div>{{ currencyUnit }}</div>
+            <UIcon name="i-material-symbols-light-currency-exchange" class="w-[20px] h-[20px] text-black" dynamic />
+          </span>
         </div>
         <UInput
           v-model="displayPrice"
@@ -129,7 +132,7 @@ defineOgImageComponent("LandingHero", {
               <div v-if="!isFixMode" class="text-gray-500 text-xs">
                 <UPopover>
                   {{ modifiedAt }}
-                  <UIcon name="i-heroicons-question-mark-circle" class="w-[18px] h-[18px] ml-1" />
+                  <UIcon name="i-heroicons-question-mark-circle" class="w-[20px] h-[20px] ml-1" />
                   <template #panel>
                     <div class="p-3 text-base text-left">실시간 환율 데이터<br />by 두나무 하나은행 오픈 API</div>
                   </template>

@@ -26,7 +26,7 @@ const colorCode2 = props.colorCode2 === "primary" ? "rgb(var(--color-primary-DEF
     <div class="text-center relative z-[1]">
       <template v-if="chip">
         <UChip :text="chip.label" size="2xl" :color="chip.color">
-          <h1 class="text-5xl font-bold tracking-tight text-gray-900 flex flex-col">
+          <h1 class="text-5xl font-bold tracking-tighter text-gray-900 flex flex-col">
             <slot v-if="$slots.default" />
             <template v-else>
               <span class="tracking-tighter" :style="{ color: colorCode }">{{ title }}</span>
@@ -36,7 +36,7 @@ const colorCode2 = props.colorCode2 === "primary" ? "rgb(var(--color-primary-DEF
         </UChip>
       </template>
       <template v-else>
-        <h1 class="text-5xl font-bold tracking-tight text-gray-900 flex flex-col">
+        <h1 class="text-5xl font-bold tracking-tighter text-gray-900 flex flex-col">
           <slot v-if="$slots.default" />
           <template v-else>
             <span class="tracking-tighter" :style="{ color: colorCode }">{{ title }}</span>
