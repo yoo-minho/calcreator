@@ -67,11 +67,11 @@ defineOgImageComponent("LandingHero", { title, title2, desc, colorCode: "rgb(6,1
 
     <div class="flex flex-col gap-3">
       <template v-if="page === 'intro'">
-        <BasicInput v-model="연간구독매출" label="연간구독매출" trailing="억 원" type="tel">
+        <BasicInput v-model="연간구독매출" label="연간구독매출" trailing="억 원" type="number">
           <template #tooltip> a.k.a ARR : Annual Recurring Revenue </template>
         </BasicInput>
 
-        <BasicInput v-model="월구독료" label="1인당 월 구독료" trailing=" 만 원" type="tel" />
+        <BasicInput v-model="월구독료" label="1인당 월 구독료" trailing=" 만 원" type="number" />
         <BasicTab v-model="selected" label="모델에 따른 유료전환율" :items="items">
           <template #tooltip>
             <div class="text-sm">

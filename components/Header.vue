@@ -15,10 +15,12 @@ const isOpen = ref(false);
 const install = async () => {
   const nuxtApp = useNuxtApp();
   if (nuxtApp.$pwa) {
-    await nuxtApp.$pwa.install();
-    if (!nuxtApp.$pwa.showInstallPrompt) {
-      isOpen.value = true;
-    }
+    nuxtApp.$pwa.install();
+    setTimeout(() => {
+      if (!nuxtApp.$pwa?.showInstallPrompt) {
+        isOpen.value = true;
+      }
+    }, 500);
   } else {
     isOpen.value = true;
   }
@@ -33,7 +35,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <InstallModal v-model="isOpen" />
+  <ModalInstallModal v-model="isOpen" />
   <div class="bg-background/75 backdrop-blur border-b -mb-px sticky top-0 z-50">
     <div class="mx-auto px-4 max-w-7xl flex items-center justify-between gap-3 h-[4rem]">
       <div class="flex items-center font-bold w-full">
@@ -46,7 +48,7 @@ onMounted(() => {
         </template>
         <div class="flex-1"></div>
         <UButton v-if="isPWAUnInstalled" color="gray" size="sm" @click="install()" variant="ghost" class="flex-col">
-          <UIcon name="i-ph-download-simple" dynamic class="text-xl" />
+          <UIcon name="i-ph-download-simple" class="text-xl" />
           <span class="tracking-tighter text-xs">앱설치</span>
         </UButton>
         <UButton

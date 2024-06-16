@@ -21,14 +21,14 @@ const isOpen = defineModel();
         <div class="flex flex-col gap-2 tracking-tighter text-sm">
           <div class="flex items-center gap-2">
             <span>1. 브라우저</span>
-            <UButton variant="outline"><UIcon name="i-mingcute-upload-line" dynamic size="1.1rem" /></UButton>
+            <UButton variant="outline"><UIcon name="i-mingcute-upload-line" /></UButton>
             <span>또는</span>
-            <UButton variant="outline"><UIcon name="i-mingcute-more-2-fill" dynamic size="1.1rem" /></UButton>
+            <UButton variant="outline"><UIcon name="i-mingcute-more-2-fill" /></UButton>
             <span>버튼 클릭</span>
           </div>
           <div class="flex items-center gap-2">
             <span>2. 아래로 스크롤 </span>
-            <UButton variant="outline">홈 화면에 추가 <UIcon name="i-ph-plus-square" dynamic size="1.5rem" /></UButton>
+            <UButton variant="outline">홈 화면에 추가 <UIcon name="i-ph-plus-square" /></UButton>
             <span>버튼 클릭</span>
           </div>
         </div>

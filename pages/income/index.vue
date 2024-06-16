@@ -131,7 +131,7 @@ defineOgImageComponent("LandingHero", { title, title2, desc, colorCode: "rgb(59,
           label="건강보험료?"
           trailing="원"
           help="월 기준, 직장가입자 기준, 노인장기요양보험료 미포함"
-          type="tel"
+          type="number"
         >
           <template #tooltip>
             <div class="text-md font-bold"><span class="text-primary">건강보험료</span> 조회방법</div>

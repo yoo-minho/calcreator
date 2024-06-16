@@ -1,12 +1,12 @@
 <script setup lang="ts">
 useColorMode().preference = "white";
-useAppConfig().ui.primary = "violet";
+useAppConfig().ui.primary = "black";
 
 const arr = [
-  { title: "해외여행용 환율계산기", icon: "solar-dollar-linear", to: "/global-money" },
-  { title: "Micro SaaS 고객 계산기", icon: "heroicons-presentation-chart-bar", to: "/micro-saas" },
-  { title: "인프런 수익 계산기", icon: "ph-user-circle-check-light", to: "/inf" },
-  { title: "중위소득 · 월평균소득 계산기", icon: "heroicons-presentation-chart-bar", to: "/income" },
+  { title: "여행용 환율계산기", icon: "i-solar-dollar-linear", to: "/global-money" },
+  { title: "Micro SaaS 고객 계산기", icon: "i-heroicons-presentation-chart-bar", to: "/micro-saas" },
+  { title: "인프런 수익 계산기", icon: "i-ph-user-circle-check-light", to: "/inf" },
+  { title: "중위소득 · 월평균소득 계산기", icon: "i-heroicons-presentation-chart-bar", to: "/income" },
 ];
 
 const title = "calcreator.cc";
@@ -25,15 +25,7 @@ defineOgImageComponent("LandingHero", { chip: "🔢🌍👍" });
 
 <template>
   <div>
-    <LandingHero>
-      <span class="text-base font-light">"{{ desc }}"</span>
-      <div class="flex items-end justify-center gap-3">
-        <img src="/icon-192.png" width="48" height="48" />
-        <span class="tracking-tighter text-transparent bg-clip-text bg-gradient-to-tl from-blue-500 to-violet-600">
-          {{ title }}
-        </span>
-      </div>
-    </LandingHero>
+    <LandingHero :title="title" :desc="`&quot;${desc}&quot;`" color-code="primary" />
     <div class="flex gap-2 mb-3 justify-center">
       <UButton
         class="bg-gradient-to-tl from-blue-500 to-violet-600"
@@ -50,10 +42,10 @@ defineOgImageComponent("LandingHero", { chip: "🔢🌍👍" });
       <UButton class="w-full" color="black" variant="ghost" size="xl" :to="v.to" square>
         <div class="flex gap-2 justify-between w-full items-center">
           <UButton color="gray" class="p-1">
-            <UIcon :name="`i-${v.icon}`" dynamic size="1rem" />
+            <UIcon :name="v.icon" class="w-[1.5em] h-[1.5em]" />
           </UButton>
           <span class="flex-1 text-left truncate tracking-tighter">{{ v.title }}</span>
-          <UIcon name="i-ph-caret-right-light" dynamic size="1rem" color="gray" />
+          <UIcon name="i-ph-caret-right-light" size="1rem" color="gray" />
         </div>
       </UButton>
     </template>

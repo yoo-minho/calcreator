@@ -14,12 +14,12 @@ const selected = defineModel<number>({ default: 1 });
               class="flex-1 text-4xl cursor-pointer flex justify-center items-center text-primary"
               @click="selected = selected === i && i > 1 ? i - 1 : i"
             >
-              <UIcon :name="icon.on" dynamic />
+              <UIcon :name="icon.on" />
             </div>
           </template>
           <template v-else>
             <div class="flex-1 text-4xl cursor-pointer flex justify-center items-center" @click="selected = i">
-              <UIcon :name="icon.off" dynamic />
+              <UIcon :name="icon.off" />
             </div>
           </template>
         </template>

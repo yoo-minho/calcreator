@@ -94,7 +94,7 @@ defineOgImageComponent("LandingHero", {
   title2: title2,
   colorCode: "rgb(34,197,94)",
   desc: desc,
-  chip: "🎓💵🎉",
+  chip: "🌱💵👊",
 });
 </script>
 
@@ -126,7 +126,7 @@ defineOgImageComponent("LandingHero", {
         >
           <div class="flex flex-col gap-1 items-start">
             <span class="truncate max-w-full">
-              <UIcon name="i-ph-leaf-duotone" dynamic size="0.8rem" />
+              <UIcon name="i-ph-leaf-duotone" size="0.8rem" />
               <span>{{ idx + 1 }}. {{ cal.title }}</span>
             </span>
             <div class="flex gap-1">

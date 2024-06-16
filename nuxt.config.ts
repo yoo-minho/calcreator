@@ -13,6 +13,9 @@ export default defineNuxtConfig({
     fallback: "light",
     classSuffix: "-mode",
   },
+  ui: {
+    icons: ["ph", "solar", "emojione", "mingcute"],
+  },
   gtag: {
     id: "G-J865KNTNQZ",
   },
@@ -55,7 +58,7 @@ export default defineNuxtConfig({
   },
   site: {
     url: "https://calcreator.cc",
-    defaultLocale: "ko_KR",
+    defaultLocale: "ko",
   },
   ogImage: {
     defaults: { component: "OgImage" },
