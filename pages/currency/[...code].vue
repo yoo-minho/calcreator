@@ -1,7 +1,10 @@
 <script setup lang="ts">
-import BasicCalculator from "./BasicCalculator.vue";
+import BasicCalculator from "./components/BasicCalculator.vue";
 
 useAppConfig().ui.primary = "pink";
+
+const route = useRoute();
+const code = String(route.params.code[0]).toUpperCase();
 
 const displayPrice = ref("0");
 const 한국원화 = ref(0);
@@ -24,23 +27,23 @@ const CURRENCY_ARR = [
   return { ...v, flag: `i-emojione-flag-for-${v.flag}` };
 });
 
-type ExchangeType = { basePrice: number; modifiedAt: string; currencyCode: string };
+type ExchangeType = { basePrice: number; modifiedAt: string; currencyCode: string; currencyUnit: number };
 
-const routeUnit = useRoute().query.unit;
-const currencyUnit = ref(String(routeUnit || CURRENCY_ARR[0].unit));
-const currencyFlag = computed(() => CURRENCY_ARR.find((c) => c.unit === currencyUnit.value)?.flag || "");
-const currencyName = computed(() => CURRENCY_ARR.find((c) => c.unit === currencyUnit.value)?.name || "");
+const currencyCode = ref(code === "ALL" ? CURRENCY_ARR[0].unit : code);
+const currencyFlag = computed(() => CURRENCY_ARR.find((c) => c.unit === currencyCode.value)?.flag || "");
+const currencyName = computed(() => CURRENCY_ARR.find((c) => c.unit === currencyCode.value)?.name || "");
 
 const { data: exchangeDataArr } = await useFetch<ExchangeType[]>(
-  () => `https://quotation-api-cdn.dunamu.com/v1/forex/recent?codes=FRX.KRW${currencyUnit.value}`,
-  { watch: [currencyUnit] }
+  () => `https://quotation-api-cdn.dunamu.com/v1/forex/recent?codes=FRX.KRW${currencyCode.value}`,
+  { watch: [currencyCode] }
 );
 
 const exchangeData = ref();
 watch(exchangeDataArr, () => (exchangeData.value = exchangeDataArr.value?.[0]), { immediate: true });
 
 const modifiedAt = computed(() => new Date(exchangeData.value?.modifiedAt || "").toLocaleDateString());
-const realPrice = computed(() => Math.round(exchangeData.value?.basePrice || 0));
+const realPrice = computed(() => Math.round((exchangeData.value?.basePrice || 0) * 100) / 100);
+const currencyUnit = computed(() => exchangeData.value?.currencyUnit);
 
 const isOpenCurrencySelectModal = ref(false);
 
@@ -55,8 +58,8 @@ const submitModal = () => {
 };
 
 const changeCurrency = (_currencyUnit: string) => {
-  currencyUnit.value = _currencyUnit;
-  useRouter().push({ query: { unit: _currencyUnit } });
+  currencyCode.value = _currencyUnit;
+  useRouter().push({ params: { code: [_currencyUnit] } });
 };
 
 const openCurrencyModal = () => {
@@ -65,14 +68,14 @@ const openCurrencyModal = () => {
 };
 
 watch(
-  [displayPrice, isFixMode],
+  [displayPrice, currentPrice],
   () => {
-    한국원화.value = +displayPrice.value * currentPrice.value;
+    한국원화.value = Math.round((+displayPrice.value * currentPrice.value) / (currencyUnit.value * 100)) * 100;
   },
   { immediate: true }
 );
 
-const title = computed(() => (routeUnit ? currencyName.value : "") + ` 여행용`);
+const title = computed(() => (code === "ALL" ? "" : currencyName.value) + ` 여행용`);
 const title2 = "환율계산기";
 const desc = "광고없음! 사칙연산과 동시에 환전이 됩니다.";
 
@@ -97,23 +100,63 @@ defineOgImageComponent("LandingHero", {
     <ModalCurrencySelectModal
       v-model="isOpenCurrencySelectModal"
       :currency-arr="CURRENCY_ARR"
-      :current-currency-unit="currencyUnit"
+      :current-currency-unit="currencyCode"
       @submit="changeCurrency"
     />
     <ModalCurrencyModal v-model="isOpenCurrencyModal" v-model:fix="fixPrice" @submit="submitModal" />
 
     <LandingHero :title="title" :title2="title2" color-code="primary" :desc="desc" />
 
-    <UDivider />
     <BasicCalculator v-model="displayPrice" class="flex-1">
-      <UDivider />
+      <UDivider>
+        <div class="flex flex-col items-center">
+          <div class="flex items-center gap-2 text-sm">
+            <UButton
+              size="xs"
+              class="font-light"
+              color="primary"
+              variant="outline"
+              @click="isOpenCurrencySelectModal = true"
+            >
+              화폐변경
+            </UButton>
+            <div>|</div>
+            <div class="flex flex-col items-center">
+              <div>{{ currencyUnit }} {{ currencyCode }} = {{ currentPrice.toLocaleString() }} 원</div>
+              <div class="text-gray-500 text-xs mt-[-4px]">
+                <template v-if="isFixMode">
+                  <div>직접 입력한 환율</div>
+                </template>
+                <template v-else>
+                  <UPopover>
+                    <div class="flex items-center">
+                      <div>{{ modifiedAt }}</div>
+                      <UIcon name="i-heroicons-question-mark-circle" class="w-[16px] h-[16px] ml-1" />
+                    </div>
+                    <template #panel>
+                      <div class="p-3 text-base text-left">실시간 환율 데이터<br />by 두나무 하나은행 오픈 API</div>
+                    </template>
+                  </UPopover>
+                </template>
+              </div>
+            </div>
 
-      <div class="flex items-center p-3 jusify-between">
-        <div class="flex flex-col items-center cursor-pointer" @click="isOpenCurrencySelectModal = true">
+            <div>|</div>
+            <template v-if="isFixMode">
+              <UButton size="xs" class="font-thin" color="gray" @click="isFixMode = false">실시간환율</UButton>
+            </template>
+            <template v-else>
+              <UButton size="xs" class="font-thin" color="gray" @click="openCurrencyModal">직접입력</UButton>
+            </template>
+          </div>
+        </div>
+      </UDivider>
+
+      <div class="flex items-center p-3 jusify-between" @click="isOpenCurrencySelectModal = true">
+        <div class="flex flex-col items-center">
           <IconRoundFull :flag="currencyFlag" />
           <span class="mt-[-4px] flex items-center gap-1">
-            <div>{{ currencyUnit }}</div>
-            <UIcon name="i-material-symbols-light-currency-exchange" class="w-[20px] h-[20px] text-black" dynamic />
+            <div>{{ currencyCode }}</div>
           </span>
         </div>
         <UInput
@@ -124,31 +167,7 @@ defineOgImageComponent("LandingHero", {
         />
       </div>
 
-      <UDivider>
-        <div class="flex flex-col items-center">
-          <div class="flex items-center gap-2 text-sm">
-            <div class="flex flex-col items-center">
-              <div>1 {{ currencyUnit }} = {{ currentPrice.toLocaleString() }} KRW</div>
-              <div v-if="!isFixMode" class="text-gray-500 text-xs">
-                <UPopover>
-                  {{ modifiedAt }}
-                  <UIcon name="i-heroicons-question-mark-circle" class="w-[20px] h-[20px] ml-1" />
-                  <template #panel>
-                    <div class="p-3 text-base text-left">실시간 환율 데이터<br />by 두나무 하나은행 오픈 API</div>
-                  </template>
-                </UPopover>
-              </div>
-            </div>
-            <div>|</div>
-            <template v-if="isFixMode">
-              <UButton size="xs" class="font-thin" color="gray" @click="isFixMode = false">실시간 환율</UButton>
-            </template>
-            <template v-else>
-              <UButton size="xs" class="font-thin" color="gray" @click="openCurrencyModal">직접 입력</UButton>
-            </template>
-          </div>
-        </div>
-      </UDivider>
+      <UDivider />
 
       <div class="flex items-center p-3 jusify-between">
         <div class="flex flex-col items-center">

@@ -3,7 +3,7 @@ useColorMode().preference = "white";
 useAppConfig().ui.primary = "black";
 
 const arr = [
-  { title: "여행용 환율계산기", icon: "i-solar-dollar-linear", to: "/global-money" },
+  { title: "여행용 환율계산기", icon: "i-solar-dollar-linear", to: "/currency" },
   { title: "Micro SaaS 고객 계산기", icon: "i-heroicons-presentation-chart-bar", to: "/micro-saas" },
   { title: "인프런 수익 계산기", icon: "i-ph-user-circle-check-light", to: "/inf" },
   { title: "중위소득 · 월평균소득 계산기", icon: "i-heroicons-presentation-chart-bar", to: "/income" },

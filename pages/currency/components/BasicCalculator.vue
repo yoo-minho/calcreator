@@ -8,6 +8,14 @@ const clearDisplay = () => {
   계산식.value = [];
 };
 
+const delDisplay = () => {
+  if (현재값.value.length > 1) {
+    현재값.value = 현재값.value.slice(0, -1);
+  } else {
+    현재값.value = "0"; // 모든 자릿수가 지워지면 기본값 0으로 설정
+  }
+};
+
 const handleEqual = () => {
   if (계산식.value.length === 0) return;
   if (!["+", "-", "*", "/"].includes(계산식.value.at(-1) || "")) {
@@ -19,27 +27,46 @@ const handleEqual = () => {
 };
 
 const appendNumber = (number: string) => {
+  // 소수점 중복 입력 방지
+  if (number === "." && 현재값.value.includes(".")) return;
+
   if (연산자눌렀는가.value) {
+    // 연산자 눌렀는가? => 새로운 숫자 입력 시작
     현재값.value = number;
     연산자눌렀는가.value = false;
-  } else if ((number === "." && !현재값.value.includes(".")) || (number !== "." && 현재값.value.includes("."))) {
-    현재값.value += number;
   } else {
-    현재값.value = (+(현재값.value + number)).toString();
+    if (number === ".") {
+      // 소수점 추가
+      현재값.value += number;
+    } else if (현재값.value.includes(".")) {
+      // 소수점을 포함한 상태에서 숫자 추가
+      현재값.value += number;
+    } else {
+      // 소수점이 없는 상태에서 숫자 추가
+      현재값.value = (+(현재값.value + number)).toString();
+    }
   }
 };
 
 const chooseOperator = (nextOperator: string) => {
   if (연산자눌렀는가.value) {
-    계산식.value = [...계산식.value.splice(0, 계산식.value.length - 1), nextOperator];
+    // 연산자가 이미 눌렸다면, 계산식의 마지막 연산자를 교체
+    계산식.value[계산식.value.length - 1] = nextOperator;
   } else {
-    if (+(계산식.value.at(-1) || "") > 0) {
-      계산식.value = [...계산식.value, nextOperator];
-    } else {
-      계산식.value = [...계산식.value, 현재값.value, nextOperator];
+    // 연산자가 눌리지 않았다면
+    const lastElement = 계산식.value.at(-1);
+
+    if (lastElement && !isNaN(+lastElement)) {
+      // 마지막 요소가 숫자라면
+      계산식.value.push(nextOperator);
+      연산자눌렀는가.value = true;
+      현재값.value = performCalculation().toString();
+    } else if (+현재값.value > 0) {
+      // 현재값이 유효하고 마지막 요소가 숫자가 아니라면
+      계산식.value.push(현재값.value, nextOperator);
+      연산자눌렀는가.value = true;
+      현재값.value = performCalculation().toString();
     }
-    연산자눌렀는가.value = true;
-    현재값.value = performCalculation().toString();
   }
 };
 
@@ -71,11 +98,16 @@ const performCalculation = (): number => {
 </script>
 <template>
   <div class="h-100 flex flex-col">
+    <slot />
     <div class="text-xl text-right px-6 py-1 text-gray-500 h-100">
       {{ 계산식.map((v) => ({ "*": "x" }[v] || v)).join(" ") || "　" }}
     </div>
-    <slot />
+
     <div class="buttons flex-1">
+      <button class="btn number" @click="appendNumber('.')">.</button>
+      <button class="btn number" @click="appendNumber('.')">.</button>
+      <button class="btn number" @click="delDisplay()">del</button>
+      <button class="btn bg-primary" @click="chooseOperator('/')">/</button>
       <button class="btn number" @click="appendNumber('7')">7</button>
       <button class="btn number" @click="appendNumber('8')">8</button>
       <button class="btn number" @click="appendNumber('9')">9</button>
@@ -83,14 +115,14 @@ const performCalculation = (): number => {
       <button class="btn number" @click="appendNumber('4')">4</button>
       <button class="btn number" @click="appendNumber('5')">5</button>
       <button class="btn number" @click="appendNumber('6')">6</button>
-      <button class="btn bg-primary" @click="chooseOperator('/')">/</button>
+      <button class="btn bg-primary" @click="chooseOperator('-')">-</button>
       <button class="btn number" @click="appendNumber('1')">1</button>
       <button class="btn number" @click="appendNumber('2')">2</button>
       <button class="btn number" @click="appendNumber('3')">3</button>
       <button class="btn bg-primary" @click="chooseOperator('+')">+</button>
+      <button class="btn" @click="appendNumber('00')">00</button>
       <button class="btn number" @click="appendNumber('0')">0</button>
-      <button class="btn" @click="appendNumber('.')">.</button>
-      <button class="btn" @click="clearDisplay()">Clear</button>
+      <button class="btn" @click="clearDisplay()">clear</button>
       <button class="btn bg-primary" @click="handleEqual()">=</button>
     </div>
   </div>

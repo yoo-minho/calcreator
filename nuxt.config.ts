@@ -1,3 +1,5 @@
+import { _padding } from "#tailwind-config/theme";
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
@@ -20,6 +22,12 @@ export default defineNuxtConfig({
     id: "G-J865KNTNQZ",
   },
   pwa: {
+    pwaAssets: {
+      includeHtmlHeadLinks: true,
+      preset: {
+        useAppleSplashScreenPwaIcon: true,
+      },
+    },
     client: {
       installPrompt: "true",
     },
@@ -27,7 +35,6 @@ export default defineNuxtConfig({
     manifest: {
       name: "calcreator",
       short_name: "calcreator",
-      description: "Let's calculate!",
       display: "standalone",
       theme_color: "#fff",
       icons: [
@@ -59,6 +66,11 @@ export default defineNuxtConfig({
   site: {
     url: "https://calcreator.cc",
     defaultLocale: "ko",
+  },
+  ignore: ["pages/**/components/**/*", "pages/**/data/**/*"],
+  sitemap: {
+    xsl: false,
+    exclude: ["/*/components/**", "/*/data/**"],
   },
   ogImage: {
     defaults: { component: "OgImage" },
