@@ -22,11 +22,37 @@ export default defineNuxtConfig({
     id: "G-J865KNTNQZ",
   },
   pwa: {
+    workbox: {
+      globPatterns: ["**/*.{js,css,html}"],
+      runtimeCaching: [
+        {
+          // 이미지 파일에 대한 CacheFirst 전략
+          urlPattern: /\.(?:png|jpg|jpeg|svg|gif)$/,
+          handler: "CacheFirst",
+          options: {
+            cacheName: "image-cache",
+            expiration: {
+              maxEntries: 50,
+              maxAgeSeconds: 60 * 60 * 24 * 30, // 30일
+            },
+          },
+        },
+        {
+          // 도메인 하위 전체에 대해 NetworkFirst 전략
+          urlPattern: /^https:\/\/calcreator\.cc\/.*$/,
+          handler: "NetworkFirst",
+          options: {
+            cacheName: "domain-cache",
+            expiration: {
+              maxEntries: 100,
+              maxAgeSeconds: 60 * 60 * 24 * 7, // 7일
+            },
+          },
+        },
+      ],
+    },
     pwaAssets: {
       includeHtmlHeadLinks: true,
-      preset: {
-        useAppleSplashScreenPwaIcon: true,
-      },
     },
     client: {
       installPrompt: "true",
@@ -36,7 +62,8 @@ export default defineNuxtConfig({
       name: "calcreator",
       short_name: "calcreator",
       display: "standalone",
-      theme_color: "#fff",
+      background_color: "#ffffff",
+      theme_color: "#000000",
       icons: [
         {
           src: "icon-192.png",
