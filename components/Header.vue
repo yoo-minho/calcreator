@@ -13,13 +13,15 @@ const copyLink = async () => {
 const isOpen = ref(false);
 
 const install = async () => {
+  localStorage.removeItem("true");
   const nuxtApp = useNuxtApp();
   if (nuxtApp.$pwa) {
-    nuxtApp.$pwa.install();
+    let showInstallPrompt = false;
+    nuxtApp.$pwa.install().then(() => {
+      showInstallPrompt = true;
+    });
     setTimeout(() => {
-      const _window = window as any;
-      _window.pwa = nuxtApp.$pwa;
-      if (!nuxtApp.$pwa?.showInstallPrompt) {
+      if (!showInstallPrompt) {
         isOpen.value = true;
       }
     }, 500);

@@ -26,10 +26,10 @@ export default defineNuxtConfig({
       runtimeCaching: [
         {
           // 이미지 파일에 대한 CacheFirst 전략
-          urlPattern: /\.(?:png|jpg|jpeg|svg|gif)$/,
+          urlPattern: /\.(?:png|jpg|jpeg|svg|gif|woff|ico)$/,
           handler: "CacheFirst",
           options: {
-            cacheName: "image-cache",
+            cacheName: "asset-cache",
             expiration: {
               maxEntries: 50,
               maxAgeSeconds: 60 * 60 * 24 * 30, // 30일
@@ -49,9 +49,6 @@ export default defineNuxtConfig({
           },
         },
       ],
-    },
-    pwaAssets: {
-      includeHtmlHeadLinks: true,
     },
     client: {
       installPrompt: "true",
