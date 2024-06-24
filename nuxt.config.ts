@@ -23,7 +23,6 @@ export default defineNuxtConfig({
   },
   pwa: {
     workbox: {
-      globPatterns: ["**/*.{js,css,html}"],
       runtimeCaching: [
         {
           // 이미지 파일에 대한 CacheFirst 전략
@@ -39,7 +38,7 @@ export default defineNuxtConfig({
         },
         {
           // 도메인 하위 전체에 대해 NetworkFirst 전략
-          urlPattern: /^https:\/\/calcreator\.cc\/.*$/,
+          urlPattern: "https://calcreator.cc/.*",
           handler: "NetworkFirst",
           options: {
             cacheName: "domain-cache",

@@ -17,6 +17,8 @@ const install = async () => {
   if (nuxtApp.$pwa) {
     nuxtApp.$pwa.install();
     setTimeout(() => {
+      const _window = window as any;
+      _window.pwa = nuxtApp.$pwa;
       if (!nuxtApp.$pwa?.showInstallPrompt) {
         isOpen.value = true;
       }
