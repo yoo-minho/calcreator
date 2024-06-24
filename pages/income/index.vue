@@ -2,16 +2,16 @@
 import IncomeResult from "./components/IncomeResult.vue";
 import { 건강보험료율, 기준중위소득, 전년도도시근로자월평균소득, 중위소득건보료 } from "./data/각종기준";
 
-useAppConfig().ui.primary = "blue";
+useAppConfig().ui.primary = "red";
 
 const selectedPeople = ref(1);
 const 건강보험료 = ref(0);
 const 건강보험료2 = ref(0);
 const 보수월액 = ref(0);
 const 모드 = ref<"선택" | "조회">("선택");
-const 중위소득대비 = ref(0);
-const 중위소득대비2 = ref(0);
+
 const 월평균소득대비 = ref(0);
+const 중위소득대비 = ref(0);
 
 watch(건강보험료, () => {
   if (+건강보험료.value > 0) {
@@ -50,7 +50,6 @@ const calculate = () => {
 
   중위소득대비.value =
     Math.round((합산건강보험료 / 중위소득건보료[2024]["직장가입"][selectedPeople.value - 1]) * 1000) / 10;
-  중위소득대비2.value = Math.round((보수월액.value / 기준중위소득[2024][selectedPeople.value - 1]) * 1000) / 10;
   월평균소득대비.value =
     Math.round((보수월액.value / 전년도도시근로자월평균소득[2024][selectedPeople.value - 1]) * 1000) / 10;
 
@@ -80,7 +79,7 @@ const 맞벌이계산식 = () => {
   return 건보료;
 };
 
-const title = "중위소득 계산기";
+const title = "중위소득 계산기 +";
 const title2 = "월평균소득 계산기";
 const desc = `건강보험료만 입력하면\n동시에 계산해드립니다`;
 
@@ -93,6 +92,10 @@ useSeoMeta({
 });
 
 defineOgImageComponent("LandingHero", { title, title2, desc, colorCode: "rgb(59,130,246)", chip: "2024" });
+
+const 중위소득계산 = (percent: number) => {
+  건강보험료.value = Math.round(중위소득건보료[2024]["직장가입"][selectedPeople.value - 1] * (percent / 100));
+};
 </script>
 <template>
   <div class="m-3">
@@ -115,6 +118,7 @@ defineOgImageComponent("LandingHero", { title, title2, desc, colorCode: "rgb(59,
           off: 'i-ph-user-circle-thin',
         }"
       />
+
       <template v-if="보수월액 > 0">
         <IncomeResult
           :healthInsuranceFee="맞벌이계산식()"
@@ -136,8 +140,19 @@ defineOgImageComponent("LandingHero", { title, title2, desc, colorCode: "rgb(59,
           <template #tooltip>
             <div class="text-md font-bold"><span class="text-primary">건강보험료</span> 조회방법</div>
             <UDivider class="py-1" />
-            <div class="text-base text-gray-400">
-              1️⃣ 건강보험공단 접속 - 로그인
+            <div class="text-md font-bold">모바일</div>
+            <UDivider class="py-1" />
+            <div class="text-sm text-gray-500">
+              1️⃣ 'The건강보험' 앱 다운로드<br />
+              2️⃣ [민원여기요]-[조회] 이동<br />
+              3️⃣ [더보기]-[직장보험료 조회] 이동<br />
+              4️⃣ 인증 후 최근 건강보험x산정보험료 조회<br />
+            </div>
+            <UDivider class="py-1" />
+            <div class="text-md font-bold">웹페이지</div>
+            <UDivider class="py-1" />
+            <div class="text-sm text-gray-500">
+              1️⃣ '건강보험공단' 접속 - 로그인
               <a
                 href="https://www.nhis.or.kr/nhis/index.do"
                 class="underline-offset-4 text-primary-300"
@@ -147,32 +162,29 @@ defineOgImageComponent("LandingHero", { title, title2, desc, colorCode: "rgb(59,
               <br />
               2️⃣ [민원여기요]-[개인민원] 이동<br />
               3️⃣ [보험료 조회/신청]-[직장보험료 조회] 이동<br />
-              4️⃣ 최근 건강보험x산정보험료 조회<br /></div
-          ></template>
+              4️⃣ 최근 건강보험x산정보험료 조회<br />
+            </div>
+          </template>
         </BasicInput>
-        <UInput
-          v-if="맞벌이유무"
-          v-model="건강보험료2"
-          color="gray"
-          variant="outline"
-          type="number"
-          input-class="text-right"
-          size="xl"
-          class="pt-1"
-          :input-attr="{ 'max-length': 8 }"
-        >
-          <template #trailing> 원 </template>
-        </UInput>
+        <BasicInput v-if="맞벌이유무" v-model="건강보험료2" type="number" trailing="원" />
         <UCheckbox
           v-if="selectedPeople > 1"
           v-model="맞벌이유무"
           :label="`맞벌이?` + (맞벌이유무 ? ' - 공식 : 높은소득 + 낮은소득/2' : '')"
         />
+        <div v-if="!맞벌이유무" class="flex gap-2 w-full">
+          <UButton :variant="중위소득대비 === 100 ? 'solid' : 'outline'" size="sm" @click="중위소득계산(100)">
+            #중위소득100
+          </UButton>
+          <UButton variant="outline" size="sm" @click="중위소득계산(150)">#중위소득150</UButton>
+          <UButton variant="outline" size="sm" @click="중위소득계산(180)">#중위소득180</UButton>
+        </div>
+
         <UButton block color="primary" label="계산하기" size="lg" icon="i-heroicons-calculator" @click="calculate()" />
       </template>
     </div>
   </div>
-  <HitBanner domain="customcal.vercel.app/income" color="blue" />
+  <HitBanner domain="customcal.vercel.app/income" color="red" />
 </template>
 
 <style lang="scss" scoped></style>

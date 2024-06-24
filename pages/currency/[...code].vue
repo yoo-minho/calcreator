@@ -33,9 +33,9 @@ const currencyCode = ref(code === "ALL" ? CURRENCY_ARR[0].unit : code);
 const currencyFlag = computed(() => CURRENCY_ARR.find((c) => c.unit === currencyCode.value)?.flag || "");
 const currencyName = computed(() => CURRENCY_ARR.find((c) => c.unit === currencyCode.value)?.name || "");
 
-const { data: exchangeDataArr } = await useFetch<ExchangeType[]>(
+const { data: exchangeDataArr, pending } = await useFetch<ExchangeType[]>(
   () => `https://quotation-api-cdn.dunamu.com/v1/forex/recent?codes=FRX.KRW${currencyCode.value}`,
-  { watch: [currencyCode] }
+  { watch: [currencyCode], lazy: true }
 );
 
 const exchangeData = ref();
@@ -124,7 +124,10 @@ defineOgImageComponent("LandingHero", {
             <div class="flex flex-col items-center">
               <div>{{ currencyUnit }} {{ currencyCode }} = {{ currentPrice.toLocaleString() }} 원</div>
               <div class="text-gray-500 text-xs mt-[-4px]">
-                <template v-if="isFixMode">
+                <template v-if="pending">
+                  <div>wait...</div>
+                </template>
+                <template v-else-if="isFixMode">
                   <div>직접 입력한 환율</div>
                 </template>
                 <template v-else>

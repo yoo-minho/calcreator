@@ -29,8 +29,8 @@ const colorCode2 = props.colorCode2 === "primary" ? "rgb(var(--color-primary-DEF
           <h1 class="text-5xl font-bold tracking-tighter text-gray-900 flex flex-col">
             <slot v-if="$slots.default" />
             <template v-else>
-              <span class="tracking-tighter" :style="{ color: colorCode }">{{ title }}</span>
-              <span class="tracking-tighter" :style="{ color: colorCode2 }">{{ title2 }}</span>
+              <span class="tracking-tighter break-keep" :style="{ color: colorCode }">{{ title }}</span>
+              <span class="tracking-tighter break-keep" :style="{ color: colorCode2 }">{{ title2 }}</span>
             </template>
           </h1>
         </UChip>
@@ -39,8 +39,8 @@ const colorCode2 = props.colorCode2 === "primary" ? "rgb(var(--color-primary-DEF
         <h1 class="text-5xl font-bold tracking-tighter text-gray-900 flex flex-col">
           <slot v-if="$slots.default" />
           <template v-else>
-            <span class="tracking-tighter" :style="{ color: colorCode }">{{ title }}</span>
-            <span class="tracking-tighter" :style="{ color: colorCode2 }">{{ title2 }}</span>
+            <span class="tracking-tighter break-keep" :style="{ color: colorCode }">{{ title }}</span>
+            <span class="tracking-tighter break-keep" :style="{ color: colorCode2 }">{{ title2 }}</span>
           </template>
         </h1>
       </template>
