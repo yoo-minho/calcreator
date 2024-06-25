@@ -16,7 +16,7 @@ export default defineNuxtConfig({
     classSuffix: "-mode",
   },
   ui: {
-    icons: ["ph", "solar", "emojione", "mingcute"],
+    icons: ["ph", "solar", "emojione", "mingcute", "fluent-emoji-flat"],
   },
   gtag: {
     id: "G-J865KNTNQZ",

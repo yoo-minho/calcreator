@@ -19,9 +19,7 @@ const props = withDefaults(
 
 const colorCode = props.colorCode === "primary" ? "rgb(var(--color-primary-DEFAULT))" : props.colorCode;
 const colorCode2 = props.colorCode2 === "primary" ? "rgb(var(--color-primary-DEFAULT))" : props.colorCode2;
-
-console.log("Math.max(props.title.length, props.title2.length)", Math.max(props.title.length, props.title2.length));
-const textSize = Math.max(props.title.length, props.title2.length) > 5 ? "text-4xl" : "text-5xl";
+const textSize = Math.max(props.title.length, props.title2.length) > 6 ? "text-4xl" : "text-5xl";
 </script>
 
 <template>

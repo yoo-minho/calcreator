@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import BasicCalculator from "./components/BasicCalculator.vue";
 
-useAppConfig().ui.primary = "pink";
+useAppConfig().ui.primary = "blue";
 
 const route = useRoute();
 const code = String(route.params.code[0]).toUpperCase();
@@ -41,12 +41,24 @@ const currencyName = computed(() => CURRENCY_ARR.find((c) => c.unit === currency
 
 const exchangeData = ref();
 
-const { data, pending } = await useFetch<{ country: ExchangeType[] }>(
-  () =>
-    `https://m.search.naver.com/p/csearch/content/qapirender.nhn?key=calculator&pkid=141&q=%ED%99%98%EC%9C%A8&where=m&u1=keb&u6=standardUnit&u7=0&u3=${
-      currencyCode.value
-    }&u4=KRW&u8=down&u2=${["VND", "JPY", "IDR"].includes(currencyCode.value) ? 100 : 1}`,
-  { lazy: true }
+const { data, pending } = await useLocalStore(`currency-${currencyCode.value}`, () =>
+  useFetch<{ country: ExchangeType[] }>(
+    () =>
+      `https://m.search.naver.com/p/csearch/content/qapirender.nhn?` +
+      [
+        "key=calculator",
+        "pkid=141",
+        "q=%ED%99%98%EC%9C%A8",
+        "where=m",
+        "u1=keb",
+        "u6=standardUnit",
+        `u3=${currencyCode.value}`,
+        `u4=KRW`,
+        `u8=down`,
+        `u2=${["VND", "JPY", "IDR"].includes(currencyCode.value) ? 100 : 1}`,
+      ].join("&"),
+    { lazy: true }
+  )
 );
 
 watch(
