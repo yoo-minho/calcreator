@@ -19,6 +19,9 @@ const props = withDefaults(
 
 const colorCode = props.colorCode === "primary" ? "rgb(var(--color-primary-DEFAULT))" : props.colorCode;
 const colorCode2 = props.colorCode2 === "primary" ? "rgb(var(--color-primary-DEFAULT))" : props.colorCode2;
+
+console.log("Math.max(props.title.length, props.title2.length)", Math.max(props.title.length, props.title2.length));
+const textSize = Math.max(props.title.length, props.title2.length) > 5 ? "text-4xl" : "text-5xl";
 </script>
 
 <template>
@@ -26,7 +29,7 @@ const colorCode2 = props.colorCode2 === "primary" ? "rgb(var(--color-primary-DEF
     <div class="text-center relative z-[1]">
       <template v-if="chip">
         <UChip :text="chip.label" size="2xl" :color="chip.color">
-          <h1 class="text-5xl font-bold tracking-tighter text-gray-900 flex flex-col">
+          <h1 class="font-bold tracking-tighter text-gray-900 flex flex-col" :class="textSize">
             <slot v-if="$slots.default" />
             <template v-else>
               <span class="tracking-tighter break-keep" :style="{ color: colorCode }">{{ title }}</span>
@@ -36,7 +39,7 @@ const colorCode2 = props.colorCode2 === "primary" ? "rgb(var(--color-primary-DEF
         </UChip>
       </template>
       <template v-else>
-        <h1 class="text-5xl font-bold tracking-tighter text-gray-900 flex flex-col">
+        <h1 class="font-bold tracking-tighter text-gray-900 flex flex-col" :class="textSize">
           <slot v-if="$slots.default" />
           <template v-else>
             <span class="tracking-tighter break-keep" :style="{ color: colorCode }">{{ title }}</span>

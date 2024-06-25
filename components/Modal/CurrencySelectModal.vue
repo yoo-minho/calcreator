@@ -7,8 +7,6 @@ const submit = (currency: any) => {
   isOpen.value = false;
   emits("submit", currency.unit);
 };
-
-const selected = ref(false);
 </script>
 <template>
   <div>
@@ -26,18 +24,17 @@ const selected = ref(false);
             />
           </div>
         </template>
-        <div class="flex flex-col gap-1">
+        <div class="grid grid-cols-3 gap-1">
           <template v-for="currency in currencyArr">
-            <UButton
-              class="flex gap-3"
-              :variant="currentCurrencyUnit === currency.unit ? 'solid' : 'soft'"
-              color="primary"
+            <div
+              class="flex flex-col shadow border p-2 items-center rounded text-sm text-center"
+              :class="currentCurrencyUnit === currency.unit ? 'bg-primary text-white' : ''"
               @click="submit(currency)"
             >
               <IconRoundFull :flag="currency.flag" />
-              <span>{{ currency.unit }}</span>
-              <span>{{ currency.name }}</span>
-            </UButton>
+              <span class="mt-1 mb-[-4px]">{{ currency.unit }}</span>
+              <span>{{ currency.name }} ({{ currency.unitName }})</span>
+            </div>
           </template>
         </div>
       </UCard>

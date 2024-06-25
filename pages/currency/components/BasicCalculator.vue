@@ -2,6 +2,7 @@
 const 현재값 = defineModel<string>({ default: "0" });
 const 연산자눌렀는가 = ref(false);
 const 계산식 = ref<string[]>([]);
+const emits = defineEmits<{ (e: "click-easy"): void }>();
 
 const clearDisplay = () => {
   현재값.value = "0";
@@ -102,9 +103,8 @@ const performCalculation = (): number => {
     <div class="text-xl text-right px-6 py-1 text-gray-500 h-100">
       {{ 계산식.map((v) => ({ "*": "x" }[v] || v)).join(" ") || "　" }}
     </div>
-
     <div class="buttons flex-1">
-      <button class="btn number" @click="appendNumber('.')">.</button>
+      <button class="btn number" @click="emits('click-easy')">easy</button>
       <button class="btn number" @click="appendNumber('.')">.</button>
       <button class="btn number" @click="delDisplay()">del</button>
       <button class="btn bg-primary" @click="chooseOperator('/')">/</button>

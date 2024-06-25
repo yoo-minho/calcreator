@@ -46,7 +46,7 @@ onMounted(() => {
         <template v-if="$route.path === '/'"> </template>
         <template v-else>
           <UButton class="flex-col items-center p-0" size="sm" variant="ghost" @click="$router.push('/')">
-            <div class="text-2xl cursor-pointer tracking-tighter mb-[-4px]">calcreator</div>
+            <div class="text-xl cursor-pointer tracking-tighter mb-[-4px]">calcreator</div>
             <span class="tracking-tighter text-xs">다른 계산기 보러가기</span>
           </UButton>
         </template>

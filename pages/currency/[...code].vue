@@ -11,35 +11,66 @@ const 한국원화 = ref(0);
 const _한국원화 = computed(() => 한국원화.value.toLocaleString());
 
 const CURRENCY_ARR = [
-  { name: "일본", unit: "JPY", flag: "japan" },
-  { name: "대만", unit: "TWD", flag: "taiwan" },
-  { name: "태국", unit: "THB", flag: "thailand" },
-  { name: "중국", unit: "CNY", flag: "china" },
-  { name: "싱가폴", unit: "SGD", flag: "singapore" },
-  { name: "미국", unit: "USD", flag: "us-outlying-islands" },
-  { name: "베트남", unit: "VND", flag: "vietnam" },
-  { name: "호주", unit: "AUD", flag: "australia" },
-  { name: "영국", unit: "GBP", flag: "united-kingdom" },
-  { name: "프랑스", unit: "EUR", flag: "france" },
-  { name: "필리핀", unit: "PHP", flag: "philippines" },
-  { name: "홍콩", unit: "HKD", flag: "hong-kong-sar-china" },
+  { name: "일본", unitName: "엔", unit: "JPY", flag: "japan" },
+  { name: "대만", unitName: "달러", unit: "TWD", flag: "taiwan" },
+  { name: "태국", unitName: "바트", unit: "THB", flag: "thailand" },
+  { name: "중국", unitName: "위안", unit: "CNY", flag: "china" },
+  { name: "싱가폴", unitName: "달러", unit: "SGD", flag: "singapore" },
+  { name: "미국", unitName: "달러", unit: "USD", flag: "us-outlying-islands" },
+  { name: "베트남", unitName: "동", unit: "VND", flag: "vietnam" },
+  { name: "호주", unitName: "달러", unit: "AUD", flag: "australia" },
+  { name: "영국", unitName: "파운드", unit: "GBP", flag: "united-kingdom" },
+  { name: "프랑스", unitName: "유로", unit: "EUR", flag: "france" },
+  { name: "필리핀", unitName: "페소", unit: "PHP", flag: "philippines" },
+  { name: "홍콩", unitName: "달러", unit: "HKD", flag: "hong-kong-sar-china" },
+  { name: "인도", unitName: "루피", unit: "INR", flag: "india" },
+  { name: "멕시코", unitName: "페소", unit: "MXN", flag: "mexico" },
+  { name: "스위스", unitName: "프랑", unit: "CHF", flag: "sweden" },
+  { name: "인도네시아", unitName: "루피아", unit: "IDR", flag: "indonesia" },
+  { name: "카타르", unitName: "리얄", unit: "QAR", flag: "qatar" },
+  { name: "사우디", unitName: "리얄", unit: "SAR", flag: "saudi-arabia" },
 ].map((v) => {
   return { ...v, flag: `i-emojione-flag-for-${v.flag}` };
 });
 
-type ExchangeType = { basePrice: number; modifiedAt: string; currencyCode: string; currencyUnit: number };
+type ExchangeType = { currencyUnit: string; value: string };
 
 const currencyCode = ref(code === "ALL" ? CURRENCY_ARR[0].unit : code);
 const currencyFlag = computed(() => CURRENCY_ARR.find((c) => c.unit === currencyCode.value)?.flag || "");
 const currencyName = computed(() => CURRENCY_ARR.find((c) => c.unit === currencyCode.value)?.name || "");
 
+const exchangeData = ref();
+
+const { data, pending } = await useFetch<{ country: ExchangeType[] }>(
+  () =>
+    `https://m.search.naver.com/p/csearch/content/qapirender.nhn?key=calculator&pkid=141&q=%ED%99%98%EC%9C%A8&where=m&u1=keb&u6=standardUnit&u7=0&u3=${
+      currencyCode.value
+    }&u4=KRW&u8=down&u2=${["VND", "JPY", "IDR"].includes(currencyCode.value) ? 100 : 1}`,
+  { lazy: true }
+);
+
+watch(
+  data,
+  () => {
+    if (data.value) {
+      exchangeData.value = {
+        currencyUnit: +data.value?.country[0].value,
+        basePrice: +data.value?.country[1].value.replace(/\,/g, ""),
+        modifiedAt: new Date(),
+      };
+    }
+  },
+  { immediate: true }
+);
+
+/*
+type ExchangeType = { basePrice: number; modifiedAt: string; currencyCode: string; currencyUnit: number };
 const { data: exchangeDataArr, pending } = await useFetch<ExchangeType[]>(
   () => `https://quotation-api-cdn.dunamu.com/v1/forex/recent?codes=FRX.KRW${currencyCode.value}`,
   { watch: [currencyCode], lazy: true }
 );
-
-const exchangeData = ref();
 watch(exchangeDataArr, () => (exchangeData.value = exchangeDataArr.value?.[0]), { immediate: true });
+*/
 
 const modifiedAt = computed(() => new Date(exchangeData.value?.modifiedAt || "").toLocaleDateString());
 const realPrice = computed(() => Math.round((exchangeData.value?.basePrice || 0) * 100) / 100);
@@ -67,10 +98,24 @@ const openCurrencyModal = () => {
   fixPrice.value = realPrice.value;
 };
 
+const clickEasy = () => {
+  function customRound(number: number) {
+    const numStr = number.toString();
+    const [integerPart, decimalPart] = numStr.split(".");
+    if (integerPart.length - 2 >= 0) {
+      const tens = 10 ** (integerPart.length - 2);
+      return Math.ceil(number / tens) * tens;
+    }
+    return Math.ceil(number);
+  }
+  displayPrice.value = customRound((10000 * currencyUnit.value) / currentPrice.value) + "";
+};
+
 watch(
   [displayPrice, currentPrice],
   () => {
-    한국원화.value = Math.round((+displayPrice.value * currentPrice.value) / (currencyUnit.value * 100)) * 100;
+    const resultValue = Math.round((+displayPrice.value * currentPrice.value) / (currencyUnit.value * 100)) * 100;
+    한국원화.value = isNaN(resultValue) ? 0 : resultValue;
   },
   { immediate: true }
 );
@@ -107,7 +152,7 @@ defineOgImageComponent("LandingHero", {
 
     <LandingHero :title="title" :title2="title2" color-code="primary" :desc="desc" />
 
-    <BasicCalculator v-model="displayPrice" class="flex-1">
+    <BasicCalculator v-model="displayPrice" class="flex-1" @clickEasy="clickEasy">
       <UDivider>
         <div class="flex flex-col items-center">
           <div class="flex items-center gap-2 text-sm">
@@ -137,7 +182,7 @@ defineOgImageComponent("LandingHero", {
                       <UIcon name="i-heroicons-question-mark-circle" class="w-[16px] h-[16px] ml-1" />
                     </div>
                     <template #panel>
-                      <div class="p-3 text-base text-left">실시간 환율 데이터<br />by 두나무 하나은행 오픈 API</div>
+                      <div class="p-3 text-base text-left">실시간 환율 데이터<br />by 네이버 API</div>
                     </template>
                   </UPopover>
                 </template>
