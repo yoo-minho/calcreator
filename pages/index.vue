@@ -1,13 +1,24 @@
 <script setup lang="ts">
+const page = useCookie("calcreator-page");
+if (page.value) {
+  navigateTo(page.value);
+}
+
 useColorMode().preference = "white";
 useAppConfig().ui.primary = "black";
 
 const arr = [
-  { title: "여행용 환율계산기", icon: "i-fluent-emoji-flat-currency-exchange", to: "/currency" },
-  { title: "Micro SaaS 고객 계산기", icon: "i-fluent-emoji-flat-microbe", to: "/micro-saas" },
-  { title: "인프런 수익 계산기", icon: "i-fluent-emoji-flat-seedling", to: "/inf" },
-  { title: "중위소득 · 월평균소득 계산기", icon: "i-fluent-emoji-flat-money-with-wings", to: "/income" },
+  { title: "여행용 환율계산기", icon: "i-fluent-emoji-flat-currency-exchange", to: "/currency", color: "blue" },
+  { title: "Micro SaaS 고객 계산기", icon: "i-fluent-emoji-flat-microbe", to: "/micro-saas", color: "cyan" },
+  { title: "인프런 수익 계산기", icon: "i-fluent-emoji-flat-seedling", to: "/inf", color: "green" },
+  { title: "중위소득 · 월평균소득 계산기", icon: "i-fluent-emoji-flat-money-with-wings", to: "/income", color: "red" },
 ];
+
+const moveCalculator = async (v: { to: string; color: string }) => {
+  useAppConfig().ui.primary = v.color;
+  page.value = v.to;
+  await navigateTo(v.to);
+};
 
 const title = "calcreator.cc";
 const desc = "계산기로 널리 이롭게";
@@ -32,7 +43,7 @@ defineOgImageComponent("LandingHero", { chip: "🔢🌍👍" });
     </div>
     <UDivider class="mb-3" />
     <template v-for="v in arr">
-      <UButton class="w-full" color="black" variant="ghost" size="xl" :to="v.to" square>
+      <UButton class="w-full" color="black" variant="ghost" size="xl" :to="v.to" square @click="moveCalculator(v)">
         <div class="flex gap-2 justify-between w-full items-center">
           <UButton color="gray" class="p-1">
             <UIcon :name="v.icon" class="w-[1.5em] h-[1.5em]" dynamic />

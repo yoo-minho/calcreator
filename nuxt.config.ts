@@ -39,7 +39,7 @@ export default defineNuxtConfig({
         {
           // 도메인 하위 전체에 대해 NetworkFirst 전략
           urlPattern: "https://calcreator.cc/.*",
-          handler: "NetworkFirst",
+          handler: "CacheFirst",
           options: {
             cacheName: "domain-cache",
             expiration: {
@@ -57,6 +57,7 @@ export default defineNuxtConfig({
     manifest: {
       name: "calcreator",
       short_name: "calcreator",
+      start_url: "/",
       display: "standalone",
       background_color: "#ffffff",
       theme_color: "#000000",

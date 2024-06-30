@@ -75,15 +75,6 @@ watch(
   { immediate: true }
 );
 
-/*
-type ExchangeType = { basePrice: number; modifiedAt: string; currencyCode: string; currencyUnit: number };
-const { data: exchangeDataArr, pending } = await useFetch<ExchangeType[]>(
-  () => `https://quotation-api-cdn.dunamu.com/v1/forex/recent?codes=FRX.KRW${currencyCode.value}`,
-  { watch: [currencyCode], lazy: true }
-);
-watch(exchangeDataArr, () => (exchangeData.value = exchangeDataArr.value?.[0]), { immediate: true });
-*/
-
 const modifiedAt = computed(() => new Date(exchangeData.value?.modifiedAt || "").toLocaleDateString());
 const realPrice = computed(() => Math.round((exchangeData.value?.basePrice || 0) * 100) / 100);
 const currencyUnit = computed(() => exchangeData.value?.currencyUnit);
@@ -92,22 +83,36 @@ const isOpenCurrencySelectModal = ref(false);
 
 const isOpenCurrencyModal = ref(false);
 const fixPrice = ref(0);
-
 const isFixMode = ref(false);
+
+const fixPriceCookieRef = useCookie<number>(`fix-price-${currencyCode.value}`);
+const fixPriceCookie = fixPriceCookieRef.value || 0;
+if (fixPriceCookie > 0) {
+  fixPrice.value = fixPriceCookie;
+  isFixMode.value = true;
+}
+
 const currentPrice = computed(() => (isFixMode.value ? fixPrice.value : realPrice.value));
 
 const submitModal = () => {
   isFixMode.value = true;
+  fixPriceCookieRef.value = fixPrice.value;
 };
 
 const changeCurrency = (_currencyUnit: string) => {
   currencyCode.value = _currencyUnit;
+  useCookie("calcreator-page").value = `/currency/${_currencyUnit}`;
   useRouter().push({ params: { code: [_currencyUnit] } });
 };
 
-const openCurrencyModal = () => {
+const openModalForFixCurrencyMode = () => {
   isOpenCurrencyModal.value = true;
   fixPrice.value = realPrice.value;
+};
+
+const revertRealTimeCurrencyMode = () => {
+  isFixMode.value = false;
+  fixPriceCookieRef.value = 0;
 };
 
 const clickEasy = () => {
@@ -203,10 +208,10 @@ defineOgImageComponent("LandingHero", {
 
             <div>|</div>
             <template v-if="isFixMode">
-              <UButton size="xs" class="font-thin" color="gray" @click="isFixMode = false">실시간환율</UButton>
+              <UButton size="xs" class="font-thin" color="gray" @click="revertRealTimeCurrencyMode">실시간환율</UButton>
             </template>
             <template v-else>
-              <UButton size="xs" class="font-thin" color="gray" @click="openCurrencyModal">직접입력</UButton>
+              <UButton size="xs" class="font-thin" color="gray" @click="openModalForFixCurrencyMode">직접입력</UButton>
             </template>
           </div>
         </div>
@@ -248,7 +253,7 @@ defineOgImageComponent("LandingHero", {
       <UDivider />
     </BasicCalculator>
 
-    <HitBanner domain="customcal.vercel.app/global-money" color="hotpink" />
+    <HitBanner domain="customcal.vercel.app/global-money" color="blue" />
   </div>
 </template>
 

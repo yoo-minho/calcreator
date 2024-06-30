@@ -5,10 +5,6 @@ import HitBanner from "~/components/HitBanner.vue";
 
 useAppConfig().ui.primary = "green";
 
-const goInf = () => {
-  window.open("https://www.inflearn.com/open-knowledge", "inf");
-};
-
 const searchWord = ref("");
 const targetArr = ref(지식공유자들);
 watch(searchWord, () => {

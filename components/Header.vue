@@ -15,19 +15,17 @@ const isOpen = ref(false);
 const install = async () => {
   localStorage.removeItem("true");
   const nuxtApp = useNuxtApp();
-  if (nuxtApp.$pwa) {
-    let showInstallPrompt = false;
-    nuxtApp.$pwa.install().then(() => {
-      showInstallPrompt = true;
-    });
-    setTimeout(() => {
-      if (!showInstallPrompt) {
-        isOpen.value = true;
-      }
-    }, 500);
+  if (nuxtApp.$pwa && nuxtApp.$pwa.showInstallPrompt) {
+    nuxtApp.$pwa.install();
   } else {
     isOpen.value = true;
   }
+};
+
+const goHome = async () => {
+  const page = useCookie("calcreator-page");
+  page.value = "";
+  await navigateTo("/");
 };
 
 const isPWAUnInstalled = ref(false);
@@ -45,7 +43,7 @@ onMounted(() => {
       <div class="flex items-center font-bold w-full">
         <template v-if="$route.path === '/'"> </template>
         <template v-else>
-          <UButton class="flex-col items-center p-0" size="sm" variant="ghost" @click="$router.push('/')">
+          <UButton class="flex-col items-center p-0" size="sm" variant="ghost" @click="goHome">
             <div class="text-xl cursor-pointer tracking-tighter mb-[-4px]">calcreator</div>
             <span class="tracking-tighter text-xs">다른 계산기 보러가기</span>
           </UButton>
