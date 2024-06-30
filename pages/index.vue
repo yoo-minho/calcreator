@@ -43,13 +43,22 @@ defineOgImageComponent("LandingHero", { chip: "🔢🌍👍" });
     </div>
     <UDivider class="mb-3" />
     <template v-for="v in arr">
-      <UButton class="w-full" color="black" variant="ghost" size="xl" :to="v.to" square @click="moveCalculator(v)">
+      <UButton
+        class="w-full"
+        color="black"
+        variant="ghost"
+        size="xl"
+        :alt="v.title"
+        :to="v.to"
+        square
+        @click="moveCalculator(v)"
+      >
         <div class="flex gap-2 justify-between w-full items-center">
           <UButton color="gray" class="p-1">
             <UIcon :name="v.icon" class="w-[1.5em] h-[1.5em]" dynamic />
           </UButton>
           <span class="flex-1 text-left truncate tracking-tighter ml-1">{{ v.title }}</span>
-          <UIcon name="i-ph-caret-right-light" size="1rem" color="gray" />
+          <UIcon name="i-ph-caret-right" size="1rem" />
         </div>
       </UButton>
     </template>
