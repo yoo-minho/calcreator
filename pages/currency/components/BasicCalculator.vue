@@ -6,7 +6,9 @@ const emits = defineEmits<{ (e: "click-easy"): void }>();
 
 const clearDisplay = () => {
   현재값.value = "0";
-  계산식.value = [];
+  if (계산식.value.length > 0 && 현재값.value === "0") {
+    계산식.value = [];
+  }
 };
 
 const delDisplay = () => {
@@ -94,7 +96,7 @@ const performCalculation = (): number => {
       }
     }
   });
-  return 결과값;
+  return Math.round(결과값);
 };
 </script>
 <template>
@@ -104,26 +106,42 @@ const performCalculation = (): number => {
       {{ 계산식.map((v) => ({ "*": "x" }[v] || v)).join(" ") || "　" }}
     </div>
     <div class="buttons flex-1">
-      <button class="btn number" @click="emits('click-easy')">easy</button>
-      <button class="btn number" @click="appendNumber('.')">.</button>
-      <button class="btn number" @click="delDisplay()">del</button>
-      <button class="btn bg-primary" @click="chooseOperator('/')">/</button>
+      <button class="btn bg-black" @click="clearDisplay()">
+        {{ 계산식.length > 0 && 현재값 === "0" ? "AC" : "C" }}
+      </button>
+      <button class="btn number bg-black" @click="delDisplay()">
+        <UIcon name="i-ph-arrow-left-bold" />
+      </button>
+      <button class="btn number" @click="emits('click-easy')">
+        <UIcon name="i-ph-hamburger-bold" />
+      </button>
+      <button class="btn bg-primary" @click="chooseOperator('/')">
+        <UIcon name="i-ph-divide-bold" />
+      </button>
       <button class="btn number" @click="appendNumber('7')">7</button>
       <button class="btn number" @click="appendNumber('8')">8</button>
       <button class="btn number" @click="appendNumber('9')">9</button>
-      <button class="btn bg-primary" @click="chooseOperator('*')">x</button>
+      <button class="btn bg-primary" @click="chooseOperator('*')">
+        <UIcon name="i-ph-x-bold" />
+      </button>
       <button class="btn number" @click="appendNumber('4')">4</button>
       <button class="btn number" @click="appendNumber('5')">5</button>
       <button class="btn number" @click="appendNumber('6')">6</button>
-      <button class="btn bg-primary" @click="chooseOperator('-')">-</button>
+      <button class="btn bg-primary" @click="chooseOperator('-')">
+        <UIcon name="i-ph-minus-bold" />
+      </button>
       <button class="btn number" @click="appendNumber('1')">1</button>
       <button class="btn number" @click="appendNumber('2')">2</button>
       <button class="btn number" @click="appendNumber('3')">3</button>
-      <button class="btn bg-primary" @click="chooseOperator('+')">+</button>
-      <button class="btn" @click="appendNumber('00')">00</button>
+      <button class="btn bg-primary" @click="chooseOperator('+')">
+        <UIcon name="i-ph-plus-bold" />
+      </button>
+      <button class="btn number" @click="appendNumber('.')">.</button>
       <button class="btn number" @click="appendNumber('0')">0</button>
-      <button class="btn" @click="clearDisplay()">clear</button>
-      <button class="btn bg-primary" @click="handleEqual()">=</button>
+      <button class="btn number" @click="appendNumber('00')">00</button>
+      <button class="btn bg-primary" @click="handleEqual()">
+        <UIcon name="i-ph-equals-bold" />
+      </button>
     </div>
   </div>
 </template>

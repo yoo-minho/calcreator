@@ -220,7 +220,7 @@ defineOgImageComponent("LandingHero", {
       <div class="flex items-center p-3 jusify-between" @click="isOpenCurrencySelectModal = true">
         <div class="flex flex-col items-center">
           <IconRoundFull :flag="currencyFlag" />
-          <span class="mt-[-4px] flex items-center gap-1">
+          <span class="mt-[1px] flex items-center gap-1">
             <div>{{ currencyCode }}</div>
           </span>
         </div>
@@ -240,7 +240,7 @@ defineOgImageComponent("LandingHero", {
             name="i-emojione-flag-for-south-korea"
             class="w-[2em] h-[2em] border-solid border-gray-300 border rounded-full shadow"
           />
-          <span class="mt-[-4px]">KRW</span>
+          <span class="mt-[1px]">KRW</span>
         </div>
         <UInput
           v-model="_한국원화"

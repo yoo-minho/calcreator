@@ -1,1 +1,1 @@
-# whatcal
+# calcreator.cc

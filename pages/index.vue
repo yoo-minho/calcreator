@@ -1,14 +1,18 @@
 <script setup lang="ts">
+definePageMeta({
+  middleware: "clear-page-cookie",
+});
+
 const page = useCookie("calcreator-page");
 if (page.value) {
-  navigateTo(page.value);
+  navigateTo(page.value, { replace: true });
 }
 
 useColorMode().preference = "white";
 useAppConfig().ui.primary = "black";
 
 const arr = [
-  { title: "여행용 환율계산기", icon: "i-fluent-emoji-flat-currency-exchange", to: "/currency", color: "blue" },
+  { title: "여행용 환율계산기", icon: "i-fluent-emoji-flat-currency-exchange", to: "/currency/all", color: "blue" },
   { title: "Micro SaaS 고객 계산기", icon: "i-fluent-emoji-flat-microbe", to: "/micro-saas", color: "cyan" },
   { title: "인프런 수익 계산기", icon: "i-fluent-emoji-flat-seedling", to: "/inf", color: "green" },
   { title: "중위소득 · 월평균소득 계산기", icon: "i-fluent-emoji-flat-money-with-wings", to: "/income", color: "red" },
@@ -33,7 +37,6 @@ useSeoMeta({
 
 defineOgImageComponent("LandingHero", { chip: "🔢🌍👍" });
 </script>
-
 <template>
   <div>
     <LandingHero :title="title" :desc="`&quot;${desc}&quot;`" color-code="primary" />
