@@ -109,11 +109,11 @@ const performCalculation = (): number => {
       <button class="btn bg-black" @click="clearDisplay()">
         {{ 계산식.length > 0 && 현재값 === "0" ? "AC" : "C" }}
       </button>
-      <button class="btn number bg-black" @click="delDisplay()">
-        <UIcon name="i-ph-arrow-left-bold" />
-      </button>
       <button class="btn number bg-black" @click="emits('click-easy')">
         <UIcon name="i-ph-hamburger-bold floating" />
+      </button>
+      <button class="btn number bg-black" @click="delDisplay()">
+        <UIcon name="i-ph-arrow-left-bold" />
       </button>
       <button class="btn bg-primary" @click="chooseOperator('/')">
         <UIcon name="i-ph-divide-bold" />

@@ -125,6 +125,12 @@ const clickEasy = () => {
     return Math.ceil(number);
   }
   displayPrice.value = customRound((10000 * currencyUnit.value) / currentPrice.value) + "";
+  const toast = useToast();
+  toast.add({
+    id: "info",
+    title: "10,000원이 얼마인지 기억해두시고 즐거운 여행되세요!",
+    icon: "i-fluent-emoji-flat-grinning-face",
+  });
 };
 
 watch(
@@ -184,7 +190,7 @@ defineOgImageComponent("LandingHero", {
             <div>|</div>
             <div class="flex flex-col items-center">
               <div>{{ currencyUnit }} {{ currencyCode }} = {{ currentPrice.toLocaleString() }} 원</div>
-              <div class="text-gray-500 text-xs mt-[-4px]">
+              <div class="text-gray-500 text-xs mt-[-2px]">
                 <template v-if="pending">
                   <div>wait...</div>
                 </template>
