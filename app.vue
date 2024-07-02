@@ -2,6 +2,18 @@
 useHead({
   titleTemplate: "%s",
 });
+
+const route = useRoute();
+const page = useCookie("calcreator-page");
+if (route.path === "/" && page.value && page.value !== "/") {
+  navigateTo(page.value, { replace: true });
+}
+
+onMounted(() => {
+  window.addEventListener("beforeunload", () => {
+    page.value = route.path;
+  });
+});
 </script>
 <template>
   <VitePwaManifest />
@@ -52,5 +64,19 @@ useHead({
 
 body {
   font-family: "Noto Sans KR", sans-serif;
+}
+
+.floating {
+  animation: float 1.5s infinite ease-in-out; /* float 애니메이션 적용 */
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(-0.1em);
+  }
+  50% {
+    transform: translateY(0.1em);
+  }
 }
 </style>

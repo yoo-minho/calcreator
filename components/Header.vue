@@ -23,8 +23,6 @@ const install = async () => {
 };
 
 const goHome = async () => {
-  const page = useCookie("calcreator-page");
-  page.value = "";
   await navigateTo("/");
 };
 
@@ -43,9 +41,9 @@ onMounted(() => {
       <div class="flex items-center font-bold w-full">
         <template v-if="$route.path === '/'"> </template>
         <template v-else>
-          <UButton class="flex-col items-center p-0" size="sm" variant="ghost" @click="goHome">
-            <div class="text-xl cursor-pointer tracking-tighter mb-[-4px]">calcreator</div>
-            <span class="tracking-tighter text-xs">다른 계산기 보러가기</span>
+          <UButton color="gray" size="sm" @click="goHome" variant="ghost" class="flex-col p-0">
+            <UIcon name="i-ph-calculator" class="text-xl" />
+            <span class="tracking-tighter text-xs">다른계산기</span>
           </UButton>
         </template>
         <div class="flex-1"></div>

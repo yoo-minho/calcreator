@@ -33,7 +33,7 @@ const submit = (currency: any) => {
             >
               <IconRoundFull :flag="currency.flag" />
               <span class="mt-1 mb-[-4px]">{{ currency.unit }}</span>
-              <span>{{ currency.name }} ({{ currency.unitName }})</span>
+              <span class="text-xs break-keep">{{ currency.name }} ({{ currency.unitName }})</span>
             </div>
           </template>
         </div>

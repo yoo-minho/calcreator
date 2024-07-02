@@ -27,7 +27,7 @@ defineProps<BaseInputType>();
         color="gray"
         variant="outline"
         :type="type"
-        input-class="text-right"
+        input-class="tracking-widest"
         size="xl"
         :disabled="disabled"
         class="flex-1"

@@ -17,18 +17,18 @@ const calculate = () => {
 
 const items = [
   {
-    label: "부분유료화",
+    label: "부분 유료화",
     aka: "Freemium",
-    content: "기본 서비스는 무료, 프리미엄 기능 사용시 유료",
+    content: "기본 서비스 무료, 프리미엄 기능 유료",
     percent: 4,
-    expression: "필요 무료고객수",
+    expression: "전체고객수",
   },
   {
-    label: "무료체험판",
+    label: "무료 체험판",
     aka: "Free Trial",
-    content: "통상 2주 체험판 제공, 계속 사용시 유료",
+    content: "2~4주 체험판 제공, 계속 사용하려면 유료",
     percent: 8,
-    expression: "필요 체험고객수",
+    expression: "체험고객수",
   },
 ];
 
@@ -67,7 +67,7 @@ defineOgImageComponent("LandingHero", { title, title2, desc, colorCode: "rgb(6,1
 
     <div class="flex flex-col gap-3">
       <template v-if="page === 'intro'">
-        <BasicInput v-model="연간구독매출" label="연간구독매출" trailing="억 원" type="number">
+        <BasicInput v-model="연간구독매출" label="연간 구독 매출" trailing="억 원" type="number">
           <template #tooltip> a.k.a ARR : Annual Recurring Revenue </template>
         </BasicInput>
 
@@ -90,12 +90,13 @@ defineOgImageComponent("LandingHero", { title, title2, desc, colorCode: "rgb(6,1
           </template>
           <template #tab-contents="{ item }">
             <div class="flex flex-col">
-              <span>
-                a.k.a <b class="text-primary">{{ item.aka }}</b>
-              </span>
-              <span> {{ item.content }} </span>
+              <span class="font-bold"> {{ item.content }} </span>
+              <UDivider class="my-2" />
               <span>
                 보통 전체 경험 고객 중 <b class="text-primary">{{ item.percent }}%</b> 유료 전환됨
+              </span>
+              <span>
+                a.k.a <b class="text-primary">{{ item.aka }}</b>
               </span>
             </div>
           </template>
@@ -110,7 +111,7 @@ defineOgImageComponent("LandingHero", { title, title2, desc, colorCode: "rgb(6,1
         <BasicLabel title="모델" :contents="`${items[selected].label} (${items[selected].aka})`" />
         <UDivider />
         <BasicResultBanner>
-          <template #name>필요 유료고객수</template>
+          <template #name>유료고객수</template>
           <template #resultValue>
             <span class="text-primary">
               <span class="font-bold tracking-tighter">{{ 필요유료고객수.toLocaleString() }}</span>

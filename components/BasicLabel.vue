@@ -3,7 +3,7 @@ defineProps<{ title: string; contents?: string; help?: string }>();
 </script>
 <template>
   <div class="text-xl leading-7 flex flex-wrap items-center justify-between">
-    <div class="font-bold" :class="{ 'flex-1': !$slots.tooltip }">{{ title }}</div>
+    <div class="font-bold tracking-tighter" :class="{ 'flex-1': !$slots.tooltip }">{{ title }}</div>
     <UPopover v-if="$slots.tooltip" class="flex-1">
       <UButton color="primary" size="md" variant="ghost" icon="i-heroicons-question-mark-circle" />
       <template #panel>

@@ -101,13 +101,12 @@ const submitModal = () => {
 
 const changeCurrency = (_currencyUnit: string) => {
   currencyCode.value = _currencyUnit;
-  useCookie("calcreator-page").value = `/currency/${_currencyUnit}`;
   useRouter().push({ params: { code: [_currencyUnit] } });
 };
 
 const openModalForFixCurrencyMode = () => {
   isOpenCurrencyModal.value = true;
-  fixPrice.value = realPrice.value;
+  fixPrice.value = Math.round(realPrice.value);
 };
 
 const revertRealTimeCurrencyMode = () => {
@@ -139,7 +138,7 @@ watch(
 
 const title = computed(() => (code === "ALL" ? "" : currencyName.value) + ` 여행용`);
 const title2 = "환율계산기";
-const desc = "광고없음! 사칙연산과 동시에 환전이 됩니다.";
+const desc = "광고없음! 사칙연산과 동시에 환율이 계산 됩니다.";
 
 useSeoMeta({
   title: `${title.value} ${title2}`,

@@ -17,7 +17,7 @@ const clickUser = (id: number) => {
         <UIcon name="i-ph-arrow-left-light" size="1rem" />
         <div class="text-xs">다른 지식공유자 보기</div>
       </UButton>
-      <UButton @click="clickUser(id)" variant="outline" class="flex-1">
+      <UButton @click="clickUser(id)" variant="outline" class="flex-1 floating">
         <div class="flex justify-end items-center w-full gap-1">
           <div class="text-xs">인프런 페이지 이동</div>
           <UIcon name="i-ph-leaf-duotone" size="1rem" />

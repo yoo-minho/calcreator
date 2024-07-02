@@ -1,13 +1,4 @@
 <script setup lang="ts">
-definePageMeta({
-  middleware: "clear-page-cookie",
-});
-
-const page = useCookie("calcreator-page");
-if (page.value) {
-  navigateTo(page.value, { replace: true });
-}
-
 useColorMode().preference = "white";
 useAppConfig().ui.primary = "black";
 
@@ -20,16 +11,16 @@ const arr = [
 
 const moveCalculator = async (v: { to: string; color: string }) => {
   useAppConfig().ui.primary = v.color;
-  page.value = v.to;
   await navigateTo(v.to);
 };
 
-const title = "calcreator.cc";
+const title = "칼크리에이터";
+const title2 = "calcreator.cc";
 const desc = "계산기로 널리 이롭게";
 
 useSeoMeta({
-  title: title,
-  ogTitle: title,
+  title: `${title} ${title2}`,
+  ogTitle: `${title} ${title2}`,
   description: desc,
   ogDescription: desc,
   twitterCard: "summary_large_image",
@@ -39,12 +30,8 @@ defineOgImageComponent("LandingHero", { chip: "🔢🌍👍" });
 </script>
 <template>
   <div>
-    <LandingHero :title="title" :desc="`&quot;${desc}&quot;`" color-code="primary" />
-    <div class="flex gap-2 mt-[-8px] mb-3 justify-center">
-      <UButton color="white" to="https://naver.me/Gpfd5bxD" target="form"> 제안하기 </UButton>
-      <UButton color="black" to="https://uminoh.tistory.com/" target="blog"> 크리에이터 소개 </UButton>
-    </div>
-    <UDivider class="mb-3" />
+    <LandingHero :title="title" :title2="title2" :desc="`&quot;${desc}&quot;`" color-code="primary" />
+    <UDivider />
     <template v-for="v in arr">
       <UButton
         class="w-full"
@@ -65,6 +52,11 @@ defineOgImageComponent("LandingHero", { chip: "🔢🌍👍" });
         </div>
       </UButton>
     </template>
+    <UDivider />
+    <div class="flex gap-2 m-3 justify-center">
+      <UButton color="white" to="https://naver.me/Gpfd5bxD" target="form"> 제안하기 </UButton>
+      <UButton color="black" to="https://uminoh.tistory.com/" target="blog"> 만든이 : 유철택 </UButton>
+    </div>
   </div>
 </template>
 

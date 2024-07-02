@@ -41,23 +41,25 @@ defineOgImageComponent("LandingHero", {
 
 <template>
   <BasicFullSpinner v-model="isLoading" />
-  <div class="flex flex-col gap-3 m-3">
+  <div class="flex flex-col gap-3">
     <LandingHero :title="title" :title2="title2" color-code="primary" :desc="desc" />
 
-    <div class="flex gap-2 justify-center mt-[-28px]">
+    <div class="flex gap-2 justify-center mt-[-28px] floating">
       <UButton to="https://www.inflearn.com/open-knowledge" target="inf">지식 공유 도전 👊👊👊</UButton>
     </div>
 
-    <SearchInput v-model="searchWord" />
+    <div class="mx-3">
+      <SearchInput v-model="searchWord" />
 
-    <div class="flex flex-wrap gap-1 mt-3">
-      <template v-for="tg in targetArr">
-        <UButton color="white" variant="solid" @click="routerPush(`inf/${tg.id}`)">
-          {{ tg.name }}
-        </UButton>
-      </template>
+      <div class="flex flex-wrap gap-1 mt-3">
+        <template v-for="tg in targetArr">
+          <UButton color="white" variant="solid" @click="routerPush(`inf/${tg.id}`)">
+            {{ tg.name }}
+          </UButton>
+        </template>
+      </div>
+      <HitBanner domain="customcal.vercel.app/inf" color="22C55E" />
     </div>
-    <HitBanner domain="customcal.vercel.app/inf" color="22C55E" />
   </div>
 </template>
 
