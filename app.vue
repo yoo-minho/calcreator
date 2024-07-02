@@ -10,9 +10,13 @@ if (route.path === "/" && page.value && page.value !== "/") {
 }
 
 onMounted(() => {
-  window.addEventListener("beforeunload", () => {
+  const memoryLastPage = () => {
     page.value = route.path;
-  });
+  };
+
+  window.addEventListener("beforeunload", memoryLastPage);
+  window.addEventListener("visibilitychange", memoryLastPage);
+  if (document.visibilityState === "hidden") memoryLastPage();
 });
 </script>
 <template>
