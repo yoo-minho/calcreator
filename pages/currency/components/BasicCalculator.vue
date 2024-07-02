@@ -154,6 +154,9 @@ const performCalculation = (): number => {
 }
 
 .btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   color: #fff;
   font-size: 28px;
   cursor: pointer;

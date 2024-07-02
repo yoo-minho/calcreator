@@ -131,6 +131,7 @@ const clickEasy = () => {
     title: "10,000원이 얼마인지 기억해두시고 즐거운 여행되세요!",
     icon: "i-fluent-emoji-flat-grinning-face",
   });
+  bombPetal();
 };
 
 watch(
@@ -161,6 +162,50 @@ defineOgImageComponent("LandingHero", {
   desc: desc,
   chip: "🗽🕌🎡",
 });
+
+const bombPetal = () => {
+  const petalsContainer = document.querySelector("body");
+  const numberOfPetals = 200;
+
+  for (let i = 0; i < numberOfPetals; i++) {
+    const petal = document.createElement("div");
+    petal.classList.add("petal");
+    petalsContainer?.prepend(petal);
+
+    // Set random position for each petal
+    const randomX = Math.random() * window.innerWidth;
+    const randomY = Math.random() * window.innerHeight;
+    const randomDelay = Math.random() * 3;
+    const duration = Math.random() * 3 + 2;
+    const size = Math.random() * 12 + 8;
+    const color = getRandomColor();
+
+    petal.style.left = `${randomX}px`;
+    petal.style.top = `${randomY}px`;
+    petal.style.animation = `fall ${duration}s ease-out ${randomDelay}s infinite`;
+    petal.style.width = `${size}px`;
+    petal.style.height = `${size}px`;
+    petal.style.backgroundColor = color;
+  }
+
+  setTimeout(() => {
+    document.querySelectorAll(".petal").forEach((el) => el.remove());
+  }, 5000);
+
+  function getRandomColor() {
+    const rainbowColors = [
+      "ff0000", // Red
+      "ff7f00", // Orange
+      "ffff00", // Yellow
+      "00ff00", // Green
+      "00ffff", // Cyan
+      "0000ff", // Blue
+      "8a2be2", // BlueViolet
+      "ff00ff", // Magenta
+    ];
+    return "#" + rainbowColors[Math.floor(Math.random() * rainbowColors.length)];
+  }
+};
 </script>
 <template>
   <div class="flex flex-col" style="height: calc(100vh - 72px)">
@@ -262,7 +307,30 @@ defineOgImageComponent("LandingHero", {
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
 * {
+}
+
+.petal {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  transform-style: preserve-3d; /* 3D 회전을 유지하도록 설정 */
+  opacity: 0;
+  animation: fall 10s linear infinite;
+}
+
+@keyframes fall {
+  0% {
+    opacity: 0;
+    transform: translateY(-100vh) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(100vh) rotate(720deg);
+  }
 }
 </style>
