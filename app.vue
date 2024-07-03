@@ -66,6 +66,10 @@ onMounted(() => {
   font-display: swap;
 }
 
+html {
+  touch-action: manipulation;
+}
+
 body {
   font-family: "Noto Sans KR", sans-serif;
 }

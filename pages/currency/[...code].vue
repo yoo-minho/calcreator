@@ -308,9 +308,6 @@ const bombPetal = () => {
 </template>
 
 <style lang="scss">
-* {
-}
-
 .petal {
   position: absolute;
   width: 10px;

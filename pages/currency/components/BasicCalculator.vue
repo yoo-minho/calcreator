@@ -30,6 +30,8 @@ const handleEqual = () => {
 };
 
 const appendNumber = (number: string) => {
+  if (현재값.value.length > 10) return;
+
   // 소수점 중복 입력 방지
   if (number === "." && 현재값.value.includes(".")) return;
 
@@ -160,5 +162,10 @@ const performCalculation = (): number => {
   color: #fff;
   font-size: 28px;
   cursor: pointer;
+}
+
+.btn:active {
+  box-shadow: 0 0 0 5px rgb(var(--color-primary-700));
+  transform: scale(0.9);
 }
 </style>
