@@ -4,7 +4,9 @@ useHead({
 });
 
 const route = useRoute();
-const page = useCookie("calcreator-page");
+const page = useCookie("calcreator-page", {
+  maxAge: 60 * 60 * 24 * 7 * 4, // 4주 유효 기간
+});
 if (route.path === "/" && page.value && page.value !== "/") {
   navigateTo(page.value, { replace: true });
 }
@@ -75,14 +77,17 @@ body {
 }
 
 .floating {
-  animation: float 1.5s infinite ease-in-out; /* float 애니메이션 적용 */
+  animation: float 1.5s infinite ease-in-out;
+  /* float 애니메이션 적용 */
 }
 
 @keyframes float {
+
   0%,
   100% {
     transform: translateY(-0.1em);
   }
+
   50% {
     transform: translateY(0.1em);
   }

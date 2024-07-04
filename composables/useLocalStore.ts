@@ -1,4 +1,8 @@
 export const useLocalStore = async (key: string, callback: () => any) => {
+  console.log({key});
+  return await callback();
+
+  /*
   if (!window?.localStorage) {
     return await callback();
   }
@@ -19,6 +23,7 @@ export const useLocalStore = async (key: string, callback: () => any) => {
     { immediate: true }
   );
   return { data, pending };
+  */
 };
 
 function isSameDate(date1: Date, date2: Date) {
