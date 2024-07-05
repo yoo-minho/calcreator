@@ -8,11 +8,15 @@ const page = useCookie("calcreator-page", {
   maxAge: 60 * 60 * 24 * 7 * 4, // 4주 유효 기간
 });
 
-onServerPrefetch(() => {
-  if (route.path === "/" && page.value && page.value !== "/") {
-    navigateTo(page.value, { replace: true });
-  }
-});
+if (route.path === "/" && page.value && page.value !== "/") {
+  const toast = useToast();
+  toast.add({
+    id: "move",
+    title: "종료 전 마지막 페이지로 이동합니다!",
+    icon: "i-heroicons-check-circle",
+  });
+  navigateTo(page.value, { replace: true });
+}
 
 onMounted(() => {
   const memoryLastPage = () => {
