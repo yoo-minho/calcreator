@@ -85,7 +85,9 @@ const isOpenCurrencyModal = ref(false);
 const fixPrice = ref(0);
 const isFixMode = ref(false);
 
-const fixPriceCookieRef = useCookie<number>(`fix-price-${currencyCode.value}`);
+const fixPriceCookieRef = useCookie<number>(`fix-price-${currencyCode.value}`, {
+  maxAge: 60 * 60 * 24 * 7 * 4, // 4주 유효 기간
+});
 const fixPriceCookie = fixPriceCookieRef.value || 0;
 if (fixPriceCookie > 0) {
   fixPrice.value = fixPriceCookie;
@@ -211,6 +213,7 @@ const bombPetal = () => {
 };
 </script>
 <template>
+<<<<<<< HEAD
   <div class="flex flex-col" style="height: calc(100vh - 72px); overflow: hidden">
     <ModalCurrencySelectModal
       v-model="isOpenCurrencySelectModal"
@@ -218,6 +221,11 @@ const bombPetal = () => {
       :current-currency-unit="currencyCode"
       @submit="changeCurrency"
     />
+=======
+  <div class="flex flex-col" style="height: calc(100vh - 72px)">
+    <ModalCurrencySelectModal v-model="isOpenCurrencySelectModal" :currency-arr="CURRENCY_ARR"
+      :current-currency-unit="currencyCode" @submit="changeCurrency" />
+>>>>>>> b542bad9f28d41221c2b9c565d9dcee5e3d499c1
     <ModalCurrencyModal v-model="isOpenCurrencyModal" v-model:fix="fixPrice" @submit="submitModal" />
 
     <LandingHero :title="title" :title2="title2" color-code="primary" :desc="desc" />
@@ -226,13 +234,8 @@ const bombPetal = () => {
       <UDivider>
         <div class="flex flex-col items-center">
           <div class="flex items-center gap-2 text-sm">
-            <UButton
-              size="xs"
-              class="font-light"
-              color="primary"
-              variant="outline"
-              @click="isOpenCurrencySelectModal = true"
-            >
+            <UButton size="xs" class="font-light" color="primary" variant="outline"
+              @click="isOpenCurrencySelectModal = true">
               화폐변경
             </UButton>
             <div>|</div>
@@ -277,30 +280,20 @@ const bombPetal = () => {
             <div>{{ currencyCode }}</div>
           </span>
         </div>
-        <UInput
-          v-model="displayPrice"
-          disabled
-          input-class="text-right text-4xl font-bold shadow-none ring-0"
-          class="flex-1"
-        />
+        <UInput v-model="displayPrice" disabled input-class="text-right text-4xl font-bold shadow-none ring-0"
+          class="flex-1" />
       </div>
 
       <UDivider />
 
       <div class="flex items-center p-3 jusify-between">
         <div class="flex flex-col items-center">
-          <UIcon
-            name="i-emojione-flag-for-south-korea"
-            class="w-[2em] h-[2em] border-solid border-gray-300 border rounded-full shadow"
-          />
+          <UIcon name="i-emojione-flag-for-south-korea"
+            class="w-[2em] h-[2em] border-solid border-gray-300 border rounded-full shadow" />
           <span class="mt-[1px]">KRW</span>
         </div>
-        <UInput
-          v-model="_한국원화"
-          disabled
-          input-class="text-right text-4xl font-bold shadow-none ring-0 text-gray-500"
-          class="flex-1"
-        />
+        <UInput v-model="_한국원화" disabled input-class="text-right text-4xl font-bold shadow-none ring-0 text-gray-500"
+          class="flex-1" />
       </div>
 
       <UDivider />
@@ -315,7 +308,8 @@ const bombPetal = () => {
   position: absolute;
   width: 10px;
   height: 10px;
-  transform-style: preserve-3d; /* 3D 회전을 유지하도록 설정 */
+  transform-style: preserve-3d;
+  /* 3D 회전을 유지하도록 설정 */
   opacity: 0;
   animation: fall 10s linear infinite;
 }
@@ -325,9 +319,11 @@ const bombPetal = () => {
     opacity: 0;
     transform: translateY(-100vh) rotate(0deg);
   }
+
   50% {
     opacity: 1;
   }
+
   100% {
     opacity: 0;
     transform: translateY(100vh) rotate(720deg);
