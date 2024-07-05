@@ -5,9 +5,12 @@ useHead({
 
 const route = useRoute();
 const page = useCookie("calcreator-page");
-if (route.path === "/" && page.value && page.value !== "/") {
-  navigateTo(page.value, { replace: true });
-}
+
+onServerPrefetch(() => {
+  if (route.path === "/" && page.value && page.value !== "/") {
+    navigateTo(page.value, { replace: true });
+  }
+});
 
 onMounted(() => {
   const memoryLastPage = () => {

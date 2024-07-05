@@ -128,7 +128,7 @@ const clickEasy = () => {
   const toast = useToast();
   toast.add({
     id: "info",
-    title: "10,000원이 얼마인지 기억해두시고 즐거운 여행되세요!",
+    title: "10,000원이 대략 얼마인지 기억해두시고 즐거운 여행되세요!",
     icon: "i-fluent-emoji-flat-grinning-face",
   });
   bombPetal();
@@ -165,14 +165,16 @@ defineOgImageComponent("LandingHero", {
 
 const bombPetal = () => {
   const petalsContainer = document.querySelector("body");
+  if (!petalsContainer) return;
+
+  petalsContainer.style.overflow = "hidden";
   const numberOfPetals = 200;
 
   for (let i = 0; i < numberOfPetals; i++) {
     const petal = document.createElement("div");
     petal.classList.add("petal");
-    petalsContainer?.prepend(petal);
+    petalsContainer.prepend(petal);
 
-    // Set random position for each petal
     const randomX = Math.random() * window.innerWidth;
     const randomY = Math.random() * window.innerHeight;
     const randomDelay = Math.random() * 3;
@@ -190,6 +192,7 @@ const bombPetal = () => {
 
   setTimeout(() => {
     document.querySelectorAll(".petal").forEach((el) => el.remove());
+    petalsContainer.style.overflow = "";
   }, 5000);
 
   function getRandomColor() {
@@ -208,7 +211,7 @@ const bombPetal = () => {
 };
 </script>
 <template>
-  <div class="flex flex-col" style="height: calc(100vh - 72px)">
+  <div class="flex flex-col" style="height: calc(100vh - 72px); overflow: hidden">
     <ModalCurrencySelectModal
       v-model="isOpenCurrencySelectModal"
       :currency-arr="CURRENCY_ARR"

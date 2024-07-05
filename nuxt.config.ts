@@ -9,19 +9,7 @@ export default defineNuxtConfig({
     },
   },
   css: ["@/assets/main.css"],
-  modules: [
-    "@nuxt/ui",
-    "nuxt-gtag",
-    "@vite-pwa/nuxt",
-    "@nuxtjs/seo",
-    "@nuxtjs/tailwindcss",
-    "@nuxt/content",
-    "shadcn-nuxt",
-  ],
-  shadcn: {
-    prefix: "",
-    componentDir: "./components/ui",
-  },
+  modules: ["@nuxt/ui", "nuxt-gtag", "@vite-pwa/nuxt", "@nuxtjs/seo", "@nuxtjs/tailwindcss", "@nuxt/content"],
   colorMode: {
     preference: "light",
     fallback: "light",

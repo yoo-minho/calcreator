@@ -1,8 +1,19 @@
 <template>
-  <main>
-    <h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
-      Taxing Laughter: The Joke Tax Chronicles
-    </h1>
+  <div class="prose m-6">
     <ContentDoc path="/update-note/currency" />
-  </main>
+  </div>
 </template>
+<style>
+.prose * {
+  letter-spacing: -0.05em;
+}
+
+.prose h2 {
+  margin: 0;
+}
+
+.prose li {
+  margin: 0;
+  font-size: 14px;
+}
+</style>
