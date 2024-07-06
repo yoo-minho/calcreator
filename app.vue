@@ -1,28 +1,18 @@
-<script lang="ts">
-export default {
-  beforeCreate() {
-    const page = useCookie("calcreator-page");
-    const route = useRoute();
-    if (route.path === "/" && page.value && page.value !== "/") {
-      navigateTo(page.value, { replace: true });
-    }
-  },
-};
-</script>
 <script setup lang="ts">
-useHead({
-  titleTemplate: "%s",
+const route = useRoute();
+const page = useCookie("calcreator-page", {
+  maxAge: 60 * 60 * 24 * 7 * 4, // 4주 유효 기간
 });
 
-onMounted(() => {
-  const route = useRoute();
-  const page = useCookie("calcreator-page", {
-    maxAge: 60 * 60 * 24 * 7 * 4, // 4주 유효 기간
-  });
-  const memoryLastPage = () => {
-    page.value = route.path;
-  };
+const { data } = await useAsyncData<string>("page", () => Promise.resolve(page.value || ""));
+if (route.path === "/" && page.value && page.value !== "/") {
+  navigateTo(data.value, { replace: true, redirectCode: 301 });
+}
 
+useHead({ titleTemplate: "%s" });
+
+onMounted(() => {
+  const memoryLastPage = () => (page.value = route.path);
   window.addEventListener("beforeunload", memoryLastPage);
   window.addEventListener("visibilitychange", memoryLastPage);
   if (document.visibilityState === "hidden") memoryLastPage();
