@@ -9,7 +9,15 @@ export default defineNuxtConfig({
     },
   },
   css: ["@/assets/main.css"],
-  modules: ["@nuxt/ui", "nuxt-gtag", "@vite-pwa/nuxt", "@nuxtjs/seo", "@nuxtjs/tailwindcss", "@nuxt/content"],
+  modules: [
+    "@nuxt/ui",
+    "nuxt-gtag",
+    "@vite-pwa/nuxt",
+    "@nuxtjs/seo",
+    "@nuxtjs/tailwindcss",
+    "@nuxt/content",
+    "@nuxt/image"
+  ],
   colorMode: {
     preference: "light",
     fallback: "light",

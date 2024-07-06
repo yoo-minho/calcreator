@@ -1,24 +1,24 @@
+<script lang="ts">
+export default {
+  beforeCreate() {
+    const page = useCookie("calcreator-page");
+    const route = useRoute();
+    if (route.path === "/" && page.value && page.value !== "/") {
+      navigateTo(page.value, { replace: true });
+    }
+  },
+};
+</script>
 <script setup lang="ts">
 useHead({
   titleTemplate: "%s",
 });
 
-const route = useRoute();
-const page = useCookie("calcreator-page", {
-  maxAge: 60 * 60 * 24 * 7 * 4, // 4주 유효 기간
-});
-
-if (route.path === "/" && page.value && page.value !== "/") {
-  const toast = useToast();
-  toast.add({
-    id: "move",
-    title: "종료 전 마지막 페이지로 이동합니다!",
-    icon: "i-heroicons-check-circle",
-  });
-  navigateTo(page.value, { replace: true });
-}
-
 onMounted(() => {
+  const route = useRoute();
+  const page = useCookie("calcreator-page", {
+    maxAge: 60 * 60 * 24 * 7 * 4, // 4주 유효 기간
+  });
   const memoryLastPage = () => {
     page.value = route.path;
   };
