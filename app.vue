@@ -4,10 +4,12 @@ const page = useCookie("calcreator-page", {
   maxAge: 60 * 60 * 24 * 7 * 4, // 4주 유효 기간
 });
 
-const { data } = await useAsyncData<string>("page", () => Promise.resolve(page.value || ""));
-if (route.path === "/" && page.value && page.value !== "/") {
-  navigateTo(data.value, { replace: true, redirectCode: 301 });
-}
+useAsyncData<void>("page", () => {
+  if (route.path === "/" && page.value && page.value !== "/") {
+    navigateTo(page.value, { replace: true, redirectCode: 301 });
+  }
+  return Promise.resolve();
+});
 
 useHead({ titleTemplate: "%s" });
 
