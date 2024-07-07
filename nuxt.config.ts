@@ -4,6 +4,12 @@ import { _padding } from "#tailwind-config/theme";
 export default defineNuxtConfig({
   devtools: { enabled: true },
   ssr: true,
+  nitro: {
+    preset: "vercel",
+  },
+  routeRules: {
+    "/api/**": { cors: true },
+  },
   app: {
     head: {
       viewport: "width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0",
