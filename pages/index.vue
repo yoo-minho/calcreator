@@ -1,4 +1,9 @@
 <script setup lang="ts">
+const { data } = await useFetch<{ redirect: string }>("/api/redirect");
+if (data.value?.redirect) {
+  navigateTo(data.value.redirect, { replace: true, redirectCode: 301 });
+}
+
 useColorMode().preference = "white";
 useAppConfig().ui.primary = "black";
 

@@ -1,5 +1,4 @@
 export const useLocalStore = async (key: string, callback: () => any) => {
-  console.log({key});
   return await callback();
 
   /*

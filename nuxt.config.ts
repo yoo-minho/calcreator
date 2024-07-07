@@ -3,6 +3,7 @@ import { _padding } from "#tailwind-config/theme";
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
+  ssr: true,
   app: {
     head: {
       viewport: "width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0",
