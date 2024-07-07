@@ -1,5 +1,7 @@
 <script setup lang="ts">
-const { data } = await useFetch<{ redirect: string }>("/api/redirect");
+const { data } = await useFetch<{ redirect: string }>("/api/redirect", {
+  server: true,
+});
 if (data.value?.redirect) {
   navigateTo(data.value.redirect, { replace: true, redirectCode: 301 });
 }
