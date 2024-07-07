@@ -16,7 +16,7 @@ export default defineNuxtConfig({
     "@nuxtjs/seo",
     "@nuxtjs/tailwindcss",
     "@nuxt/content",
-    "@nuxt/image"
+    "@nuxt/image",
   ],
   colorMode: {
     preference: "light",
@@ -31,9 +31,10 @@ export default defineNuxtConfig({
   },
   pwa: {
     workbox: {
+      navigateFallback: "/",
+      globPatterns: ["**/*.{js,css,html,png,svg,ico}"],
       runtimeCaching: [
         {
-          // 이미지 파일에 대한 CacheFirst 전략
           urlPattern: /\.(?:png|jpg|jpeg|svg|gif|woff|ico)$/,
           handler: "CacheFirst",
           options: {
@@ -45,15 +46,15 @@ export default defineNuxtConfig({
           },
         },
         {
-          // 도메인 하위 전체에 대해 NetworkFirst 전략
           urlPattern: "https://calcreator.cc/.*",
-          handler: "CacheFirst",
+          handler: "NetworkFirst",
           options: {
             cacheName: "domain-cache",
             expiration: {
               maxEntries: 100,
               maxAgeSeconds: 60 * 60 * 24 * 7, // 7일
             },
+            networkTimeoutSeconds: 10,
           },
         },
       ],
