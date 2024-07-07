@@ -2,20 +2,25 @@ import { _padding } from "#tailwind-config/theme";
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  devtools: { enabled: true },
+  devtools: { enabled: false },
   ssr: true,
+
   nitro: {
     preset: "vercel",
   },
+
   routeRules: {
     "/api/**": { cors: true },
   },
+
   app: {
     head: {
       viewport: "width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0",
     },
   },
+
   css: ["@/assets/main.css"],
+
   modules: [
     "@nuxt/ui",
     "nuxt-gtag",
@@ -25,17 +30,21 @@ export default defineNuxtConfig({
     "@nuxt/content",
     "@nuxt/image",
   ],
+
   colorMode: {
     preference: "light",
     fallback: "light",
     classSuffix: "-mode",
   },
+
   ui: {
     icons: ["ph", "solar", "emojione", "mingcute", "fluent-emoji-flat"],
   },
+
   gtag: {
     id: "G-J865KNTNQZ",
   },
+
   pwa: {
     workbox: {
       navigateFallback: "/",
@@ -103,17 +112,23 @@ export default defineNuxtConfig({
       ],
     },
   },
+
   site: {
     url: "https://calcreator.cc",
     defaultLocale: "ko",
   },
+
   ignore: ["pages/**/components/**/*", "pages/**/data/**/*"],
+
   sitemap: {
     xsl: false,
     exclude: ["/*/components/**", "/*/data/**"],
   },
+
   ogImage: {
     defaults: { component: "OgImage" },
     fonts: ["Noto+Sans+KR:400", "Noto+Sans+KR:500", "Noto+Sans+KR:700", "Noto+Sans+KR:900"],
   },
+
+  compatibilityDate: "2024-07-07",
 });
