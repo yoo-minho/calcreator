@@ -39,7 +39,7 @@ onMounted(() => {
   <div class="bg-background/75 backdrop-blur border-b -mb-px sticky top-0 z-50">
     <div class="mx-auto px-4 max-w-7xl flex items-center justify-between gap-3 h-[4rem]">
       <div class="flex items-center font-bold w-full">
-        <template v-if="$route.path === '/'"> </template>
+        <template v-if="$route.path === '/main'"> </template>
         <template v-else>
           <UButton color="gray" size="sm" @click="goHome" variant="ghost" class="flex-col p-0">
             <UIcon name="i-ph-calculator" class="text-xl" />

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const page = useCookie("calcreator-page");
 const nonReactivePage = [...(page.value || "")].join(""); //useCookie 반응성 이슈
+
 if (nonReactivePage) {
   if (nonReactivePage === "/") {
     await navigateTo("/main", { replace: true });
@@ -8,7 +9,7 @@ if (nonReactivePage) {
     await navigateTo(nonReactivePage, { replace: true });
   }
 } else {
-  await navigateTo("/main", { replace: true });
+  // await navigateTo("/main", { replace: true });
 }
 
 const title = "칼크리에이터";
