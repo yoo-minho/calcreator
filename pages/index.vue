@@ -1,14 +1,25 @@
 <script setup lang="ts">
-import { delay } from "~/util/CommUtil";
-
 const page = useCookie("calcreator-page");
-await delay(5000);
-if (page.value && page.value !== "/" && page.value !== "/main") {
-  await navigateTo(page.value, { replace: true, redirectCode: 301 });
+if (page.value && page.value === "/") {
+  await navigateTo("/main", { replace: true });
 } else {
-  // await navigateTo("/main", { replace: true, redirectCode: 302 });
+  await navigateTo(page.value, { replace: true, redirectCode: 301 });
 }
+
+const title = "칼크리에이터";
+const title2 = "calcreator.cc";
+const desc = "계산기로 널리 이롭게";
+
+useSeoMeta({
+  title: `${title} ${title2}`,
+  ogTitle: `${title} ${title2}`,
+  description: desc,
+  ogDescription: desc,
+  twitterCard: "summary_large_image",
+});
+
+defineOgImageComponent("LandingHero", { chip: "🔢🌍👍" });
 </script>
 <template>
-  <div>page:{{ page }}</div>
+  <div></div>
 </template>
