@@ -70,7 +70,6 @@ export default defineNuxtConfig({
               maxEntries: 100,
               maxAgeSeconds: 60 * 60 * 24, // 1일
             },
-            networkTimeoutSeconds: 1,
           },
         },
         {
