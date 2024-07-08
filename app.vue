@@ -1,9 +1,4 @@
 <script setup lang="ts">
-const route = useRoute();
-const page = useCookie("calcreator-page", {
-  maxAge: 60 * 60 * 24 * 7 * 4, // 4주 유효 기간
-});
-
 useHead({
   titleTemplate: "%s",
   meta: [
@@ -62,6 +57,11 @@ useHead({
       media: "(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)",
     },
   ],
+});
+
+const route = useRoute();
+const page = useCookie("calcreator-page", {
+  maxAge: 60 * 60 * 24 * 7 * 4, // 4주 유효 기간
 });
 
 onMounted(() => {
