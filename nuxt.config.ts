@@ -6,14 +6,6 @@ export default defineNuxtConfig({
   devtools: { enabled: false },
   ssr: true,
 
-  nitro: {
-    preset: "vercel",
-  },
-
-  routeRules: {
-    "/api/**": { cors: true },
-  },
-
   app: {
     head: {
       viewport: "width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0",
@@ -50,6 +42,7 @@ export default defineNuxtConfig({
     workbox: {
       navigateFallback: "/",
       globPatterns: ["**/*.{mjs,js,css,html,png,svg,ico,json}"],
+      globIgnores: ["**/node_modules/**/*", "sw.js", "workbox-*.js"],
       cacheId: `my-app-${version}`, // 버전을 캐시 ID에 포함
       cleanupOutdatedCaches: true,
       skipWaiting: true,

@@ -1,10 +1,26 @@
 <script setup lang="ts">
-const page = useCookie("calcreator-page");
-if (page.value && page.value === "/") {
-  await navigateTo("/main", { replace: true });
-} else {
-  await navigateTo(page.value, { replace: true, redirectCode: 301 });
-}
+import { delay } from "~/util/CommUtil";
+
+const counter = ref(3);
+
+onMounted(async () => {
+  counter.value--;
+  await delay(1000);
+  counter.value--;
+  await delay(1000);
+  counter.value--;
+
+  const page = useCookie("calcreator-page");
+  if (page.value) {
+    if (page.value === "/") {
+      await navigateTo("/main", { replace: true });
+    } else {
+      await navigateTo(page.value, { replace: true });
+    }
+  } else {
+    await navigateTo("/main", { replace: true });
+  }
+});
 
 const title = "칼크리에이터";
 const title2 = "calcreator.cc";
@@ -21,5 +37,5 @@ useSeoMeta({
 // defineOgImageComponent("LandingHero", { chip: "🔢🌍👍" });
 </script>
 <template>
-  <div></div>
+  <div class="absolute w-full h-full flex items-center justify-center">{{ counter }}</div>
 </template>
