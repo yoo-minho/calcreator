@@ -18,7 +18,7 @@ useSeoMeta({
   twitterCard: "summary_large_image",
 });
 
-defineOgImageComponent("LandingHero", { chip: "🔢🌍👍" });
+// defineOgImageComponent("LandingHero", { chip: "🔢🌍👍" });
 </script>
 <template>
   <div></div>
