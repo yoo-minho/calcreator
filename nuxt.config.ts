@@ -48,7 +48,7 @@ export default defineNuxtConfig({
   pwa: {
     workbox: {
       navigateFallback: "/",
-      globPatterns: ["**/*.{js,css,html,png,svg,ico}"],
+      globPatterns: ["**/*.{mjs,js,css,html,png,svg,ico,json}"],
       runtimeCaching: [
         {
           urlPattern: /\.(?:png|jpg|jpeg|svg|gif|woff|ico)$/,
@@ -62,6 +62,18 @@ export default defineNuxtConfig({
           },
         },
         {
+          urlPattern: "https://calcreator.cc/api/currency/.*",
+          handler: "CacheFirst",
+          options: {
+            cacheName: "api-cache",
+            expiration: {
+              maxEntries: 100,
+              maxAgeSeconds: 60 * 60 * 24, // 1일
+            },
+            networkTimeoutSeconds: 1,
+          },
+        },
+        {
           urlPattern: "https://calcreator.cc/.*",
           handler: "NetworkFirst",
           options: {
@@ -70,7 +82,7 @@ export default defineNuxtConfig({
               maxEntries: 100,
               maxAgeSeconds: 60 * 60 * 24 * 7, // 7일
             },
-            networkTimeoutSeconds: 10,
+            networkTimeoutSeconds: 3,
           },
         },
       ],

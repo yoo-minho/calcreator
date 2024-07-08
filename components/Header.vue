@@ -23,7 +23,7 @@ const install = async () => {
 };
 
 const goHome = async () => {
-  await navigateTo("/");
+  await navigateTo("/main");
 };
 
 const isPWAUnInstalled = ref(false);

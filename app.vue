@@ -4,12 +4,6 @@ const page = useCookie("calcreator-page", {
   maxAge: 60 * 60 * 24 * 7 * 4, // 4주 유효 기간
 });
 
-if (route.path === "/" || route.path === "") {
-  if (page.value && page.value !== "/") {
-    navigateTo(page.value, { replace: true, redirectCode: 301 });
-  }
-}
-
 useHead({
   titleTemplate: "%s",
   meta: [

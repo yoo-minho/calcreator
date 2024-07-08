@@ -40,40 +40,8 @@ const currencyFlag = computed(() => CURRENCY_ARR.find((c) => c.unit === currency
 const currencyName = computed(() => CURRENCY_ARR.find((c) => c.unit === currencyCode.value)?.name || "");
 
 const exchangeData = ref();
-
-const { data, pending } = await useLocalStore(`currency-${currencyCode.value}`, () =>
-  useFetch<{ country: ExchangeType[] }>(
-    () =>
-      `https://m.search.naver.com/p/csearch/content/qapirender.nhn?` +
-      [
-        "key=calculator",
-        "pkid=141",
-        "q=%ED%99%98%EC%9C%A8",
-        "where=m",
-        "u1=keb",
-        "u6=standardUnit",
-        `u3=${currencyCode.value}`,
-        `u4=KRW`,
-        `u8=down`,
-        `u2=${["VND", "JPY", "IDR"].includes(currencyCode.value) ? 100 : 1}`,
-      ].join("&"),
-    { lazy: true }
-  )
-);
-
-watch(
-  data,
-  () => {
-    if (data.value) {
-      exchangeData.value = {
-        currencyUnit: +data.value?.country[0].value,
-        basePrice: +data.value?.country[1].value.replace(/\,/g, ""),
-        modifiedAt: new Date(),
-      };
-    }
-  },
-  { immediate: true }
-);
+const { data } = await useFetch<{ country: ExchangeType[] }>(`/api/currency/${currencyCode.value}`);
+watch(data, () => (exchangeData.value = data.value), { immediate: true });
 
 const modifiedAt = computed(() => new Date(exchangeData.value?.modifiedAt || "").toLocaleDateString());
 const realPrice = computed(() => Math.round((exchangeData.value?.basePrice || 0) * 100) / 100);
@@ -241,10 +209,7 @@ const bombPetal = () => {
             <div class="flex flex-col items-center">
               <div>{{ currencyUnit }} {{ currencyCode }} = {{ currentPrice.toLocaleString() }} 원</div>
               <div class="text-gray-500 text-xs mt-[-2px]">
-                <template v-if="pending">
-                  <div>wait...</div>
-                </template>
-                <template v-else-if="isFixMode">
+                <template v-if="isFixMode">
                   <div>직접 입력한 환율</div>
                 </template>
                 <template v-else>
