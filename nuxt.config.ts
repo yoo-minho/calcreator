@@ -1,4 +1,5 @@
 import { _padding } from "#tailwind-config/theme";
+import { version } from "./package.json";
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -49,6 +50,10 @@ export default defineNuxtConfig({
     workbox: {
       navigateFallback: "/",
       globPatterns: ["**/*.{mjs,js,css,html,png,svg,ico,json}"],
+      cacheId: `my-app-${version}`, // 버전을 캐시 ID에 포함
+      cleanupOutdatedCaches: true,
+      skipWaiting: true,
+      clientsClaim: true,
       runtimeCaching: [
         {
           urlPattern: /\.(?:png|jpg|jpeg|svg|gif|woff|ico)$/,
