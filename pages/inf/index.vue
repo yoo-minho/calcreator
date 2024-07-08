@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import BasicFullSpinner from "~/components/BasicFullSpinner.vue";
 import { 지식공유자들 } from "./data/지식공유자";
-import HitBanner from "~/components/HitBanner.vue";
 
 useAppConfig().ui.primary = "green";
 

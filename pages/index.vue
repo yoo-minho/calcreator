@@ -1,26 +1,15 @@
 <script setup lang="ts">
-import { delay } from "~/util/CommUtil";
-
-const counter = ref(3);
-
-onMounted(async () => {
-  // counter.value--;
-  // await delay(1000);
-  // counter.value--;
-  // await delay(1000);
-  // counter.value--;
-
-  const page = useCookie("calcreator-page");
-  if (page.value) {
-    if (page.value === "/") {
-      await navigateTo("/main", { replace: true });
-    } else {
-      await navigateTo(page.value, { replace: true });
-    }
-  } else {
+const page = useCookie("calcreator-page");
+const nonReactivePage = [...(page.value || "")].join(""); //useCookie 반응성 이슈
+if (nonReactivePage) {
+  if (nonReactivePage === "/") {
     await navigateTo("/main", { replace: true });
+  } else {
+    await navigateTo(nonReactivePage, { replace: true });
   }
-});
+} else {
+  await navigateTo("/main", { replace: true });
+}
 
 const title = "칼크리에이터";
 const title2 = "calcreator.cc";
