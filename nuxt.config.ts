@@ -40,7 +40,7 @@ export default defineNuxtConfig({
 
   pwa: {
     workbox: {
-      navigateFallback: "/",
+      navigateFallback: "/main",
       globPatterns: ["**/*.{js,css,html,png,svg,ico,json}"],
       cacheId: `calcreator-${version}`,
       cleanupOutdatedCaches: true,
