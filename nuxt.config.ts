@@ -38,25 +38,10 @@ export default defineNuxtConfig({
     id: "G-J865KNTNQZ",
   },
 
-  nitro: {
-    routeRules: {
-      "/api/**": {
-        cors: true,
-        headers: {
-          "Access-Control-Allow-Methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Headers": "*",
-          "Access-Control-Allow-Credentials": "true",
-        },
-      },
-    },
-  },
-
   pwa: {
     workbox: {
       navigateFallback: "/",
       globPatterns: ["**/*.{js,css,html,png,svg,ico,json}"],
-      globIgnores: ["**/node_modules/**/*", "sw.js", "workbox-*.js"],
       cacheId: `calcreator-${version}`,
       cleanupOutdatedCaches: true,
       skipWaiting: true,
@@ -70,17 +55,6 @@ export default defineNuxtConfig({
             expiration: {
               maxEntries: 50,
               maxAgeSeconds: 60 * 60 * 24 * 30, // 30일
-            },
-          },
-        },
-        {
-          urlPattern: "https://calcreator.cc/api/currency/.*",
-          handler: "CacheFirst",
-          options: {
-            cacheName: "api-cache",
-            expiration: {
-              maxEntries: 100,
-              maxAgeSeconds: 60 * 60 * 24, // 1일
             },
           },
         },
