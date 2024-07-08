@@ -272,8 +272,6 @@ const bombPetal = () => {
 
       <UDivider />
     </BasicCalculator>
-
-    <HitBanner domain="customcal.vercel.app/global-money" color="blue" />
   </div>
 </template>
 

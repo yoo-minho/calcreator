@@ -4,11 +4,11 @@ import { delay } from "~/util/CommUtil";
 const counter = ref(3);
 
 onMounted(async () => {
-  counter.value--;
-  await delay(1000);
-  counter.value--;
-  await delay(1000);
-  counter.value--;
+  // counter.value--;
+  // await delay(1000);
+  // counter.value--;
+  // await delay(1000);
+  // counter.value--;
 
   const page = useCookie("calcreator-page");
   if (page.value) {
@@ -37,5 +37,6 @@ useSeoMeta({
 // defineOgImageComponent("LandingHero", { chip: "🔢🌍👍" });
 </script>
 <template>
-  <div class="absolute w-full h-full flex items-center justify-center">{{ counter }}</div>
+  <div></div>
+  <!-- <div class="absolute w-full h-full flex items-center justify-center">{{ counter }}</div> -->
 </template>

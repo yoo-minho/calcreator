@@ -184,7 +184,6 @@ const 중위소득계산 = (percent: number) => {
       </template>
     </div>
   </div>
-  <HitBanner domain="customcal.vercel.app/income" color="red" />
 </template>
 
 <style lang="scss" scoped></style>

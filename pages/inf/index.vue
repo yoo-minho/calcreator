@@ -58,7 +58,6 @@ defineOgImageComponent("LandingHero", {
           </UButton>
         </template>
       </div>
-      <HitBanner domain="customcal.vercel.app/inf" color="22C55E" />
     </div>
   </div>
 </template>

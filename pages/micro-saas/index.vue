@@ -138,7 +138,6 @@ defineOgImageComponent("LandingHero", { title, title2, desc, colorCode: "rgb(6,1
         <UDivider type="dashed" />
         <BasicRefer :refers="refers" />
       </template>
-      <HitBanner domain="customcal.vercel.app/micro-saas" color="cyan" />
     </div>
   </div>
 </template>
