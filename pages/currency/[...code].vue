@@ -194,7 +194,7 @@ const bombPetal = () => {
 
     <BasicCalculator v-model="displayPrice" class="flex-1" @clickEasy="clickEasy">
       <UDivider>
-        <div class="flex flex-col items-center">
+        <div class="flex flex-col items-center mt-[-16px]">
           <div class="flex items-center gap-2 text-sm">
             <UButton
               size="xs"
