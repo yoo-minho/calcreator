@@ -181,7 +181,7 @@ const bombPetal = () => {
 };
 </script>
 <template>
-  <div class="flex flex-col" style="height: calc(100vh - 72px); overflow: hidden">
+  <div class="flex flex-col" style="height: calc(100vh - 126px); overflow: hidden">
     <ModalCurrencySelectModal
       v-model="isOpenCurrencySelectModal"
       :currency-arr="CURRENCY_ARR"

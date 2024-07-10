@@ -53,10 +53,6 @@ defineOgImageComponent("LandingHero", { chip: "🔢🌍👍" });
       </UButton>
     </template>
     <UDivider />
-    <div class="flex gap-2 m-3 justify-center">
-      <UButton color="white" to="https://naver.me/Gpfd5bxD" target="form"> 제안하기 </UButton>
-      <UButton color="black" to="https://www.threads.net/@irontaek" target="blog"> 만든이 : 유철택 </UButton>
-    </div>
   </div>
 </template>
 

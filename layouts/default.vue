@@ -11,6 +11,7 @@ inject();
       <slot />
     </div>
   </div>
+  <MadeBanner />
 </template>
 
 <style lang="scss" scoped></style>

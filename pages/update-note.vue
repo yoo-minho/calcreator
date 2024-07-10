@@ -1,6 +1,6 @@
 <template>
   <div class="prose m-6">
-    <ContentDoc path="/update-note/currency" />
+    <ContentDoc path="/update-note" />
   </div>
 </template>
 <style>
