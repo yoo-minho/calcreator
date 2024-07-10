@@ -11,7 +11,7 @@ const goUpdateNote = () => {
       <div>v0.0.2</div>
     </UButton>
     <UButton color="white" to="https://www.threads.net/@irontaek" target="blog" class="py-[2px]" size="sm">
-      <div class="tracking-tighter">made by 철택</div>
+      <div class="tracking-tighter">made by 유철택</div>
       <UIcon name="i-ph-threads-logo-bold" class="text-xl m-[-4px]" />
     </UButton>
   </div>
