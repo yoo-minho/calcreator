@@ -2,6 +2,7 @@
 const 현재값 = defineModel<string>({ default: "0" });
 const 연산자눌렀는가 = ref(false);
 const 계산식 = ref<string[]>([]);
+defineProps<{ customZero: "00" | "000" }>();
 const emits = defineEmits<{ (e: "click-easy"): void }>();
 
 const clearDisplay = () => {
@@ -140,7 +141,7 @@ const performCalculation = (): number => {
       </button>
       <button class="btn number" @click="appendNumber('.')">.</button>
       <button class="btn number" @click="appendNumber('0')">0</button>
-      <button class="btn number" @click="appendNumber('00')">00</button>
+      <button class="btn number" @click="appendNumber(customZero)">{{ customZero }}</button>
       <button class="btn bg-primary" @click="handleEqual()">
         <UIcon name="i-ph-equals-bold" />
       </button>

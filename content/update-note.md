@@ -1,6 +1,18 @@
 # 업데이트 노트
 
 <div class="flex items-center justify-between">
+    <span>v0.0.3</span> <span class="text-xs text-gray-400">2024-07-15</span>
+</div>
+
+- **여행용 환율계산기** 개선
+
+  - 계산기 Input 천단위 comma <span class="text-gray-400">by juny</span>
+  - 베트남 전용 '000' 버튼 분기 <span class="text-gray-400">by juny</span>
+  - 직접 환율 입력 시 바로 수정 가능 <span class="text-gray-400">by adami</span>
+
+<hr class="mt-0 mb-3">
+
+<div class="flex items-center justify-between">
     <span>v0.0.2</span> <span class="text-xs text-gray-400">2024-07-09</span>
 </div>
 

@@ -6,6 +6,7 @@ useAppConfig().ui.primary = "blue";
 const route = useRoute();
 const code = String(route.params.code[0]).toUpperCase();
 
+const calPrice = ref("0");
 const displayPrice = ref("0");
 const 한국원화 = ref(0);
 const _한국원화 = computed(() => 한국원화.value.toLocaleString());
@@ -87,28 +88,29 @@ const revertRealTimeCurrencyMode = () => {
 const clickEasy = () => {
   function customRound(number: number) {
     const numStr = number.toString();
-    const [integerPart, decimalPart] = numStr.split(".");
+    const [integerPart] = numStr.split(".");
     if (integerPart.length - 2 >= 0) {
       const tens = 10 ** (integerPart.length - 2);
       return Math.ceil(number / tens) * tens;
     }
     return Math.ceil(number);
   }
-  displayPrice.value = customRound((10000 * currencyUnit.value) / currentPrice.value) + "";
+  calPrice.value = customRound((10000 * currencyUnit.value) / currentPrice.value) + "";
   const toast = useToast();
   toast.add({
     id: "info",
     title: "10,000원이 대략 얼마인지 기억해두시고 즐거운 여행되세요!",
     icon: "i-fluent-emoji-flat-grinning-face",
   });
-  bombPetal();
+  useBombPetal();
 };
 
 watch(
-  [displayPrice, currentPrice],
+  [calPrice, currentPrice],
   () => {
-    const resultValue = Math.round((+displayPrice.value * currentPrice.value) / (currencyUnit.value * 100)) * 100;
+    const resultValue = Math.round((+calPrice.value * currentPrice.value) / (currencyUnit.value * 100)) * 100;
     한국원화.value = isNaN(resultValue) ? 0 : resultValue;
+    displayPrice.value = (+calPrice.value).toLocaleString();
   },
   { immediate: true }
 );
@@ -132,53 +134,6 @@ defineOgImageComponent("LandingHero", {
   desc: desc,
   chip: "🗽🕌🎡",
 });
-
-const bombPetal = () => {
-  const petalsContainer = document.querySelector("body");
-  if (!petalsContainer) return;
-
-  petalsContainer.style.overflow = "hidden";
-  const numberOfPetals = 200;
-
-  for (let i = 0; i < numberOfPetals; i++) {
-    const petal = document.createElement("div");
-    petal.classList.add("petal");
-    petalsContainer.prepend(petal);
-
-    const randomX = Math.random() * window.innerWidth;
-    const randomY = Math.random() * window.innerHeight;
-    const randomDelay = Math.random() * 3;
-    const duration = Math.random() * 3 + 2;
-    const size = Math.random() * 12 + 8;
-    const color = getRandomColor();
-
-    petal.style.left = `${randomX}px`;
-    petal.style.top = `${randomY}px`;
-    petal.style.animation = `fall ${duration}s ease-out ${randomDelay}s infinite`;
-    petal.style.width = `${size}px`;
-    petal.style.height = `${size}px`;
-    petal.style.backgroundColor = color;
-  }
-
-  setTimeout(() => {
-    document.querySelectorAll(".petal").forEach((el) => el.remove());
-    petalsContainer.style.overflow = "";
-  }, 5000);
-
-  function getRandomColor() {
-    const rainbowColors = [
-      "ff0000", // Red
-      "ff7f00", // Orange
-      "ffff00", // Yellow
-      "00ff00", // Green
-      "00ffff", // Cyan
-      "0000ff", // Blue
-      "8a2be2", // BlueViolet
-      "ff00ff", // Magenta
-    ];
-    return "#" + rainbowColors[Math.floor(Math.random() * rainbowColors.length)];
-  }
-};
 </script>
 <template>
   <div class="flex flex-col" style="height: calc(100vh - 126px); overflow: hidden">
@@ -192,7 +147,12 @@ const bombPetal = () => {
 
     <LandingHero :title="title" :title2="title2" color-code="primary" :desc="desc" />
 
-    <BasicCalculator v-model="displayPrice" class="flex-1" @clickEasy="clickEasy">
+    <BasicCalculator
+      v-model="calPrice"
+      class="flex-1"
+      :custom-zero="currencyCode === 'VND' ? '000' : '00'"
+      @clickEasy="clickEasy"
+    >
       <UDivider>
         <div class="flex flex-col items-center mt-[-16px]">
           <div class="flex items-center gap-2 text-sm">
@@ -210,13 +170,21 @@ const bombPetal = () => {
               <div>{{ currencyUnit }} {{ currencyCode }} = {{ currentPrice.toLocaleString() }} 원</div>
               <div class="text-gray-500 text-xs mt-[-2px]">
                 <template v-if="isFixMode">
-                  <div>직접 입력한 환율</div>
+                  <div class="flex items-center">
+                    <div>직접 입력한 환율</div>
+                    <UIcon
+                      name="i-heroicons-pencil-square"
+                      class="w-[20px] h-[20px] ml-1"
+                      clickable
+                      @click="openModalForFixCurrencyMode"
+                    />
+                  </div>
                 </template>
                 <template v-else>
                   <UPopover>
                     <div class="flex items-center">
                       <div>{{ modifiedAt }}</div>
-                      <UIcon name="i-heroicons-question-mark-circle" class="w-[16px] h-[16px] ml-1" />
+                      <UIcon name="i-heroicons-question-mark-circle" class="w-[20px] h-[20px] ml-1" />
                     </div>
                     <template #panel>
                       <div class="p-3 text-base text-left">실시간 환율 데이터<br />by 네이버 API</div>
@@ -237,8 +205,8 @@ const bombPetal = () => {
         </div>
       </UDivider>
 
-      <div class="flex items-center p-3 jusify-between" @click="isOpenCurrencySelectModal = true">
-        <div class="flex flex-col items-center">
+      <div class="flex items-center p-3 jusify-between">
+        <div class="flex flex-col items-center" @click="isOpenCurrencySelectModal = true">
           <IconRoundFull :flag="currencyFlag" />
           <span class="mt-[1px] flex items-center gap-1">
             <div>{{ currencyCode }}</div>
