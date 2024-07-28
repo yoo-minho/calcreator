@@ -142,7 +142,7 @@ useSeoMeta({
 defineOgImageComponent("LandingHero", {
   title: title.value,
   title2: title2,
-  colorCode: "rgb(236,72,153)",
+  colorCode: "rgb(59, 130, 246)",
   desc: desc,
   chip: "🗽🕌🎡",
 });

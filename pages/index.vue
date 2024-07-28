@@ -20,7 +20,8 @@ useSeoMeta({
   twitterCard: "summary_large_image",
 });
 
-defineOgImageComponent("LandingHero", { chip: "🔢🌍👍" });
+// 여기 주석 풀면 npm run build 시 The route is missing the Nuxt OG Image payload or route rules. 이슈남
+// defineOgImageComponent("LandingHero", { chip: "🔢🌍👍" });
 </script>
 <template>
   <div></div>

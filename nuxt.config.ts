@@ -3,10 +3,10 @@ import { version } from "./package.json";
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  devtools: { enabled: false },
+  devtools: { enabled: true },
   ssr: true,
   devServer: {
-    port: 3000,
+    port: 3001,
   },
   app: {
     head: {
@@ -24,6 +24,7 @@ export default defineNuxtConfig({
     "@nuxtjs/tailwindcss",
     "@nuxt/content",
     "@nuxt/image",
+    "@nuxtjs/color-mode",
   ],
 
   colorMode: {
