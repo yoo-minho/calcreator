@@ -2,14 +2,10 @@
 const page = useCookie("calcreator-page");
 const nonReactivePage = [...(page.value || "")].join(""); //useCookie 반응성 이슈
 
-if (nonReactivePage) {
-  if (nonReactivePage === "/") {
-    await navigateTo("/main", { replace: true });
-  } else {
-    await navigateTo(nonReactivePage, { replace: true });
-  }
+if (nonReactivePage === "" || nonReactivePage === "/") {
+  await navigateTo("/main", { replace: true });
 } else {
-  // await navigateTo("/main", { replace: true });
+  await navigateTo(nonReactivePage, { replace: true });
 }
 
 const title = "칼크리에이터";
@@ -24,9 +20,8 @@ useSeoMeta({
   twitterCard: "summary_large_image",
 });
 
-// defineOgImageComponent("LandingHero", { chip: "🔢🌍👍" });
+defineOgImageComponent("LandingHero", { chip: "🔢🌍👍" });
 </script>
 <template>
   <div></div>
-  <!-- <div class="absolute w-full h-full flex items-center justify-center">{{ counter }}</div> -->
 </template>

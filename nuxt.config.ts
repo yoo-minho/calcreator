@@ -5,7 +5,9 @@ import { version } from "./package.json";
 export default defineNuxtConfig({
   devtools: { enabled: false },
   ssr: true,
-
+  devServer: {
+    port: 3001,
+  },
   app: {
     head: {
       viewport: "width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0",
@@ -22,6 +24,7 @@ export default defineNuxtConfig({
     "@nuxtjs/tailwindcss",
     "@nuxt/content",
     "@nuxt/image",
+    "@nuxtjs/color-mode",
   ],
 
   colorMode: {

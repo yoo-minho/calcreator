@@ -18,7 +18,8 @@ const cheerUp = () => {
 </script>
 
 <template>
-  <div class="flex items-center my-3 gap-2 justify-center">
+  <UDivider />
+  <div class="flex items-center gap-2 justify-center my-1 sm:my-3">
     <UButton color="white" size="sm" class="py-[2px]" @click="goUpdateNote">
       <div>v{{ version }}</div>
     </UButton>

@@ -31,7 +31,7 @@ const handleEqual = () => {
 };
 
 const appendNumber = (number: string) => {
-  if (현재값.value.length > 10) return;
+  if (현재값.value.length > 9) return;
 
   // 소수점 중복 입력 방지
   if (number === "." && 현재값.value.includes(".")) return;
@@ -77,12 +77,12 @@ const chooseOperator = (nextOperator: string) => {
 };
 
 const oper = (sign: string) =>
-  ({
-    "+": (a: number, b: number) => a + b,
-    "-": (a: number, b: number) => a - b,
-    "*": (a: number, b: number) => a * b,
-    "/": (a: number, b: number) => a / b,
-  }[sign] || (() => 0));
+({
+  "+": (a: number, b: number) => a + b,
+  "-": (a: number, b: number) => a - b,
+  "*": (a: number, b: number) => a * b,
+  "/": (a: number, b: number) => a / b,
+}[sign] || (() => 0));
 
 const performCalculation = (): number => {
   let 결과값: number = 0;

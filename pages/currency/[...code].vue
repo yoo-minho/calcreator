@@ -37,15 +37,25 @@ const CURRENCY_ARR = [
 type ExchangeType = { currencyUnit: string; value: string };
 
 const currencyCode = ref(code === "ALL" ? CURRENCY_ARR[0].unit : code);
-const currencyFlag = computed(() => CURRENCY_ARR.find((c) => c.unit === currencyCode.value)?.flag || "");
-const currencyName = computed(() => CURRENCY_ARR.find((c) => c.unit === currencyCode.value)?.name || "");
+const currencyFlag = computed(
+  () => CURRENCY_ARR.find((c) => c.unit === currencyCode.value)?.flag || ""
+);
+const currencyName = computed(
+  () => CURRENCY_ARR.find((c) => c.unit === currencyCode.value)?.name || ""
+);
 
 const exchangeData = ref();
-const { data } = await useFetch<{ country: ExchangeType[] }>(`/api/currency/${currencyCode.value}`);
+const { data } = await useFetch<{ country: ExchangeType[] }>(
+  `/api/currency/${currencyCode.value}`
+);
 watch(data, () => (exchangeData.value = data.value), { immediate: true });
 
-const modifiedAt = computed(() => new Date(exchangeData.value?.modifiedAt || "").toLocaleDateString());
-const realPrice = computed(() => Math.round((exchangeData.value?.basePrice || 0) * 100) / 100);
+const modifiedAt = computed(() =>
+  new Date(exchangeData.value?.modifiedAt || "").toLocaleDateString()
+);
+const realPrice = computed(
+  () => Math.round((exchangeData.value?.basePrice || 0) * 100) / 100
+);
 const currencyUnit = computed(() => exchangeData.value?.currencyUnit);
 
 const isOpenCurrencySelectModal = ref(false);
@@ -108,7 +118,9 @@ const clickEasy = () => {
 watch(
   [calPrice, currentPrice],
   () => {
-    const resultValue = Math.round((+calPrice.value * currentPrice.value) / (currencyUnit.value * 100)) * 100;
+    const resultValue =
+      Math.round((+calPrice.value * currentPrice.value) / (currencyUnit.value * 100)) *
+      100;
     한국원화.value = isNaN(resultValue) ? 0 : resultValue;
     displayPrice.value = (+calPrice.value).toLocaleString();
   },
@@ -134,60 +146,57 @@ defineOgImageComponent("LandingHero", {
   desc: desc,
   chip: "🗽🕌🎡",
 });
+
+
+const _formatKoreanCurrency = (num: number) => {
+  const koreanCurrency = formatKoreanCurrency(num)
+  return koreanCurrency.includes('억') || koreanCurrency.includes('만') ? koreanCurrency : ''
+}
 </script>
 <template>
-  <div class="flex flex-col" style="height: calc(100vh - 126px); overflow: hidden">
-    <ModalCurrencySelectModal
-      v-model="isOpenCurrencySelectModal"
-      :currency-arr="CURRENCY_ARR"
-      :current-currency-unit="currencyCode"
-      @submit="changeCurrency"
-    />
+  <div class="flex flex-col h-full">
+    <ModalCurrencySelectModal v-model="isOpenCurrencySelectModal" :currency-arr="CURRENCY_ARR"
+      :current-currency-unit="currencyCode" @submit="changeCurrency" />
     <ModalCurrencyModal v-model="isOpenCurrencyModal" v-model:fix="fixPrice" @submit="submitModal" />
-
-    <LandingHero :title="title" :title2="title2" color-code="primary" :desc="desc" />
-
-    <BasicCalculator
-      v-model="calPrice"
-      class="flex-1"
-      :custom-zero="currencyCode === 'VND' ? '000' : '00'"
-      @clickEasy="clickEasy"
-    >
+    <div class="w-full flex flex-col justify-center items-center my-2 gap-1">
+      <BasicLandingTitle :title="title" :title2="title2" />
+      <p class="text-xs tracking-tight text-gray-600 break-keep whitespace-pre">
+        {{ desc }}
+      </p>
+    </div>
+    <BasicCalculator v-model="calPrice" class="flex-1" :custom-zero="currencyCode === 'VND' ? '000' : '00'"
+      @clickEasy="clickEasy">
       <UDivider>
-        <div class="flex flex-col items-center mt-[-16px]">
+        <div class="flex flex-col items-center">
           <div class="flex items-center gap-2 text-sm">
-            <UButton
-              size="xs"
-              class="font-light"
-              color="primary"
-              variant="outline"
-              @click="isOpenCurrencySelectModal = true"
-            >
+            <UButton size="xs" class="font-light" color="primary" variant="outline"
+              @click="isOpenCurrencySelectModal = true">
               화폐변경
             </UButton>
             <div>|</div>
             <div class="flex flex-col items-center">
-              <div>{{ currencyUnit }} {{ currencyCode }} = {{ currentPrice.toLocaleString() }} 원</div>
+              <div>
+                {{ currencyUnit }} {{ currencyCode }} =
+                {{ currentPrice.toLocaleString() }} 원
+              </div>
               <div class="text-gray-500 text-xs mt-[-2px]">
                 <template v-if="isFixMode">
                   <div class="flex items-center">
                     <div>직접 입력한 환율</div>
-                    <UIcon
-                      name="i-heroicons-pencil-square"
-                      class="w-[20px] h-[20px] ml-1"
-                      clickable
-                      @click="openModalForFixCurrencyMode"
-                    />
+                    <UIcon name="i-heroicons-pencil-square" class="w-[16px] h-[16px] ml-1" clickable
+                      @click="openModalForFixCurrencyMode" />
                   </div>
                 </template>
                 <template v-else>
                   <UPopover>
-                    <div class="flex items-center">
+                    <div class="flex items-center gap-1">
                       <div>{{ modifiedAt }}</div>
-                      <UIcon name="i-heroicons-question-mark-circle" class="w-[20px] h-[20px] ml-1" />
+                      <div class="underline">API</div>
                     </div>
                     <template #panel>
-                      <div class="p-3 text-base text-left">실시간 환율 데이터<br />by 네이버 API</div>
+                      <div class="p-3 text-base text-left">
+                        실시간 환율 데이터<br />by 네이버 API
+                      </div>
                     </template>
                   </UPopover>
                 </template>
@@ -205,37 +214,30 @@ defineOgImageComponent("LandingHero", {
         </div>
       </UDivider>
 
-      <div class="flex items-center p-3 jusify-between">
+      <div class="flex items-center jusify-between px-3 py-1">
         <div class="flex flex-col items-center" @click="isOpenCurrencySelectModal = true">
           <IconRoundFull :flag="currencyFlag" />
-          <span class="mt-[1px] flex items-center gap-1">
-            <div>{{ currencyCode }}</div>
-          </span>
+          <span class="text-xs sm:text-base">{{ currencyCode }}</span>
         </div>
-        <UInput
-          v-model="displayPrice"
-          disabled
-          input-class="text-right text-4xl font-bold shadow-none ring-0"
-          class="flex-1"
-        />
+        <div class="flex flex-col">
+          <UInput v-model="displayPrice" disabled input-class="text-right text-[32px] font-bold shadow-none ring-0 py-0"
+            class="flex-1" />
+          <div class="text-gray-500 text-right px-[10px] h-[16px] text-xs">{{ _formatKoreanCurrency(+calPrice) }}</div>
+        </div>
       </div>
 
-      <UDivider />
+      <UDivider class="py-1" />
 
-      <div class="flex items-center p-3 jusify-between">
+      <div class="flex items-center jusify-between px-3 py-1">
         <div class="flex flex-col items-center">
-          <UIcon
-            name="i-emojione-flag-for-south-korea"
-            class="w-[2em] h-[2em] border-solid border-gray-300 border rounded-full shadow"
-          />
-          <span class="mt-[1px]">KRW</span>
+          <IconRoundFull :flag="'i-emojione-flag-for-south-korea'" />
+          <span class="text-xs sm:text-base">KRW</span>
         </div>
-        <UInput
-          v-model="_한국원화"
-          disabled
-          input-class="text-right text-4xl font-bold shadow-none ring-0 text-gray-500"
-          class="flex-1"
-        />
+        <div class="flex flex-col">
+          <UInput v-model="_한국원화" disabled
+            input-class="text-right text-[32px] font-bold shadow-none ring-0 text-gray-500 py-0" class="flex-1" />
+          <div class="text-gray-500 text-right px-[10px] h-[16px] text-xs">{{ _formatKoreanCurrency(한국원화) }}</div>
+        </div>
       </div>
 
       <UDivider />

@@ -1,6 +1,18 @@
 # 업데이트 노트
 
 <div class="flex items-center justify-between">
+    <span>v0.0.4</span> <span class="text-xs text-gray-400">2024-07-29</span>
+</div>
+
+- **여행용 환율계산기** 개선
+
+  - 천단위 이상 '억, 만' 읽기모드 <span class="text-gray-400">by 어령통</span>
+  - subpath 없을시 초기 빈화면 뜨는 이슈
+  - 해상도 낮은 기기에서 계산 영역 짤리는 이슈
+
+<hr class="mt-0 mb-3">
+
+<div class="flex items-center justify-between">
     <span>v0.0.3</span> <span class="text-xs text-gray-400">2024-07-15</span>
 </div>
 
