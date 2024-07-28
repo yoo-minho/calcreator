@@ -24,7 +24,6 @@ export default defineNuxtConfig({
     "@nuxtjs/tailwindcss",
     "@nuxt/content",
     "@nuxt/image",
-    "@nuxtjs/color-mode",
   ],
 
   colorMode: {
