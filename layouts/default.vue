@@ -8,7 +8,7 @@ inject();
     <Header />
     <UNotifications />
     <div class="flex justify-center flex-1 overflow-y-auto">
-      <div class="min-w-xs max-w-sm w-full">
+      <div class="min-w-xs max-w-[430px] w-full">
         <slot />
       </div>
     </div>

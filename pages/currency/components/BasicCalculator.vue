@@ -77,12 +77,12 @@ const chooseOperator = (nextOperator: string) => {
 };
 
 const oper = (sign: string) =>
-({
-  "+": (a: number, b: number) => a + b,
-  "-": (a: number, b: number) => a - b,
-  "*": (a: number, b: number) => a * b,
-  "/": (a: number, b: number) => a / b,
-}[sign] || (() => 0));
+  ({
+    "+": (a: number, b: number) => a + b,
+    "-": (a: number, b: number) => a - b,
+    "*": (a: number, b: number) => a * b,
+    "/": (a: number, b: number) => a / b,
+  }[sign] || (() => 0));
 
 const performCalculation = (): number => {
   let 결과값: number = 0;
@@ -154,6 +154,7 @@ const performCalculation = (): number => {
   background-color: #333;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+  height: 100vw;
 }
 
 .btn {

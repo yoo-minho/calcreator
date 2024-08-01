@@ -37,25 +37,15 @@ const CURRENCY_ARR = [
 type ExchangeType = { currencyUnit: string; value: string };
 
 const currencyCode = ref(code === "ALL" ? CURRENCY_ARR[0].unit : code);
-const currencyFlag = computed(
-  () => CURRENCY_ARR.find((c) => c.unit === currencyCode.value)?.flag || ""
-);
-const currencyName = computed(
-  () => CURRENCY_ARR.find((c) => c.unit === currencyCode.value)?.name || ""
-);
+const currencyFlag = computed(() => CURRENCY_ARR.find((c) => c.unit === currencyCode.value)?.flag || "");
+const currencyName = computed(() => CURRENCY_ARR.find((c) => c.unit === currencyCode.value)?.name || "");
 
 const exchangeData = ref();
-const { data } = await useFetch<{ country: ExchangeType[] }>(
-  `/api/currency/${currencyCode.value}`
-);
+const { data } = await useFetch<{ country: ExchangeType[] }>(`/api/currency/${currencyCode.value}`);
 watch(data, () => (exchangeData.value = data.value), { immediate: true });
 
-const modifiedAt = computed(() =>
-  new Date(exchangeData.value?.modifiedAt || "").toLocaleDateString()
-);
-const realPrice = computed(
-  () => Math.round((exchangeData.value?.basePrice || 0) * 100) / 100
-);
+const modifiedAt = computed(() => new Date(exchangeData.value?.modifiedAt || "").toLocaleDateString());
+const realPrice = computed(() => Math.round((exchangeData.value?.basePrice || 0) * 100) / 100);
 const currencyUnit = computed(() => exchangeData.value?.currencyUnit);
 
 const isOpenCurrencySelectModal = ref(false);
@@ -118,9 +108,7 @@ const clickEasy = () => {
 watch(
   [calPrice, currentPrice],
   () => {
-    const resultValue =
-      Math.round((+calPrice.value * currentPrice.value) / (currencyUnit.value * 100)) *
-      100;
+    const resultValue = Math.round((+calPrice.value * currentPrice.value) / (currencyUnit.value * 100)) * 100;
     한국원화.value = isNaN(resultValue) ? 0 : resultValue;
     displayPrice.value = (+calPrice.value).toLocaleString();
   },
@@ -131,14 +119,15 @@ const title = computed(() => (code === "ALL" ? "" : currencyName.value) + ` 여�
 const title2 = "환율계산기";
 const desc = "광고없음! 사칙연산과 동시에 환율이 계산 됩니다.";
 
-useSeoMeta({
+const seoData = {
   title: `${title.value} ${title2}`,
   ogTitle: `${title.value} ${title2}`,
   description: desc,
   ogDescription: desc,
   twitterCard: "summary_large_image",
-});
-
+} as any;
+useSeoMeta(seoData);
+useSeoStore({ title: title.value, title2, icon: "i-fluent-emoji-flat-currency-exchange" });
 defineOgImageComponent("LandingHero", {
   title: title.value,
   title2: title2,
@@ -147,44 +136,59 @@ defineOgImageComponent("LandingHero", {
   chip: "🗽🕌🎡",
 });
 
-
 const _formatKoreanCurrency = (num: number) => {
-  const koreanCurrency = formatKoreanCurrency(num)
-  return koreanCurrency.includes('억') || koreanCurrency.includes('만') ? koreanCurrency : ''
-}
+  const koreanCurrency = formatKoreanCurrency(num);
+  return koreanCurrency.includes("억") || koreanCurrency.includes("만") ? koreanCurrency : "";
+};
 </script>
 <template>
-  <div class="flex flex-col h-full">
-    <ModalCurrencySelectModal v-model="isOpenCurrencySelectModal" :currency-arr="CURRENCY_ARR"
-      :current-currency-unit="currencyCode" @submit="changeCurrency" />
+  <div class="flex flex-col h-full max-h-[640px] border-x">
+    <ModalCurrencySelectModal
+      v-model="isOpenCurrencySelectModal"
+      :currency-arr="CURRENCY_ARR"
+      :current-currency-unit="currencyCode"
+      @submit="changeCurrency"
+    />
     <ModalCurrencyModal v-model="isOpenCurrencyModal" v-model:fix="fixPrice" @submit="submitModal" />
-    <div class="w-full flex flex-col justify-center items-center my-2 gap-1">
-      <BasicLandingTitle :title="title" :title2="title2" />
-      <p class="text-xs tracking-tight text-gray-600 break-keep whitespace-pre">
-        {{ desc }}
-      </p>
+    <div>
+      <div class="w-full flex flex-col justify-center items-center my-2 gap-1">
+        <p class="text-xs tracking-tight text-gray-600 break-keep whitespace-pre">
+          {{ desc }}
+        </p>
+      </div>
     </div>
-    <BasicCalculator v-model="calPrice" class="flex-1" :custom-zero="currencyCode === 'VND' ? '000' : '00'"
-      @clickEasy="clickEasy">
-      <UDivider>
+    <UDivider />
+    <BasicCalculator
+      v-model="calPrice"
+      class="flex-1"
+      :custom-zero="currencyCode === 'VND' ? '000' : '00'"
+      @clickEasy="clickEasy"
+    >
+      <UDivider class="py-3">
         <div class="flex flex-col items-center">
           <div class="flex items-center gap-2 text-sm">
-            <UButton size="xs" class="font-light" color="primary" variant="outline"
-              @click="isOpenCurrencySelectModal = true">
+            <UButton
+              size="xs"
+              class="font-light"
+              color="primary"
+              variant="outline"
+              @click="isOpenCurrencySelectModal = true"
+            >
               화폐변경
             </UButton>
             <div>|</div>
             <div class="flex flex-col items-center">
-              <div>
-                {{ currencyUnit }} {{ currencyCode }} =
-                {{ currentPrice.toLocaleString() }} 원
-              </div>
+              <div>{{ currencyUnit }} {{ currencyCode }} = {{ currentPrice.toLocaleString() }} 원</div>
               <div class="text-gray-500 text-xs mt-[-2px]">
                 <template v-if="isFixMode">
                   <div class="flex items-center">
                     <div>직접 입력한 환율</div>
-                    <UIcon name="i-heroicons-pencil-square" class="w-[16px] h-[16px] ml-1" clickable
-                      @click="openModalForFixCurrencyMode" />
+                    <UIcon
+                      name="i-heroicons-pencil-square"
+                      class="w-[16px] h-[16px] ml-1"
+                      clickable
+                      @click="openModalForFixCurrencyMode"
+                    />
                   </div>
                 </template>
                 <template v-else>
@@ -194,9 +198,7 @@ const _formatKoreanCurrency = (num: number) => {
                       <div class="underline">API</div>
                     </div>
                     <template #panel>
-                      <div class="p-3 text-base text-left">
-                        실시간 환율 데이터<br />by 네이버 API
-                      </div>
+                      <div class="p-3 text-base text-left">실시간 환율 데이터<br />by 네이버 API</div>
                     </template>
                   </UPopover>
                 </template>
@@ -220,8 +222,12 @@ const _formatKoreanCurrency = (num: number) => {
           <span class="text-xs sm:text-base">{{ currencyCode }}</span>
         </div>
         <div class="flex flex-col">
-          <UInput v-model="displayPrice" disabled input-class="text-right text-[32px] font-bold shadow-none ring-0 py-0"
-            class="flex-1" />
+          <UInput
+            v-model="displayPrice"
+            disabled
+            input-class="text-right text-[32px] font-bold shadow-none ring-0 py-0"
+            class="flex-1"
+          />
           <div class="text-gray-500 text-right px-[10px] h-[16px] text-xs">{{ _formatKoreanCurrency(+calPrice) }}</div>
         </div>
       </div>
@@ -234,8 +240,12 @@ const _formatKoreanCurrency = (num: number) => {
           <span class="text-xs sm:text-base">KRW</span>
         </div>
         <div class="flex flex-col">
-          <UInput v-model="_한국원화" disabled
-            input-class="text-right text-[32px] font-bold shadow-none ring-0 text-gray-500 py-0" class="flex-1" />
+          <UInput
+            v-model="_한국원화"
+            disabled
+            input-class="text-right text-[32px] font-bold shadow-none ring-0 text-gray-500 py-0"
+            class="flex-1"
+          />
           <div class="text-gray-500 text-right px-[10px] h-[16px] text-xs">{{ _formatKoreanCurrency(한국원화) }}</div>
         </div>
       </div>

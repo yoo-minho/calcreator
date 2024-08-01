@@ -51,19 +51,25 @@ const title = "Micro SaaS";
 const title2 = "고객 계산기";
 const desc = `월 구독료 만원으로 연 10억 매출을 내려면\n고객이 얼마나 필요한지 계산해드립니다`;
 
-useSeoMeta({
+const seoData = {
   title: `${title} ${title2}`,
   ogTitle: `${title} ${title2}`,
   description: desc,
   ogDescription: desc,
   twitterCard: "summary_large_image",
-});
+} as any;
+useSeoStore(seoData);
+useSeoStore({ title, title2, icon: "i-fluent-emoji-flat-microbe" });
 
 defineOgImageComponent("LandingHero", { title, title2, desc, colorCode: "rgb(6,182,212)", chip: "💵👨‍💻👍" });
 </script>
 <template>
   <div class="m-3">
-    <LandingHero :title="title" color-code="primary" :title2="title2" :desc="desc" />
+    <div class="w-full text-center">
+      <p class="mt-3 text-sm tracking-tight text-gray-600 break-keep whitespace-pre">{{ desc }}</p>
+    </div>
+
+    <UDivider class="my-3" />
 
     <div class="flex flex-col gap-3">
       <template v-if="page === 'intro'">

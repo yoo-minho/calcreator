@@ -3,10 +3,10 @@ import { version } from "./package.json";
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  devtools: { enabled: true },
+  devtools: { enabled: false },
   ssr: true,
   devServer: {
-    port: 3001,
+    port: 3000,
   },
   app: {
     head: {

@@ -1,6 +1,14 @@
 # 업데이트 노트
 
 <div class="flex items-center justify-between">
+    <span>v0.0.5</span> <span class="text-xs text-gray-400">2024-08-01</span>
+</div>
+
+- **전체 디자인** 개선
+
+<hr class="mt-0 mb-3">
+
+<div class="flex items-center justify-between">
     <span>v0.0.4</span> <span class="text-xs text-gray-400">2024-07-29</span>
 </div>
 

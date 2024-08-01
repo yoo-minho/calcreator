@@ -42,8 +42,8 @@ const calculate = () => {
   const 합산건강보험료 = !맞벌이유무.value
     ? 건강보험료.value
     : 건강보험료.value > 건강보험료2.value
-      ? 건강보험료.value + 건강보험료2.value / 2
-      : 건강보험료.value / 2 + 건강보험료2.value;
+    ? 건강보험료.value + 건강보험료2.value / 2
+    : 건강보험료.value / 2 + 건강보험료2.value;
 
   보수월액.value = Math.round(합산건강보험료 * (100 / (건강보험료율[2024] / 2)));
   모드.value = "조회";
@@ -83,13 +83,15 @@ const title = "중위소득 계산기 +";
 const title2 = "월평균소득 계산기";
 const desc = `건강보험료만 입력하면\n동시에 계산해드립니다`;
 
-useSeoMeta({
+const seoData = {
   title: `${title} ${title2}`,
   ogTitle: `${title} ${title2}`,
   description: desc,
   ogDescription: desc,
   twitterCard: "summary_large_image",
-});
+} as any;
+useSeoStore(seoData);
+useSeoStore({ title, title2, icon: "i-fluent-emoji-flat-money-with-wings" });
 
 defineOgImageComponent("LandingHero", { title, title2, desc, colorCode: "rgb(239, 68, 68)", chip: "2024" });
 
@@ -99,20 +101,41 @@ const 중위소득계산 = (percent: number) => {
 </script>
 <template>
   <div class="m-3">
-    <LandingHero :title="title" color-code="primary" :title2="title2" :desc="desc"
-      :chip="{ label: '2024', color: 'primary' }" />
+    <div class="w-full text-center">
+      <p class="mt-3 text-sm tracking-tight text-gray-600 break-keep whitespace-pre">{{ desc }}</p>
+    </div>
+    <UDivider class="my-3" />
     <div class="flex flex-col gap-3">
-      <IconSelector v-model="selectedPeople" title="가족구성원" unit="명" :count="7" :mode="모드" :icon="{
-      on: 'i-ph-user-circle-duotone',
-      off: 'i-ph-user-circle-thin',
-    }" />
+      <IconSelector
+        v-model="selectedPeople"
+        title="가족구성원"
+        unit="명"
+        :count="7"
+        :mode="모드"
+        :icon="{
+          on: 'i-ph-user-circle-duotone',
+          off: 'i-ph-user-circle-thin',
+        }"
+      />
 
       <template v-if="보수월액 > 0">
-        <IncomeResult :healthInsuranceFee="맞벌이계산식()" :income="보수월액" :isDual="맞벌이유무" :medianIncome="중위소득대비"
-          :avgMonIncome="월평균소득대비" @back="recalculate()" />
+        <IncomeResult
+          :healthInsuranceFee="맞벌이계산식()"
+          :income="보수월액"
+          :isDual="맞벌이유무"
+          :medianIncome="중위소득대비"
+          :avgMonIncome="월평균소득대비"
+          @back="recalculate()"
+        />
       </template>
       <template v-else>
-        <BasicInput v-model="건강보험료" label="건강보험료?" trailing="원" help="월 기준, 직장가입자 기준, 노인장기요양보험료 미포함" type="number">
+        <BasicInput
+          v-model="건강보험료"
+          label="건강보험료?"
+          trailing="원"
+          help="월 기준, 직장가입자 기준, 노인장기요양보험료 미포함"
+          type="number"
+        >
           <template #tooltip>
             <div class="text-md font-bold"><span class="text-primary">건강보험료</span> 조회방법</div>
             <UDivider class="py-1" />
@@ -129,8 +152,12 @@ const 중위소득계산 = (percent: number) => {
             <UDivider class="py-1" />
             <div class="text-sm text-gray-500">
               1️⃣ '건강보험공단' 접속 - 로그인
-              <a href="https://www.nhis.or.kr/nhis/index.do" class="underline-offset-4 text-primary-300"
-                target="건강보험공단">링크</a>
+              <a
+                href="https://www.nhis.or.kr/nhis/index.do"
+                class="underline-offset-4 text-primary-300"
+                target="건강보험공단"
+                >링크</a
+              >
               <br />
               2️⃣ [민원여기요]-[개인민원] 이동<br />
               3️⃣ [보험료 조회/신청]-[직장보험료 조회] 이동<br />
@@ -139,7 +166,11 @@ const 중위소득계산 = (percent: number) => {
           </template>
         </BasicInput>
         <BasicInput v-if="맞벌이유무" v-model="건강보험료2" type="number" trailing="원" />
-        <UCheckbox v-if="selectedPeople > 1" v-model="맞벌이유무" :label="`맞벌이?` + (맞벌이유무 ? ' - 공식 : 높은소득 + 낮은소득/2' : '')" />
+        <UCheckbox
+          v-if="selectedPeople > 1"
+          v-model="맞벌이유무"
+          :label="`맞벌이?` + (맞벌이유무 ? ' - 공식 : 높은소득 + 낮은소득/2' : '')"
+        />
         <div v-if="!맞벌이유무" class="flex gap-2 w-full">
           <UButton :variant="중위소득대비 === 100 ? 'solid' : 'outline'" size="sm" @click="중위소득계산(100)">
             #중위소득100
