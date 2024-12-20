@@ -142,13 +142,9 @@ const _formatKoreanCurrency = (num: number) => {
 };
 </script>
 <template>
-  <div class="flex flex-col h-full max-h-[640px] border-x">
-    <ModalCurrencySelectModal
-      v-model="isOpenCurrencySelectModal"
-      :currency-arr="CURRENCY_ARR"
-      :current-currency-unit="currencyCode"
-      @submit="changeCurrency"
-    />
+  <div class="flex flex-col h-full max-h-[640px]">
+    <ModalCurrencySelectModal v-model="isOpenCurrencySelectModal" :currency-arr="CURRENCY_ARR"
+      :current-currency-unit="currencyCode" @submit="changeCurrency" />
     <ModalCurrencyModal v-model="isOpenCurrencyModal" v-model:fix="fixPrice" @submit="submitModal" />
     <div>
       <div class="w-full flex flex-col justify-center items-center my-2 gap-1">
@@ -158,22 +154,13 @@ const _formatKoreanCurrency = (num: number) => {
       </div>
     </div>
     <UDivider />
-    <BasicCalculator
-      v-model="calPrice"
-      class="flex-1"
-      :custom-zero="currencyCode === 'VND' ? '000' : '00'"
-      @clickEasy="clickEasy"
-    >
+    <BasicCalculator v-model="calPrice" class="flex-1" :custom-zero="currencyCode === 'VND' ? '000' : '00'"
+      @clickEasy="clickEasy">
       <UDivider class="py-3">
         <div class="flex flex-col items-center">
           <div class="flex items-center gap-2 text-sm">
-            <UButton
-              size="xs"
-              class="font-light"
-              color="primary"
-              variant="outline"
-              @click="isOpenCurrencySelectModal = true"
-            >
+            <UButton size="xs" class="font-light" color="primary" variant="outline"
+              @click="isOpenCurrencySelectModal = true">
               화폐변경
             </UButton>
             <div>|</div>
@@ -183,12 +170,8 @@ const _formatKoreanCurrency = (num: number) => {
                 <template v-if="isFixMode">
                   <div class="flex items-center">
                     <div>직접 입력한 환율</div>
-                    <UIcon
-                      name="i-heroicons-pencil-square"
-                      class="w-[16px] h-[16px] ml-1"
-                      clickable
-                      @click="openModalForFixCurrencyMode"
-                    />
+                    <UIcon name="i-heroicons-pencil-square" class="w-[16px] h-[16px] ml-1" clickable
+                      @click="openModalForFixCurrencyMode" />
                   </div>
                 </template>
                 <template v-else>
@@ -222,12 +205,8 @@ const _formatKoreanCurrency = (num: number) => {
           <span class="text-xs sm:text-base">{{ currencyCode }}</span>
         </div>
         <div class="flex flex-col">
-          <UInput
-            v-model="displayPrice"
-            disabled
-            input-class="text-right text-[32px] font-bold shadow-none ring-0 py-0"
-            class="flex-1"
-          />
+          <UInput v-model="displayPrice" disabled input-class="text-right text-[32px] font-bold shadow-none ring-0 py-0"
+            class="flex-1" />
           <div class="text-gray-500 text-right px-[10px] h-[16px] text-xs">{{ _formatKoreanCurrency(+calPrice) }}</div>
         </div>
       </div>
@@ -240,12 +219,8 @@ const _formatKoreanCurrency = (num: number) => {
           <span class="text-xs sm:text-base">KRW</span>
         </div>
         <div class="flex flex-col">
-          <UInput
-            v-model="_한국원화"
-            disabled
-            input-class="text-right text-[32px] font-bold shadow-none ring-0 text-gray-500 py-0"
-            class="flex-1"
-          />
+          <UInput v-model="_한국원화" disabled
+            input-class="text-right text-[32px] font-bold shadow-none ring-0 text-gray-500 py-0" class="flex-1" />
           <div class="text-gray-500 text-right px-[10px] h-[16px] text-xs">{{ _formatKoreanCurrency(한국원화) }}</div>
         </div>
       </div>

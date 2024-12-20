@@ -4,15 +4,15 @@ import { inject } from "@vercel/analytics";
 inject();
 </script>
 <template>
-  <div class="flex flex-col h-dvh">
-    <Header />
-    <UNotifications />
-    <div class="flex justify-center flex-1 overflow-y-auto">
-      <div class="min-w-xs max-w-[430px] w-full">
+  <div class="flex justify-center bg-gray-500">
+    <div class="max-w-[430px] h-dvh w-full flex flex-col bg-white">
+      <Header />
+      <UNotifications />
+      <div class="flex-1 overflow-y-auto">
         <slot />
       </div>
+      <MadeBanner />
     </div>
-    <MadeBanner />
   </div>
 </template>
 

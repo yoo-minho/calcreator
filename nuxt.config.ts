@@ -24,6 +24,7 @@ export default defineNuxtConfig({
     "@nuxtjs/tailwindcss",
     "@nuxt/content",
     "@nuxt/image",
+    "@nuxt/icon",
     "@nuxtjs/color-mode",
   ],
 
@@ -33,8 +34,10 @@ export default defineNuxtConfig({
     classSuffix: "-mode",
   },
 
-  ui: {
-    icons: ["ph", "solar", "emojione", "mingcute", "fluent-emoji-flat"],
+  icon: {
+    clientBundle: {
+      scan: true,
+    },
   },
 
   gtag: {
@@ -131,4 +134,14 @@ export default defineNuxtConfig({
   },
 
   compatibilityDate: "2024-07-07",
+
+  nitro: {
+    routeRules: {
+      "/sw.js": {
+        headers: {
+          "Cache-Control": "no-cache, no-store, must-revalidate",
+        },
+      },
+    },
+  },
 });

@@ -77,12 +77,12 @@ const chooseOperator = (nextOperator: string) => {
 };
 
 const oper = (sign: string) =>
-  ({
-    "+": (a: number, b: number) => a + b,
-    "-": (a: number, b: number) => a - b,
-    "*": (a: number, b: number) => a * b,
-    "/": (a: number, b: number) => a / b,
-  }[sign] || (() => 0));
+({
+  "+": (a: number, b: number) => a + b,
+  "-": (a: number, b: number) => a - b,
+  "*": (a: number, b: number) => a * b,
+  "/": (a: number, b: number) => a / b,
+}[sign] || (() => 0));
 
 const performCalculation = (): number => {
   let 결과값: number = 0;
@@ -113,7 +113,7 @@ const performCalculation = (): number => {
         {{ 계산식.length > 0 && 현재값 === "0" ? "AC" : "C" }}
       </button>
       <button class="btn number bg-black" @click="emits('click-easy')">
-        <UIcon name="i-ph-hamburger-bold floating" />
+        <UIcon name="i-ph-hamburger-bold" class="floating" />
       </button>
       <button class="btn number bg-black" @click="delDisplay()">
         <UIcon name="i-ph-arrow-left-bold" />
@@ -141,7 +141,9 @@ const performCalculation = (): number => {
       </button>
       <button class="btn number" @click="appendNumber('.')">.</button>
       <button class="btn number" @click="appendNumber('0')">0</button>
-      <button class="btn number" @click="appendNumber(customZero)">{{ customZero }}</button>
+      <button class="btn number" @click="appendNumber(customZero)">
+        {{ customZero }}
+      </button>
       <button class="btn bg-primary" @click="handleEqual()">
         <UIcon name="i-ph-equals-bold" />
       </button>

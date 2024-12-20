@@ -1,6 +1,21 @@
 # 업데이트 노트
 
 <div class="flex items-center justify-between">
+    <span>v0.0.6</span> <span class="text-xs text-gray-400">2024-12-20</span>
+</div>
+
+- **공통** 개선
+
+  - Nuxt 3.12 -> 3.14
+  - 전체 레이아웃 디자인 수정
+
+- **인프런 수익계산기** 개선
+
+  - API 변경 및 아웃풋 파라미터 수정
+
+<hr class="mt-0 mb-3">
+
+<div class="flex items-center justify-between">
     <span>v0.0.5</span> <span class="text-xs text-gray-400">2024-08-01</span>
 </div>
 

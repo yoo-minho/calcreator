@@ -11,7 +11,7 @@ type CourseItem = {
     slug: string;
     metadata: { skills: string[] };
   };
-  payment: {
+  listPrice: {
     regularPrice: number;
   };
 };
@@ -19,7 +19,7 @@ type CourseItem = {
 const props = defineProps<{ id: number }>();
 
 const { data } = await useFetch<{ data: { items: CourseItem[] } }>(
-  `https://www.inflearn.com/users/api/ucc/api/v2/course/user/${props.id}?pageNumber=1&pageSize=100&sort=RECENT`
+  `https://course-api.inflearn.com/client/api/v1/course/user/${props.id}?lang=ko&pageNumber=1&pageSize=100&sort=RECENT`
 );
 const items = data.value?.data.items || [];
 
@@ -30,9 +30,9 @@ const calItems = items
     return {
       title: item.course.title,
       studentCount: item.course.studentCount,
-      regularPrice: item.payment.regularPrice,
+      regularPrice: item.listPrice.regularPrice,
       courseId: item.course.slug,
-      sales: item.course.studentCount * item.payment.regularPrice,
+      sales: item.course.studentCount * item.listPrice.regularPrice,
       skills: item.course.metadata.skills,
     };
   })
@@ -119,11 +119,8 @@ defineOgImageComponent("LandingHero", {
 
     <div class="max-w-full">
       <template v-for="(cal, idx) in calItems">
-        <UCard
-          class="mb-3 max-w-full cursor-pointer"
-          :ui="{ body: { padding: 'p-3 sm:px-3 sm:py-2' } }"
-          @click="clickCourse(cal.courseId)"
-        >
+        <UCard class="mb-3 max-w-full cursor-pointer" :ui="{ body: { padding: 'p-3 sm:px-3 sm:py-2' } }"
+          @click="clickCourse(cal.courseId)">
           <div class="flex flex-col gap-1 items-start">
             <span class="truncate max-w-full">
               <UIcon name="i-ph-leaf-duotone" size="0.8rem" />

@@ -46,7 +46,7 @@ const seo = useSeoStore() as Ref<{ title: string; title2: string; icon: string }
   <div class="bg-background/75 backdrop-blur border-b -mb-px sticky top-0 z-50">
     <div class="mx-auto px-4 max-w-7xl flex items-center justify-between gap-3 h-[60px]">
       <div class="flex items-center w-full flex-wrap">
-        <template v-if="$route.path === '/' || $route.path === '/main' || !seo">
+        <template v-if="route.path === '/' || route.path === '/main' || route.path === '/update-note' || !seo">
           <div class="flex-1"></div>
         </template>
         <template v-else-if="seo">
