@@ -21,11 +21,12 @@
     "@vite-pwa/nuxt": "^0.8.0",
     "shiki": "^1.12.0",
     "vue": "^3.4.21",
-    "vue-router": "^4.3.0"
+    "vue-router": "^4.3.0",
+    "sass": "^1.72.0",
+    "sass-loader": "^14.1.1"
   },
   "devDependencies": {
     "nuxt": "^3.14.1592",
-    "nuxt-gtag": "^2.0.5",
-    "sass": "^1.75.0"
+    "nuxt-gtag": "^2.0.5"
   }
 }

@@ -38,16 +38,30 @@ export default defineNuxtConfig({
     clientBundle: {
       scan: true,
     },
+    serverBundle: {
+      collections: [],
+    },
   },
 
   gtag: {
     id: "G-J865KNTNQZ",
   },
 
+  vite: {
+    css: {
+      preprocessorOptions: {
+        scss: {
+          api: "modern-compiler", // Deprecation Warning: The legacy JS API. Sass 2.0.0.
+        },
+      },
+    },
+  },
+
   pwa: {
     workbox: {
-      navigateFallback: "/main", //와 이거 때문에 완전 헷갈렸다!
       globPatterns: ["**/*.{js,css,html,png,svg,ico,json}"],
+      globIgnores: ["**/node_modules/**/*", "sw.js", "workbox-*.js"],
+      navigateFallback: "/main",
       cacheId: `calcreator-${version}`,
       cleanupOutdatedCaches: true,
       skipWaiting: true,
@@ -77,6 +91,10 @@ export default defineNuxtConfig({
           },
         },
       ],
+    },
+    registerType: "autoUpdate",
+    devOptions: {
+      enabled: true,
     },
     client: {
       installPrompt: "true",
